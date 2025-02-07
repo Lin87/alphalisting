@@ -252,6 +252,7 @@ dist
 
 # Build data
 /build/
+/test/
 
 # Composer PHAR
 /composer.phar

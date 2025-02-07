@@ -7,8 +7,8 @@ ARG PHP_VERSION
 
 FROM alphalisting:latest-wp${WP_VERSION}-php${PHP_VERSION}
 
-LABEL author=diddledani
-LABEL author_uri=https://github.com/diddledani
+LABEL author=Lin87
+LABEL author_uri=https://github.com/Lin87
 
 SHELL [ "/bin/bash", "-c" ]
 
@@ -24,7 +24,7 @@ RUN apt-get install zip unzip -y \
     fi
 
 ENV COVERAGE=0
-ENV SUITES=${SUITES:-}
+#ENV SUITES=${SUITES:-}
 
 # Install composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
@@ -34,7 +34,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --install-dir=/usr/local/bin
 
 # Add composer global binaries to PATH
-ENV PATH "$PATH:~/.composer/vendor/bin"
+ENV PATH="$PATH:~/.composer/vendor/bin"
 
 # Configure php
 RUN echo "date.timezone = UTC" >> /usr/local/etc/php/php.ini

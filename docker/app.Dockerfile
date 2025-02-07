@@ -1,31 +1,26 @@
-###############################################################################
-# Pre-configured WordPress Installation w/ alphalisting #
-# For testing only, use in production not recommended. #
-###############################################################################
+# Define build arguments
+ARG WP_VERSION=6.7.1
+ARG PHP_VERSION=8.3
 
-# Use build args to get the right wordpress + php image
-ARG WP_VERSION
-ARG PHP_VERSION
-
+# Use the arguments in the FROM instruction
 FROM wordpress:${WP_VERSION}-php${PHP_VERSION}-apache
-
-# Needed to specify the build args again after the FROM command.
-ARG WP_VERSION
-ARG PHP_VERSION
 
 # Save the build args for use by the runtime environment
 ENV WP_VERSION=${WP_VERSION}
 ENV PHP_VERSION=${PHP_VERSION}
+ENV WORDPRESS_DB_HOST=${DB_HOST}
+ENV WORDPRESS_DB_USER=${DB_USER}
+ENV WORDPRESS_DB_PASSWORD=${DB_PASSWORD}
+ENV WORDPRESS_DB_NAME=${DB_NAME}
 
-LABEL author=diddledan
-LABEL author_uri=https://github.com/diddledan
+LABEL author=Lin87
+LABEL author_uri=https://github.com/Lin87
 
 SHELL [ "/bin/bash", "-c" ]
 
 # Install system packages
 RUN apt-get update && \
     apt-get -y install \
-    # CircleCI depedencies
     git \
     ssh \
     tar \
@@ -34,7 +29,7 @@ RUN apt-get update && \
     mariadb-client
 
 # Install Dockerize
-ENV DOCKERIZE_VERSION v0.6.1
+ENV DOCKERIZE_VERSION=v0.6.1
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -46,10 +41,6 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 # Set project environmental variables
 ENV WP_ROOT_FOLDER="/var/www/html"
-ENV WORDPRESS_DB_HOST=${DB_HOST}
-ENV WORDPRESS_DB_USER=${DB_USER}
-ENV WORDPRESS_DB_PASSWORD=${DB_PASSWORD}
-ENV WORDPRESS_DB_NAME=${DB_NAME}
 ENV PLUGINS_DIR="${WP_ROOT_FOLDER}/wp-content/plugins"
 ENV PROJECT_DIR="${PLUGINS_DIR}/alphalisting"
 
@@ -60,8 +51,7 @@ RUN sed -i '$d' /usr/local/bin/docker-entrypoint.sh
 RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf
 
 # Custom PHP settings
-RUN echo "upload_max_filesize = 50M" >> /usr/local/etc/php/conf.d/custom.ini \
-    ;
+RUN echo "upload_max_filesize = 50M" >> /usr/local/etc/php/conf.d/custom.ini
 
 # Install XDebug 3
 RUN if test "7.4" = "$PHP_VERSION"; then \
@@ -81,8 +71,8 @@ RUN if test "7.4" = "$PHP_VERSION"; then \
 ENV USING_XDEBUG=0
 
 # Set up entrypoint
-WORKDIR    /var/www/html
-COPY       docker/app.entrypoint.sh /usr/local/bin/app-entrypoint.sh
-RUN        chmod 755 /usr/local/bin/app-entrypoint.sh
+WORKDIR /var/www/html
+COPY docker/app.entrypoint.sh /usr/local/bin/app-entrypoint.sh
+RUN chmod 755 /usr/local/bin/app-entrypoint.sh
 ENTRYPOINT ["app-entrypoint.sh"]
 CMD ["apache2-foreground"]

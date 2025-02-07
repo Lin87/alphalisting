@@ -49,6 +49,11 @@ wp plugin activate alphalisting --allow-root
 # Set pretty permalinks.
 wp rewrite structure '/%year%/%monthnum%/%postname%/' --allow-root
 
+# Ensure the directory exists
+mkdir -p "${PROJECT_DIR}/tests/_data"
+chmod -R 777 "${PROJECT_DIR}/tests/_data"  # Ensure the directory is writable
+
+# Export the database
 wp db export "${PROJECT_DIR}/tests/_data/dump.sql" --allow-root
 
 exec "$@"

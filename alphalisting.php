@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     	AlphaListing
- * Plugin URI:      	https://github.com/Lin87/a-z-listing
+ * Plugin URI:      	https://github.com/Lin87/alphalisting
  * Description:     	Display an A to Z listing of posts (based on work by Dani Llewellyn)
  * Author:          	Ethan Lin
  * Author URI:      	https://github.com/Lin87
