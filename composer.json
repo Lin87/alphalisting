@@ -1,0 +1,75 @@
+{
+    "name": "a-z-listing/a-z-listing",
+    "description": "The A-Z Listing plugin for WordPress (based on work by Dani Llewellyn)",
+    "license": "GPL-2.0-or-later",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Ethan Lin",
+            "email": "ethan.lin.05@gmail.com"
+        }
+    ],
+    "config": {
+        "platform": {
+            "php": "8.3"
+        },
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "kylekatarnls/update-helper": true
+        }
+    },
+    "require": {
+        "symfony\/polyfill-mbstring": "=1.19"
+    },
+    "require-dev": {
+        "wp-coding-standards\/wpcs": "^2.3",
+        "phpcompatibility\/phpcompatibility-wp": "*",
+        "dealerdirect\/phpcodesniffer-composer-installer": "^0.7.1",
+        "squizlabs\/php_codesniffer": "^3.5",
+        "phpunit\/phpunit": "^6",
+        "lucatume/wp-browser": "^3.0",
+        "codeception/module-asserts": "^1.3",
+        "codeception/module-phpbrowser": "^1.0",
+        "codeception/module-webdriver": "^1.0",
+        "codeception/module-db": "^1.0",
+        "codeception/module-filesystem": "^1.0",
+        "codeception/module-cli": "^1.0",
+        "codeception/util-universalframework": "^1.0"
+    },
+    "replace": {
+        "symfony\/polyfill-php54": "*",
+        "symfony\/polyfill-php55": "*",
+        "symfony\/polyfill-php56": "*",
+        "symfony\/polyfill-php70": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "A_Z_Listing\\": "src\/"
+        }
+    },
+    "scripts": {
+        "install-test-env": "bash bin/install-test-env.sh",
+        "docker-build": "bash bin/run-docker.sh build",
+        "docker-run": "bash bin/run-docker.sh run",
+        "docker-destroy": "docker-compose down",
+        "build-and-run": [
+            "@docker-build",
+            "@docker-run"
+        ],
+        "build-app": "@docker-build -a",
+        "build-test": "@docker-build -t",
+        "run-app": "@docker-run -a",
+        "run-test": "@docker-run -t",
+        "lint": "vendor/bin/phpcs",
+        "phpcs-i": [
+            "php ./vendor/bin/phpcs -i"
+        ],
+        "check-cs": [
+            "php ./vendor/bin/phpcs"
+        ],
+        "fix-cs": [
+            "php ./vendor/bin/phpcbf"
+        ],
+        "phpstan": ["phpstan analyze --ansi --memory-limit=1G"]
+    }
+}
