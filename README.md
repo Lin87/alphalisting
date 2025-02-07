@@ -1,6 +1,6 @@
 # A-Z Listing #
 
-**Contributors:** [Lin87](https://github.com/Lin87), [diddledani](https://profiles.wordpress.org/diddledani/)  
+**Contributors:** [eslin87](https://profiles.wordpress.org/eslin87/), [diddledani](https://profiles.wordpress.org/diddledani/)  
 **Tags:** a to z, a-z, archive, listing, widget, index  
 **Requires at least:** 5.0  
 **Requires PHP:** 8.3  
@@ -11,7 +11,7 @@
 
 Provides an A to Z index page and widget. The widget links to the index page at the appropriate letter.
 
-This plugin is based on the original A-Z Listing by Dani Llewellyn, which is no longer maintained.
+This plugin is based on the original A-Z Listing by Dani Llewellyn, which is no longer maintained. 
 
 ## Description ##
 

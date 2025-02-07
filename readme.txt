@@ -1,6 +1,6 @@
 === A-Z Listing ===
 
-Contributors: Lin87, diddledani
+Contributors: eslin87, diddledani
 Tags: a to z, a-z, archive, listing, widget, index
 Requires at least: 5.0
 Requires PHP: 8.3

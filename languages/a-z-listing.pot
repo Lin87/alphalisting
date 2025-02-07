@@ -1,14 +1,14 @@
-# Copyright (C) 2022 Dani Llewellyn
+# Copyright (C) 2025 Ethan Lin
 # This file is distributed under the same license as the A-Z Listing package.
 msgid ""
 msgstr ""
-"Project-Id-Version: A-Z Listing 4.3.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/a-z-listing\n"
-"POT-Creation-Date: 2022-06-29 22:59:47+00:00\n"
+"Project-Id-Version: A-Z Listing 4.3.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/AlphaListing\n"
+"POT-Creation-Date: 2025-02-07 16:49:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2022-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2025-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en\n"
@@ -217,17 +217,17 @@ msgid "Terms to filter by"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "https://a-z-listing.com/"
+msgid "https://github.com/Lin87/a-z-listing"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Display an A to Z listing of posts"
+msgid "Display an A to Z listing of posts (based on work by Dani Llewellyn)"
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "Dani Llewellyn"
+msgid "Ethan Lin"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://bowlhat.net/"
+msgid "https://github.com/Lin87"
 msgstr ""
