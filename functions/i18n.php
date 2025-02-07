@@ -1,8 +1,8 @@
 <?php
 /**
- * A-Z Listing Internationalisation
+ * AlphaListing Internationalisation
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 2.0.0
  * @return void
  */
-function a_z_listing_init_translations() {
-	load_plugin_textdomain( 'a-z-listing' );
+function alphalisting_init_translations() {
+	load_plugin_textdomain( 'alphalisting' );
 }
-add_action( 'init', 'a_z_listing_init_translations' );
+add_action( 'init', 'alphalisting_init_translations' );

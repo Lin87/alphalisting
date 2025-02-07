@@ -1,8 +1,8 @@
 <?php
 /**
- * Legacy A-Z Listing Numbers functionality
+ * Legacy AlphaListing Numbers functionality
  *
- * @package  a-z-listing
+ * @package  alphalisting
  */
 
 declare(strict_types=1);
@@ -12,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Legacy A-Z Listing Numbers functionality class
+ * Legacy AlphaListing Numbers functionality class
  *
  * @since 2.0.0
  */
-class A_Z_Listing_Numbers extends \A_Z_Listing\Numbers {}
+class AlphaListing_Numbers extends \AlphaListing\Numbers {}

@@ -2,12 +2,12 @@
 /**
  * String functions
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing;
+namespace AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

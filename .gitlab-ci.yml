@@ -4,9 +4,9 @@ include:
   - template: Security/License-Scanning.gitlab-ci.yml
   - template: Security/SAST.gitlab-ci.yml
   - template: Security/Secret-Detection.gitlab-ci.yml
-  - project: a-z-listing/ci-config
+  - project: alphalisting/ci-config
     file: /build-and-test.yml
-  - project: a-z-listing/ci-config
+  - project: alphalisting/ci-config
     file: /release-WordPress.org.yml
 
 stages:
@@ -16,7 +16,7 @@ stages:
 
 update-docs-on-release:
   stage: release
-  image: registry.gitlab.com/a-z-listing/ci-config/php:7.4
+  image: registry.gitlab.com/alphalisting/ci-config/php:7.4
   only:
     - tags
   before_script:
@@ -32,4 +32,4 @@ update-docs-on-release:
       wp --ssh=$SSH_USERNAME@$SSH_HOST:$SITE_DIRECTORY term delete $tax $TERMS_TO_DELETE
     done
 
-    wp --ssh=$SSH_USERNAME@$SSH_HOST:$SITE_DIRECTORY parser create wp-content/plugins/a-z-listing --user=diddledani
+    wp --ssh=$SSH_USERNAME@$SSH_HOST:$SITE_DIRECTORY parser create wp-content/plugins/alphalisting --user=diddledani

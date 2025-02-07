@@ -2,12 +2,12 @@
 /**
  * Posts Query class
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing\Shortcode;
+namespace AlphaListing\Shortcode;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -77,7 +77,7 @@ class PostsQuery extends Query {
 	 * Set the fields we require on \WP_Query.
 	 *
 	 * @since 3.0.0 Introduced.
-	 * @since 4.0.0 Converted to static function, and moved to \A_Z_Listing\Shortcode\PostsQuery.
+	 * @since 4.0.0 Converted to static function, and moved to \AlphaListing\Shortcode\PostsQuery.
 	 * @param string    $fields The current fields in SQL format.
 	 * @param \WP_Query $query  The \WP_Query instance.
 	 * @return string The new fields in SQL format.

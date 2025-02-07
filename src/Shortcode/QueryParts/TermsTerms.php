@@ -2,18 +2,18 @@
 /**
  * Taxonomy Terms for taxonomies Query Part.
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing\Shortcode\QueryParts;
+namespace AlphaListing\Shortcode\QueryParts;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \A_Z_Listing\Strings;
+use \AlphaListing\Strings;
 
 /**
  * Taxonomy Terms Query Part extension for taxonomies
@@ -30,7 +30,7 @@ class TermsTerms extends TermsCommon {
 	/**
 	 * Update the query with this extension's additional configuration.
 	 *
-	 * @param \A_Z_Listing\Query $query      The query.
+	 * @param \AlphaListing\Query $query      The query.
 	 * @param string             $display    The display/query type.
 	 * @param string             $key        The name of the attribute.
 	 * @param mixed              $value      The shortcode attribute value.

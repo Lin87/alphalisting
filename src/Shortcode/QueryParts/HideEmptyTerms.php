@@ -2,18 +2,18 @@
 /**
  * Hide Empty Terms Query Part.
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing\Shortcode\QueryParts;
+namespace AlphaListing\Shortcode\QueryParts;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \A_Z_Listing\Shortcode\Extension;
+use \AlphaListing\Shortcode\Extension;
 
 /**
  * Hide Empty Terms Query Part extension
@@ -38,7 +38,7 @@ class HideEmptyTerms extends Extension {
 	/**
 	 * Update the query with this extension's additional configuration.
 	 *
-	 * @param \A_Z_Listing\Query $query      The query.
+	 * @param \AlphaListing\Query $query      The query.
 	 * @param string             $display    The display/query type.
 	 * @param string             $key        The name of the attribute.
 	 * @param mixed              $value      The shortcode attribute value.
@@ -47,7 +47,7 @@ class HideEmptyTerms extends Extension {
 	 */
 	public function shortcode_query_for_display_and_attribute( $query, string $display, string $key, $value, array $attributes ) {
 		if ( ! isset( $query['hide_empty'] ) || empty( $query['hide_empty'] ) ) {
-			$query['hide_empty'] = a_z_listing_is_truthy( $value );
+			$query['hide_empty'] = alphalisting_is_truthy( $value );
 		}
 		return $query;
 	}

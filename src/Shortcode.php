@@ -2,12 +2,12 @@
 /**
  * Contains the A-Z Index shortcode functionality
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing;
+namespace AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -23,11 +23,11 @@ class Shortcode extends Singleton implements Extension {
 	 * @return void
 	 */
 	final public function initialize() {
-		add_shortcode( 'a-z-listing', array( $this, 'handle' ) );
+		add_shortcode( 'alphalisting', array( $this, 'handle' ) );
 	}
 
 	/**
-	 * Handle the a-z-listing shortcode
+	 * Handle the alphalisting shortcode
 	 *
 	 * @since 1.0.0
 	 * @since 1.7.0 Add numbers attribute to append or prepend numerics to the listing.
@@ -36,17 +36,17 @@ class Shortcode extends Singleton implements Extension {
 	 * @since 3.0.0 Move into a class and namespace.
 	 * @since 4.0.0 Abstract away most of the specifics into separate classes.
 	 * @param  string|array<string,mixed> $attributes Provided by WordPress core. Contains the shortcode attributes.
-	 * @return string The A-Z Listing HTML.
+	 * @return string The AlphaListing HTML.
 	 * @suppress PhanPluginPossiblyStaticPublicMethod
 	 */
 	public function handle( $attributes = array() ): string {
 		/**
 		 * Run extensions.
 		 */
-		do_action( 'a_z_listing_shortcode_start', $attributes );
+		do_action( 'alphalisting_shortcode_start', $attributes );
 
 		$defaults   = apply_filters(
-			'a_z_listing_get_shortcode_attributes',
+			'alphalisting_get_shortcode_attributes',
 			array(
 				'display'          => 'posts',
 				'get-all-children' => 'false',
@@ -60,17 +60,17 @@ class Shortcode extends Singleton implements Extension {
 		$attributes = shortcode_atts(
 			$defaults,
 			$attributes,
-			'a-z-listing'
+			'alphalisting'
 		);
 
 		foreach ( $attributes as $attribute => &$value ) {
-			$value = apply_filters( "a_z_listing_sanitize_shortcode_attribute__$attribute", $value, $attributes );
+			$value = apply_filters( "alphalisting_sanitize_shortcode_attribute__$attribute", $value, $attributes );
 		}
-		$attributes = apply_filters( 'a_z_listing_sanitize_shortcode_attributes', $attributes );
+		$attributes = apply_filters( 'alphalisting_sanitize_shortcode_attributes', $attributes );
 
 		$grouping      = $attributes['grouping'];
 		$group_numbers = false;
-		if ( ! empty( $attributes['group-numbers'] ) && a_z_listing_is_truthy( $attributes['group-numbers'] ) ) {
+		if ( ! empty( $attributes['group-numbers'] ) && alphalisting_is_truthy( $attributes['group-numbers'] ) ) {
 			$group_numbers = true;
 		}
 
@@ -107,7 +107,7 @@ class Shortcode extends Singleton implements Extension {
 		$grouping_obj->teardown();
 		$numbers_obj->teardown();
 
-		do_action( 'a_z_listing_shortcode_end', $attributes );
+		do_action( 'alphalisting_shortcode_end', $attributes );
 
 		return $ret;
 	}

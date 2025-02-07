@@ -2,18 +2,18 @@
 /**
  * Parent Post Query Part.
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing\Shortcode\QueryParts;
+namespace AlphaListing\Shortcode\QueryParts;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \A_Z_Listing\Shortcode\Extension;
+use \AlphaListing\Shortcode\Extension;
 
 /**
  * Parent Post Query Part extension
@@ -38,7 +38,7 @@ class ParentPost extends Extension {
 	/**
 	 * Update the query with this extension's additional configuration.
 	 *
-	 * @param \A_Z_Listing\Query $query      The query.
+	 * @param \AlphaListing\Query $query      The query.
 	 * @param string             $display    The display/query type.
 	 * @param string             $key        The name of the attribute.
 	 * @param mixed              $value      The shortcode attribute value.
@@ -46,7 +46,7 @@ class ParentPost extends Extension {
 	 * @return mixed The updated query.
 	 */
 	public function shortcode_query_for_display_and_attribute( $query, string $display, string $key, $value, array $attributes ) {
-		if ( isset( $attributes['get-all-children'] ) && a_z_listing_is_truthy( $attributes['get-all-children'] ) ) {
+		if ( isset( $attributes['get-all-children'] ) && alphalisting_is_truthy( $attributes['get-all-children'] ) ) {
 			$query['child_of'] = $value;
 		} else {
 			$query['post_parent'] = $value;

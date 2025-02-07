@@ -2,12 +2,12 @@
 /**
  * Terms Query class
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing\Shortcode;
+namespace AlphaListing\Shortcode;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

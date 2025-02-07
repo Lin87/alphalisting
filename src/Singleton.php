@@ -1,20 +1,20 @@
 <?php
 /**
- * A-Z Listing singleton
+ * AlphaListing singleton
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing;
+namespace AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * A_Z_Listing_Singleton
+ * AlphaListing_Singleton
  */
 abstract class Singleton implements Extension {
 	/**

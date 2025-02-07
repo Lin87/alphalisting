@@ -2,19 +2,19 @@
 /**
  * Taxonomy Terms Query Part.
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing\Shortcode\QueryParts;
+namespace AlphaListing\Shortcode\QueryParts;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \A_Z_Listing\Shortcode\Extension;
-use \A_Z_Listing\Strings;
+use \AlphaListing\Shortcode\Extension;
+use \AlphaListing\Strings;
 
 /**
  * Taxonomy Terms Query Part extension common implementation

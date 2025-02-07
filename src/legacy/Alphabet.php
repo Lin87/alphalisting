@@ -1,8 +1,8 @@
 <?php
 /**
- * Legacy compatibility A-Z Listing Alphabet handler
+ * Legacy compatibility AlphaListing Alphabet handler
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
@@ -12,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Legacy compatibility A-Z Listing Alphabet handler class
+ * Legacy compatibility AlphaListing Alphabet handler class
  *
  * @since 4.0.0
  */
-class A_Z_Listing_Alphabet extends \A_Z_Listing\Alphabet {}
+class AlphaListing_Alphabet extends \AlphaListing\Alphabet {}

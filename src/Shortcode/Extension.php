@@ -2,23 +2,23 @@
 /**
  * Shortcode Extension class
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing\Shortcode;
+namespace AlphaListing\Shortcode;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \A_Z_Listing\Singleton;
+use \AlphaListing\Singleton;
 
 /**
  * Shortcode Extension
  */
-abstract class Extension extends Singleton implements \A_Z_Listing\Extension {
+abstract class Extension extends Singleton implements \AlphaListing\Extension {
 	/**
 	 * The attribute for this shortcode extension.
 	 *
@@ -61,15 +61,15 @@ abstract class Extension extends Singleton implements \A_Z_Listing\Extension {
 	 * @return void
 	 */
 	final public function initialize() {
-		add_action( 'a_z_listing_shortcode_start', array( $this, 'handler' ), 10, 1 );
-		add_action( 'a_z_listing_shortcode_end', array( $this, 'cleanup' ), 10, 1 );
+		add_action( 'alphalisting_shortcode_start', array( $this, 'handler' ), 10, 1 );
+		add_action( 'alphalisting_shortcode_end', array( $this, 'cleanup' ), 10, 1 );
 
 		if ( ! empty( $this->attribute_name ) ) {
-			add_filter( 'a_z_listing_get_shortcode_attributes', array( $this, 'add_attribute' ) );
-			add_filter( "a_z_listing_sanitize_shortcode_attribute__{$this->attribute_name}", array( $this, 'sanitize_attribute' ), 10, 2 );
-			add_filter( "a_z_listing_shortcode_query_for_attribute__{$this->attribute_name}", array( $this, 'shortcode_query' ), 10, 5 );
+			add_filter( 'alphalisting_get_shortcode_attributes', array( $this, 'add_attribute' ) );
+			add_filter( "alphalisting_sanitize_shortcode_attribute__{$this->attribute_name}", array( $this, 'sanitize_attribute' ), 10, 2 );
+			add_filter( "alphalisting_shortcode_query_for_attribute__{$this->attribute_name}", array( $this, 'shortcode_query' ), 10, 5 );
 			foreach ( $this->display_types as $display ) {
-				add_filter( "a_z_listing_shortcode_query_for_display__{$display}__and_attribute__{$this->attribute_name}", array( $this, 'shortcode_query_for_display_and_attribute' ), 10, 5 );
+				add_filter( "alphalisting_shortcode_query_for_display__{$display}__and_attribute__{$this->attribute_name}", array( $this, 'shortcode_query_for_display_and_attribute' ), 10, 5 );
 			}
 		}
 	}

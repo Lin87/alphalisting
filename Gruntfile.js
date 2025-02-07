@@ -11,7 +11,7 @@ module.exports = function( grunt ) {
 
 		addtextdomain: {
 			options: {
-				textdomain: 'a-z-listing',
+				textdomain: 'alphalisting',
 			},
 			update_all_domains: {
 				options: {
@@ -39,9 +39,6 @@ module.exports = function( grunt ) {
 						return readme;
 					},
 					post_convert: function( readme ) {
-						readme = readme.replace( /^## Description ##$/, function( title ) {
-							return `${title}\n\n[![Build Status](https://travis-ci.org/bowlhat/wp-a-z-listing.svg?branch=master)](https://travis-ci.org/bowlhat/wp-a-z-listing)\n\n`;
-						});
 						readme = readme.replace( /^\*\*([^*\s][^*]*)\*\*$/gm, function( a, b ) {
 							return `#### ${b} ####`;
 						});
@@ -59,8 +56,8 @@ module.exports = function( grunt ) {
 				options: {
 					domainPath: '/languages',
 					exclude: [ '\.git/*', 'bin/*', 'node_modules/*', 'tests/*', 'vendor/*' ],
-					mainFile: 'a-z-listing.php',
-					potFilename: 'a-z-listing.pot',
+					mainFile: 'alphalisting.php',
+					potFilename: 'alphalisting.pot',
 					potHeaders: {
 						poedit: true,
 						'x-poedit-keywordslist': true
@@ -93,8 +90,8 @@ module.exports = function( grunt ) {
 			},
 			dist: {
 				files: {
-					'css/a-z-listing-default.css': 'css/a-z-listing-default.scss',
-					'css/a-z-listing-customize.css': 'css/a-z-listing-customize.scss'
+					'css/alphalisting-default.css': 'css/alphalisting-default.scss',
+					'css/alphalisting-customize.css': 'css/alphalisting-customize.scss'
 				}
 			}
 		},

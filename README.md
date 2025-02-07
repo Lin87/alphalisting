@@ -1,4 +1,4 @@
-# A-Z Listing #
+# AlphaListing #
 
 **Contributors:** [eslin87](https://profiles.wordpress.org/eslin87/), [diddledani](https://profiles.wordpress.org/diddledani/)  
 **Tags:** a to z, a-z, archive, listing, widget, index  
@@ -15,7 +15,7 @@ This plugin is based on the original A-Z Listing by Dani Llewellyn, which is no 
 
 ## Description ##
 
-Show your posts, pages, and terms alphabetically in a Rolodex-, catalogue-, or directory-style list with the A-Z Listing plugin!
+Show your posts, pages, and terms alphabetically in a Rolodex-, catalogue-, or directory-style list with the AlphaListing plugin!
 
 The plugin has a short-code for the list, and a widget so you can link to the list from anywhere on your site. If a letter doesn't have any pages then the widget will display the letter unlinked. The list page will omit the display for that letter entirely.
 
@@ -32,9 +32,9 @@ This section describes how to install the plugin and get it working.
 
 ### Instructions ###
 
-1. Upload the a-z-listing folder to the `/wp-content/plugins/` directory.
+1. Upload the alphalisting folder to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Use the `[a-z-listing]` short-code or block in the block editor (gutenberg) on the page or post that you want to show the listing.
+1. Use the `[alphalisting]` short-code or block in the block editor (gutenberg) on the page or post that you want to show the listing.
 1. Add the A-Z Site Map widget to a sidebar.
 
 ## block ##
@@ -43,59 +43,59 @@ Version 4.0.0 introduces new block editor support. You should use the block in m
 
 ## short-code for compatibility and PHP use ##
 
-The plugin supplies a short-code for the full A-Z listing allowing use without modifying your theme's templates.
+The plugin supplies a short-code for the full AlphaListing allowing use without modifying your theme's templates.
 
 Basic usage is as follows:
 
-    [a-z-listing]
+    [alphalisting]
 
 To specify a post-type to display instead of `page` then use, e.g. `post`:
 
-    [a-z-listing display="posts" post-type="post"]
+    [alphalisting display="posts" post-type="post"]
 
 To filter the posts by a term from a taxonomy:
 
-    [a-z-listing display="posts" post-type="post" taxonomy="category" terms="my-term-slug"]
+    [alphalisting display="posts" post-type="post" taxonomy="category" terms="my-term-slug"]
 
 To display pages that are direct children of the page with ID `24`:
 
-    [a-z-listing display="posts" post-type="page" parent-post="24"]
+    [alphalisting display="posts" post-type="page" parent-post="24"]
 
 To display pages that are children of any depth below the page with ID `24`:
 
-    [a-z-listing display="posts" post-type="page" parent-post="24" get-all-children="yes"]
+    [alphalisting display="posts" post-type="page" parent-post="24" get-all-children="yes"]
 
 To show terms from a taxonomy instead of posts and pages, e.g. Terms from the `Categories` taxonomy:
 
-    [a-z-listing display="terms" taxonomy="category"]
+    [alphalisting display="terms" taxonomy="category"]
 
 To show terms from the `Categories` taxonomy that are direct children of the term with ID of `42`:
 
-    [a-z-listing display="terms" taxonomy="category" parent-term="42"]
+    [alphalisting display="terms" taxonomy="category" parent-term="42"]
 
 To show terms from the `Categories` taxonomy that are children of any depth in the tree below the term with ID of `42`:
 
-    [a-z-listing display="terms" taxonomy="category" parent-term="42" get-all-children="yes"]
+    [alphalisting display="terms" taxonomy="category" parent-term="42" get-all-children="yes"]
 
 To override the alphabet used by the plugin:
 
-    [a-z-listing display="posts" alphabet="Aa,Bb,Cc,Dd,Ee,Ff,Gg,Hh,Ii,Jj,Kk,Ll,Mm,Nn,Oo,Pp,Qq,Rr,Ss,Tt,Uu,Vv,Ww,Xx,Yy,Zz"]
+    [alphalisting display="posts" alphabet="Aa,Bb,Cc,Dd,Ee,Ff,Gg,Hh,Ii,Jj,Kk,Ll,Mm,Nn,Oo,Pp,Qq,Rr,Ss,Tt,Uu,Vv,Ww,Xx,Yy,Zz"]
 
 To add numbers to the listing:
 
-    [a-z-listing display="posts" numbers="after"]
+    [alphalisting display="posts" numbers="after"]
 
 The numbers can also be shown before the alphabet:
 
-    [a-z-listing display="posts" numbers="before"]
+    [alphalisting display="posts" numbers="before"]
 
 You can group the numbers into a single collection for all posts beginning with a numeral:
 
-    [a-z-listing numbers="after" group-numbers="yes"]
+    [alphalisting numbers="after" group-numbers="yes"]
 
 To group the alphabet letters into a range:
 
-    [a-z-listing grouping="3"]
+    [alphalisting grouping="3"]
 
 ** The arguments are all optional **
 
@@ -131,7 +131,7 @@ To group the alphabet letters into a range:
   * Must be set to `true`, `yes`, `on`, or `1` to put the symbols group before the alphabet. All other values will keep the default behaviour.
 * `alphabet`: allows you to override the alphabet that the plugin uses.
   * Default value: `unset`.
-  * When this attribute is not defined, the plugin will either use the untranslated default, or if [glotpress](https://translate.wordpress.org/projects/wp-plugins/a-z-listing) includes a translation for your site's language as set in `Admin -> Settings -> Site Language` it will use that translation.
+  * When this attribute is not defined, the plugin will either use the untranslated default, or if [glotpress](https://translate.wordpress.org/projects/wp-plugins/alphalisting) includes a translation for your site's language as set in `Admin -> Settings -> Site Language` it will use that translation.
   * The current untranslated default is: `AÁÀÄÂaáàäâ,Bb,Cc,Dd,EÉÈËÊeéèëê,Ff,Gg,Hh,IÍÌÏÎiíìïî,Jj,Kk,Ll,Mm,Nn,OÓÒÖÔoóòöô,Pp,Qq,Rr,Ssß,Tt,UÚÙÜÛuúùüû,Vv,Ww,Xx,Yy,Zz`.
   * Accepts a single line of letters/symbols, which need to be separated via the comma character `,`.
   * Including more than one letter/symbol in each group will display posts starting with any of those under the same section.
@@ -211,27 +211,7 @@ To group the alphabet letters into a range:
 
 ### Most compatible method ###
 
-The best way to use the plugin from PHP is to call `do_shortcode( '[a-z-listing]' );` and save or `echo` the returned text. The parameter passed to `do_shortcode()` should be a complete A-Z Listing shortcode with parameters as above.
-
-### Legacy method ###
-
-```php
-<?php
-the_a_z_listing( $query ); // or
-get_the_a_z_listing( $query );
-?>
-```
-
-Where `$query` is one of the following:
-
-* any valid [`WP_Query`](https://codex.wordpress.org/Class_Reference/WP_Query) parameter array
-* a `WP_Query` object formed from `new WP_Query();`
-* any valid [`get_pages()`](https://codex.wordpress.org/Function_Reference/get_pages) parameter array. This array must include a `child_of` key or a `parent` key to tell the plugin that it is a `get_pages()` query
-* a single string containing a taxonomy which will switch the listing to display terms from that taxonomy instead of posts
-
-### Reference ###
-
-Full API documentation is available at [A-Z-Listing Reference](https://a-z-listing.com/reference/)
+The best way to use the plugin from PHP is to call `do_shortcode( '[alphalisting]' );` and save or `echo` the returned text. The parameter passed to `do_shortcode()` should be a complete AlphaListing shortcode with parameters as above.
 
 ## Multiple Column Output ##
 
@@ -239,9 +219,7 @@ Multiple column layout is the default on wide screens. A letter's group of items
 
 ## Templates and Theming ##
 
-The plugin allows the site owner, developer, or themer to provide custom templates for the A-Z Listing output.
-
-*NOTE: These functions have changed name and method of access in 1.0.0. We have dropped the `_a_z_` moniker in the function name and within the template file they are accessed via the `$a_z_listing` object.* The former function names are still accessible, but are largely deprecated.
+The plugin allows the site owner, developer, or themer to provide custom templates for the AlphaListing output.
 
 To add a template to your theme, you need a file similar to the `templates/a-z-listing.php` file in the plugin folder. Your copy needs to be placed within your theme at the theme root directory and called `a-z-listing.php` or `a-z-listing-section.php` (where `-section` is an optional top-level page slug for the section-targeting feature).
 
@@ -254,18 +232,16 @@ Important functions to use in your template are as follows:
 * `$a_z_query->the_letters()` prints the full alphabet, and links the letters that have posts to their section within the index page.
 * `$a_z_query->have_letters()` returns true or false depending on whether there are any letters left to loop-through. This is part of the Letter Loop.
 * `$a_z_query->have_items()` behaves very similarly to Core's `have_posts()` function. It is part of the Item Loop.
-* `$a_z_query->the_letter()` similar to Core's `the_post()`, this will set-up the next iteration of the A-Z Listing's Letter Loop. This needs to wrap-around the Item Loop.
-* `$a_z_query->the_item()` similar to Core's `the_post()`, this will set-up the next iteration of the A-Z Listing's Item Loop, the same way the normal WordPress Loop works. This needs to be _within_ the Letter Loop.
+* `$a_z_query->the_letter()` similar to Core's `the_post()`, this will set-up the next iteration of the AlphaListing's Letter Loop. This needs to wrap-around the Item Loop.
+* `$a_z_query->the_item()` similar to Core's `the_post()`, this will set-up the next iteration of the AlphaListing's Item Loop, the same way the normal WordPress Loop works. This needs to be _within_ the Letter Loop.
 
-When you are within the Item Loop you may utilise all in-built WordPress Core post-related functions such as `the_content()`. Note that titles and permalinks have helper functions to cope with the A-Z Listing showing taxonomy terms (see the next section).
+When you are within the Item Loop you may utilise all in-built WordPress Core post-related functions such as `the_content()`. Note that titles and permalinks have helper functions to cope with the AlphaListing showing taxonomy terms (see the next section).
 
 I advise that you start with a copy of the default template template when customizing your own version. The supplied templates show the usage of most of the functions this plugin provides.
 
 ### Helper functions ###
 
 The plugin supports displaying taxonomy terms as though each term were a post. This means that the WordPress functions related to posts such as `the_title()` and `the_permalink()` are unreliable. We have therefore added helper functions which will return or print the correct output for the item.
-
-*NOTE: These functions have changed name and method of access in 1.0.0. We have dropped the _a_z_ moniker in the function name and within the template file they are accessed via the `$a_z_listing` object.* The previous function names are still accessible, but are largely deprecated.
 
 These helper functions cope with the dual usage of the plugin supporting both `WP_Query`-based (returning `WP_Post` objects) and Taxonomy Terms (returning `WP_Term` objects) listings. These are:
 
@@ -292,13 +268,13 @@ This can be achieved using the short-code or PHP. In these examples the generic 
 
 ##### Single post-type #####
 
-    [a-z-listing post-type="your-post-type-slug"]
+    [alphalisting post-type="your-post-type-slug"]
 
 ##### Multiple post-types #####
 
 For multiple post-types just separate them with a comma.
 
-    [a-z-listing post-type="type1-slug,type2-slug"]
+    [alphalisting post-type="type1-slug,type2-slug"]
 
 #### PHP method ####
 
@@ -308,7 +284,7 @@ PHP code needs to be added to your theme files, and cannot be used as post or pa
 
 ```php
 <?php
-the_a_z_listing( array(
+the_alphalisting( array(
     'post_type' => 'your-post-type-slug'
 ) );
 ?>
@@ -318,13 +294,13 @@ the_a_z_listing( array(
 
 ```php
 <?php
-the_a_z_listing( array(
+the_alphalisting( array(
     'post_type' => array( 'type1-slug', 'type2-slug' )
 ) );
 ?>
 ```
 
-The argument to `the_a_z_listing()` is an [array](https://secure.php.net/manual/en/language.types.array.php) and takes the same parameters as [WP_Query](https://codex.wordpress.org/Class_Reference/WP_Query)
+The argument to `the_alphalisting()` is an [array](https://secure.php.net/manual/en/language.types.array.php) and takes the same parameters as [WP_Query](https://codex.wordpress.org/Class_Reference/WP_Query)
 
 The code above needs to be within a php block which is denoted by the `<?php` and `?>` pair. Depending on your theme, you might not need the opening and closing php tags shown in the above snippet; if that is the case, you are free to omit them in your code.
 
@@ -336,13 +312,13 @@ This can be achieved using the short-code or PHP. In these examples the generic 
 
 ##### Single term #####
 
-    [a-z-listing taxonomy="taxonomy-slug" terms="term-slug"]
+    [alphalisting taxonomy="taxonomy-slug" terms="term-slug"]
 
 ##### Multiple terms #####
 
 For multiple terms just separate them with a comma.
 
-    [a-z-listing taxonomy="taxonomy-slug" terms="term1-slug,term2-slug"]
+    [alphalisting taxonomy="taxonomy-slug" terms="term1-slug,term2-slug"]
 
 #### PHP method ####
 
@@ -350,7 +326,7 @@ PHP code needs to be added to your theme files, and cannot be used as post or pa
 
 ```php
 <?php
-the_a_z_listing( array(
+the_alphalisting( array(
     'tax_query' => array(
         'taxonomy' => 'your-taxonomy-slug',
         'field' => 'slug',
@@ -362,7 +338,7 @@ the_a_z_listing( array(
 
 Any number of terms may be added to the `terms` [array](https://secure.php.net/manual/en/language.types.array.php), including one or none.
 
-The argument to `the_a_z_listing()` is an [array](https://secure.php.net/manual/en/language.types.array.php) and takes the same parameters as [WP_Query](https://codex.wordpress.org/Class_Reference/WP_Query)
+The argument to `the_alphalisting()` is an [array](https://secure.php.net/manual/en/language.types.array.php) and takes the same parameters as [WP_Query](https://codex.wordpress.org/Class_Reference/WP_Query)
 
 The code above needs to be within a php block which is denoted by the `<?php` and `?>` pair. Depending on your theme, you might not need the opening and closing php tags shown in the above snippet; if that is the case, you are free to omit them in your code.
 
@@ -372,7 +348,7 @@ This can be achieved using the short-code or PHP. In these examples the generic 
 
 #### short-code method ####
 
-    [a-z-listing taxonomy="taxonomy-slug" display="terms"]
+    [alphalisting taxonomy="taxonomy-slug" display="terms"]
 
 The taxonomy parameter takes a single taxonomy's slug, e.g. `category` or `post_tag`.
 
@@ -384,11 +360,11 @@ PHP code needs to be added to your theme files, and cannot be used as post or pa
 
 ```php
 <?php
-the_a_z_listing( 'taxonomy-slug' );
+the_alphalisting( 'taxonomy-slug' );
 ?>
 ```
 
-The argument to `the_a_z_listing()` is a [string](https://secure.php.net/manual/en/language.types.string.php) and contains the slug of a single taxonomy, e.g. `category` or `post_tag`.
+The argument to `the_alphalisting()` is a [string](https://secure.php.net/manual/en/language.types.string.php) and contains the slug of a single taxonomy, e.g. `category` or `post_tag`.
 
 The code above needs to be within a php block which is denoted by the `<?php` and `?>` pair. Depending on your theme, you might not need the opening and closing php tags shown in the above snippet; if that is the case, you are free to omit them in your code.
 
@@ -398,7 +374,7 @@ In your theme's `functions.php` file add the following code:
 
 ```php
 <?php
-add_filter( 'a-z-listing-sections', '__return_empty_array' );
+add_filter( 'alphalisting-sections', '__return_empty_array' );
 ?>
 ```
 
@@ -412,7 +388,7 @@ Yes you can. This needs the following code added to your theme's `functions.php`
 
 ```php
 <?php
-add_action( 'init', 'a_z_listing_force_enable_styles', 99 );
+add_action( 'init', 'alphalisting_force_enable_styles', 99 );
 ?>
 ```
 
@@ -426,10 +402,10 @@ You can add code which detects the page which the user is browsing and only enab
 <?php
 add_action( 'init', 'your_override_wrapper_function', 99 );
 function your_override_wrapper_function() {
-    if ( ! is_page( 'your-a-z-listing-page-slug-or-ID' ) ) { // ID is numeric, slug is a string.
+    if ( ! is_page( 'your-alphalisting-page-slug-or-ID' ) ) { // ID is numeric, slug is a string.
         return; // we don't want to run for anything except the page we're interested in.
     }
-    a_z_listing_force_enable_styles(); // this is the page we want, so run the function to enqueue the styles.
+    alphalisting_force_enable_styles(); // this is the page we want, so run the function to enqueue the styles.
 }
 ?>
 ```
@@ -442,7 +418,7 @@ In your theme's functions.php add the following code:
 
 ```php
 <?php
-add_filter( 'a-z-listing-add-styling', '__return_false' );
+add_filter( 'alphalisting-add-styling', '__return_false' );
 ?>
 ```
 
@@ -454,7 +430,7 @@ In your theme's functions.php add the following code:
 
 ```php
 <?php
-add_filter( 'a-z-listing-tabify', '__return_true' );
+add_filter( 'alphalisting-tabify', '__return_true' );
 ?>
 ```
 

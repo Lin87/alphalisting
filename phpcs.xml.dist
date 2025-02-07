@@ -55,13 +55,13 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<!-- Value: replace the function, class, and variable prefixes used. Separate multiple prefixes with a comma. -->
-			<property name="prefixes" type="array" value="a_z_listing,the_a_z_listing,have_a_z_,get_the_a_z,the_a_z"/>
+			<property name="prefixes" type="array" value="alphalisting,the_alphalisting,have_a_z_,get_the_a_z,the_a_z"/>
 		</properties>
 	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<!-- Value: replace the text domain used. -->
-			<property name="text_domain" type="array" value="a-z-listing"/>
+			<property name="text_domain" type="array" value="alphalisting"/>
 		</properties>
 	</rule>
 	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">

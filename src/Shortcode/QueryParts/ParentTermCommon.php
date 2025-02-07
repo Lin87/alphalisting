@@ -2,18 +2,18 @@
 /**
  * Parent Term Query Part.
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing\Shortcode\QueryParts;
+namespace AlphaListing\Shortcode\QueryParts;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \A_Z_Listing\Shortcode\Extension;
+use \AlphaListing\Shortcode\Extension;
 
 /**
  * Parent Term Common implementation.
@@ -30,13 +30,13 @@ abstract class ParentTermCommon extends Extension {
 	/**
 	 * Update the query with this extension's additional configuration.
 	 *
-	 * @param \A_Z_Listing\Query $query      The query.
+	 * @param \AlphaListing\Query $query      The query.
 	 * @param int                $parent_id  The shortcode attribute value.
 	 * @param array              $attributes The complete set of shortcode attributes.
 	 * @return mixed The updated query.
 	 */
 	public function shortcode_query_with_parent_id( $query, int $parent_id, array $attributes ) {
-		if ( isset( $attributes['get-all-children'] ) && a_z_listing_is_truthy( $attributes['get-all-children'] ) ) {
+		if ( isset( $attributes['get-all-children'] ) && alphalisting_is_truthy( $attributes['get-all-children'] ) ) {
 			$parent_selector = 'child_of';
 		} else {
 			$parent_selector = 'parent';

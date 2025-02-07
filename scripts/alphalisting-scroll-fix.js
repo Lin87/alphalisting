@@ -1,6 +1,6 @@
 ( function() {
 	const offset = a_z_listing_scroll_fix.offset || -120;
-	function fixAZListingScroll() {
+	function fixAlphaListingScroll() {
 		document.addEventListener( 'click', function( e ) {
 			if ( e.target.href.startsWith( '#letter-' ) ) {
 				e.preventDefault();
@@ -10,8 +10,8 @@
 		} );
 	}
 	if ( document.readyState === 'loading' ) {
-		document.addEventListener( 'DOMContentLoaded', fixAZListingScroll );
+		document.addEventListener( 'DOMContentLoaded', fixAlphaListingScroll );
 	} else {
-		fixAZListingScroll();
+		fixAlphaListingScroll();
 	}
 } )();

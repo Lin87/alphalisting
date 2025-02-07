@@ -21,7 +21,7 @@ import AZInspectorControls from '../components/AZInspectorControls';
 
 import shortcodeUpgrader from './shortcode-upgrader';
 
-const store = createReduxStore( 'a-z-listing/slotfills', {
+const store = createReduxStore( 'alphalisting/slotfills', {
 	reducer( state = {} ) {
 		return state;
 	},
@@ -43,19 +43,19 @@ const store = createReduxStore( 'a-z-listing/slotfills', {
 register( store );
 
 domReady( () => {
-	const attributes = applyFilters( 'a_z_listing_attributes', globalAttributes );
+	const attributes = applyFilters( 'alphalisting_attributes', globalAttributes );
 
 	/**
 	 * Every block starts by registering a new block type definition.
 	 *
 	 * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
 	 */
-	registerBlockType( 'a-z-listing/block', {
+	registerBlockType( 'alphalisting/block', {
 		/**
 		 * This is the display title for your block, which can be translated with `i18n` functions.
 		 * The block inserter will show this name.
 		 */
-		title: __( 'A-Z Listing', 'a-z-listing' ),
+		title: __( 'AlphaListing', 'alphalisting' ),
 
 		/**
 		 * This is a short description for your block, can be translated with `i18n` functions.
@@ -63,7 +63,7 @@ domReady( () => {
 		 */
 		description: __(
 			'Show your posts in an alphabetically-ordered rolodex-style list',
-			'a-z-listing'
+			'alphalisting'
 		),
 
 		/**
@@ -96,24 +96,24 @@ domReady( () => {
 			from: [
 				{
 					type: 'prefix',
-					prefix: '[a-z-listing',
+					prefix: '[alphalisting',
 					transform() {
-						return createBlock( 'a-z-listing/block' );
+						return createBlock( 'alphalisting/block' );
 					},
 				},
 				{
 					type: 'prefix',
-					prefix: '[a-z-listing]',
+					prefix: '[alphalisting]',
 					transform() {
-						return createBlock( 'a-z-listing/block' );
+						return createBlock( 'alphalisting/block' );
 					},
 				},
 				{
 					type: 'raw',
-					isMatch: ( node ) => node.nodeName === 'P' && /^\s*\[a-z-listing.*\]\s*$/.test( node.textContent ),
+					isMatch: ( node ) => node.nodeName === 'P' && /^\s*\[alphalisting.*\]\s*$/.test( node.textContent ),
 					transform( node ) {
 						const atts = attrs( node.textContent.trim() );
-						return createBlock( 'a-z-listing/block', atts );
+						return createBlock( 'alphalisting/block', atts );
 					},
 				},
 			],

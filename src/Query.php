@@ -1,13 +1,13 @@
 <?php
 /**
- * A-Z Listing main process
+ * AlphaListing main process
  *
- * @package  a-z-listing
+ * @package  alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing;
+namespace AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -83,7 +83,7 @@ class Query {
 	private $current_letter_offset = 0;
 
 	/**
-	 * The query for this instance of the A-Z Listing
+	 * The query for this instance of the AlphaListing
 	 *
 	 * @var \WP_Query|array
 	 */
@@ -104,10 +104,10 @@ class Query {
 	private $instance_id;
 
 	/**
-	 * A_Z_Listing constructor
+	 * AlphaListing constructor
 	 *
 	 * @since 0.1
-	 * @since 1.9.2 Instantiate the \WP_Query object here instead of in `A_Z_Listing::construct_query()`
+	 * @since 1.9.2 Instantiate the \WP_Query object here instead of in `AlphaListing::construct_query()`
 	 * @since 2.0.0 add $type and $use_cache parameters
 	 * @param null|\WP_Query|array|string $query      A \WP_Query-compatible query definition or a taxonomy name.
 	 * @param string                      $type       Specify the listing type; either 'posts' or 'terms'.
@@ -121,7 +121,7 @@ class Query {
 			$this->type = 'terms';
 			if ( empty( $attributes ) ) {
 				$attributes = array( 'taxonomy' => $query );
-				$query      = apply_filters( 'a_z_listing_shortcode_query_for_display__terms', array(), $attributes );
+				$query      = apply_filters( 'alphalisting_shortcode_query_for_display__terms', array(), $attributes );
 			}
 		} elseif ( 'terms' === $type && ! empty( $query ) ) {
 			$this->type = 'terms';
@@ -135,7 +135,7 @@ class Query {
 			if ( empty( $attributes ) ) {
 				$attributes = array( 'taxonomy' => $taxonomy );
 			}
-			$query = apply_filters( 'a_z_listing_shortcode_query_for_display__terms', $query, $attributes );
+			$query = apply_filters( 'alphalisting_shortcode_query_for_display__terms', $query, $attributes );
 		} else {
 			if ( empty( $type ) ) {
 				if ( isset( $attributes['display'] ) ) {
@@ -151,7 +151,7 @@ class Query {
 			 * @param array<string> $types The supported display/query types.
 			 * @return array<string> The supported display/query types.
 			 */
-			$types      = apply_filters( 'a_z_listing_shortcode_query_types', array() );
+			$types      = apply_filters( 'alphalisting_shortcode_query_types', array() );
 			$this->type = in_array( $type, $types, true ) ? $type : 'posts';
 
 			if ( empty( $attributes ) ) {
@@ -160,13 +160,13 @@ class Query {
 			if ( empty( $query ) ) {
 				$query = array();
 			}
-			$query = apply_filters( "a_z_listing_shortcode_query_for_display__{$this->type}", $query, $attributes );
+			$query = apply_filters( "alphalisting_shortcode_query_for_display__{$this->type}", $query, $attributes );
 		}
 
-		// Must be after filter 'a_z_listing_shortcode_query_for_display__$display'
+		// Must be after filter 'alphalisting_shortcode_query_for_display__$display'
 		// to correctly wire-up the query-part filters.
 		if ( ! defined( 'PHPUNIT_TEST_SUITE' ) || ! PHPUNIT_TEST_SUITE ) {
-			$this->instance_id = apply_filters( 'a_z_listing_instance_id', ++self::$num_instances );
+			$this->instance_id = apply_filters( 'alphalisting_instance_id', ++self::$num_instances );
 		} else {
 			$this->instance_id = 'testid';
 		}
@@ -180,7 +180,7 @@ class Query {
 		 * @param array|Object|\WP_Query  $query  The query object
 		 * @param string  $type  The type of the query. Either 'posts' or 'terms'.
 		 */
-		$query = apply_filters( 'a_z_listing_query', $query, $this->type );
+		$query = apply_filters( 'alphalisting_query', $query, $this->type );
 
 		/**
 		 * Modify or replace the query
@@ -190,7 +190,7 @@ class Query {
 		 * @param array|Object|\WP_Query  $query  The query object
 		 * @param string  $type  The type of the query. Either 'posts' or 'terms'.
 		 */
-		$query = apply_filters( 'a-z-listing-query', $query, $this->type ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$query = apply_filters( 'alphalisting-query', $query, $this->type ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		if ( is_array( $query ) && isset( $query['taxonomy'] ) ) {
 			$this->taxonomy = $query['taxonomy'];
@@ -212,7 +212,7 @@ class Query {
 		 * @param array  $query  The query.
 		 * @param string  $type  The type of the query. e.g. posts, terms, etc.
 		 */
-		$items = apply_filters( 'a_z_listing_get_cached_query', array(), (array) $query, $this->type );
+		$items = apply_filters( 'alphalisting_get_cached_query', array(), (array) $query, $this->type );
 
 		if ( ! is_array( $items ) || 0 === count( $items ) ) {
 			/**
@@ -222,11 +222,11 @@ class Query {
 			 * @param array $items The items.
 			 * @param array|\WP_Query $query The query.
 			 */
-			$items = apply_filters( "a_z_listing_get_items_for_display__{$this->type}", array(), $query );
+			$items = apply_filters( "alphalisting_get_items_for_display__{$this->type}", array(), $query );
 		}
 
-		if ( defined( 'A_Z_LISTING_LOG' ) && A_Z_LISTING_LOG ) {
-			do_action( 'a_z_listing_log', "A-Z Listing: {$this->type}", '!ID', $items );
+		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG ) {
+			do_action( 'alphalisting_log', "AlphaListing: {$this->type}", '!ID', $items );
 		}
 
 		/**
@@ -237,7 +237,7 @@ class Query {
 		 * @param string $type  The query type - e.g. terms, posts, etc.
 		 * @param array  $query The query as an array.
 		 */
-		$items = apply_filters( 'a-z-listing-filter-items', $items, $this->type, (array) $query ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$items = apply_filters( 'alphalisting-filter-items', $items, $this->type, (array) $query ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		$this->matched_item_indices = $this->get_all_indices( $items );
 
@@ -250,7 +250,7 @@ class Query {
 			 * @param string  $type  The type of the query. e.g. posts, terms, etc.
 			 * @param array  $items  The items from query.
 			 */
-			do_action( 'a_z_listing_save_cache', (array) $query, $this->type, $this->matched_item_indices );
+			do_action( 'alphalisting_save_cache', (array) $query, $this->type, $this->matched_item_indices );
 		}
 	}
 
@@ -306,23 +306,23 @@ class Query {
 		/**
 		 * Override the detected top-level sections for the site. Defaults to contain each page with no post-parent.
 		 *
-		 * @deprecated Use a_z_listing_sections
-		 * @see a_z_listing_sections
+		 * @deprecated Use alphalisting_sections
+		 * @see alphalisting_sections
 		 */
-		$sections = apply_filters_deprecated( 'az_sections', array( $sections ), '1.0.0', 'a_z_listing_sections' );
+		$sections = apply_filters_deprecated( 'az_sections', array( $sections ), '1.0.0', 'alphalisting_sections' );
 		/**
 		 * Override the detected top-level sections for the site. Defaults to contain each page with no post-parent.
 		 *
 		 * @param array $sections The sections for the site.
 		 */
-		$sections = apply_filters( 'a_z_listing_sections', $sections );
+		$sections = apply_filters( 'alphalisting_sections', $sections );
 		/**
 		 * Override the detected top-level sections for the site. Defaults to contain each page with no post-parent.
 		 *
 		 * @since 1.7.1
 		 * @param array $sections The sections for the site.
 		 */
-		$sections = apply_filters( 'a-z-listing-sections', $sections ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$sections = apply_filters( 'alphalisting-sections', $sections ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		if ( ! $page instanceof \WP_Post ) {
 			$page = get_post( $page );
@@ -345,8 +345,8 @@ class Query {
 			$section_object = null;
 		}
 
-		if ( defined( 'A_Z_LISTING_LOG' ) ) {
-			do_action( 'a_z_listing_log', 'A-Z Listing: Section selection', $section_name, $sections );
+		if ( defined( 'ALPHALISTING_LOG' ) ) {
+			do_action( 'alphalisting_log', 'AlphaListing: Section selection', $section_name, $sections );
 		}
 
 		if ( null !== $section_name && ! in_array( $section_name, $sections, true ) ) {
@@ -354,8 +354,8 @@ class Query {
 			$section_object = null;
 		}
 
-		if ( defined( 'A_Z_LISTING_LOG' ) ) {
-			do_action( 'a_z_listing_log', 'A-Z Listing: Proceeding with section', $section_name );
+		if ( defined( 'ALPHALISTING_LOG' ) ) {
+			do_action( 'alphalisting_log', 'AlphaListing: Proceeding with section', $section_name );
 		}
 		return $section_object;
 	}
@@ -393,7 +393,7 @@ class Query {
 	 */
 	protected function get_all_indices_for_item( $item ): array {
 		$indexed_items = array();
-		$item_indices  = apply_filters( 'a_z_listing_extract_item_indices', array(), $item, $this->type, $this->alphabet );
+		$item_indices  = apply_filters( 'alphalisting_extract_item_indices', array(), $item, $this->type, $this->alphabet );
 
 		if ( ! empty( $item_indices ) ) {
 			foreach ( $item_indices as $key => $entries ) {
@@ -406,8 +406,8 @@ class Query {
 			}
 		}
 
-		if ( defined( 'A_Z_LISTING_LOG' ) && A_Z_LISTING_LOG > 2 ) {
-			do_action( 'a_z_listing_log', 'A-Z Listing: Complete item indices', $indexed_items );
+		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 2 ) {
+			do_action( 'alphalisting_log', 'AlphaListing: Complete item indices', $indexed_items );
 		}
 		return $indexed_items;
 	}
@@ -548,7 +548,7 @@ class Query {
 							 * @return int The new order preference: -1 if $a is less than $b. 1 if $a is greater than $b. 0 if they are identical.
 							 */
 							$sort = apply_filters(
-								'a_z_listing_item_sorting_comparator',
+								'alphalisting_item_sorting_comparator',
 								$default_sort,
 								$atitle,
 								$btitle
@@ -560,7 +560,7 @@ class Query {
 							}
 
 							if ( defined( 'AZLISTINGLOG' ) && AZLISTINGLOG ) {
-								do_action( 'a_z_listing_log', 'A-Z Listing: value returned from `a_z_listing_item_sorting_comparator` filter sorting was not an integer', $sort, $atitle, $btitle );
+								do_action( 'alphalisting_log', 'AlphaListing: value returned from `alphalisting_item_sorting_comparator` filter sorting was not an integer', $sort, $atitle, $btitle );
 							}
 							return $default_sort;
 						}
@@ -590,14 +590,14 @@ class Query {
 	 *
 	 * @since 0.1
 	 * @since 1.0.0 deprecated.
-	 * @see A_Z_Listing::get_the_letters()
-	 * @deprecated use A_Z_Listing::get_the_letters().
+	 * @see AlphaListing::get_the_letters()
+	 * @deprecated use AlphaListing::get_the_letters().
 	 * @param string       $target The page to point links toward.
 	 * @param string|array $style CSS classes to apply to the output.
 	 * @return string The letter links HTML
 	 */
 	public function get_letter_display( string $target = '', $style = '' ): string {
-		_deprecated_function( __METHOD__, '1.0.0', 'A_Z_Listing::get_the_letters' );
+		_deprecated_function( __METHOD__, '1.0.0', 'AlphaListing::get_the_letters' );
 		return $this->get_the_letters( $target, $style );
 	}
 
@@ -658,7 +658,7 @@ class Query {
 
 				$ret .= '<li class="' . esc_attr( implode( ' ', $classes ) ) . '">';
 				if ( ! empty( $indices[ $character ] ) ) {
-					$ret .= '<a href="' . esc_url( "$target#a-z-listing-letter-$id-{$this->instance_id}" ) . '">';
+					$ret .= '<a href="' . esc_url( "$target#alphalisting-letter-$id-{$this->instance_id}" ) . '">';
 				}
 				$ret .= '<span>' . esc_html( $that->get_the_letter_title( $character ) ) . '</span>';
 				if ( ! empty( $indices[ $character ] ) ) {
@@ -718,10 +718,10 @@ class Query {
 		 * Filter the stylesheet applied to the listing
 		 *
 		 * @param string                  $styles      The styles
-		 * @param A_Z_Listing\A_Z_Listing $a_z_query   The A-Z Listing Query object
+		 * @param AlphaListing\AlphaListing $a_z_query   The AlphaListing Query object
 		 * @param string                  $instance_id The instance ID
 		 */
-		$styles = apply_filters( 'a_z_listing_styles', '', $this, $this->instance_id );
+		$styles = apply_filters( 'alphalisting_styles', '', $this, $this->instance_id );
 		echo "<style>\n";
 		echo esc_html( $styles );
 		echo "\n</style>";
@@ -752,7 +752,7 @@ class Query {
 	 * @return string The instance number
 	 */
 	public function get_the_instance_id() {
-		return "a-z-listing-{$this->instance_id}";
+		return "alphalisting-{$this->instance_id}";
 	}
 
 	/**
@@ -768,12 +768,12 @@ class Query {
 	 * Used by theme templates. Returns true when we still have letters to iterate.
 	 *
 	 * @since 0.7
-	 * @see A_Z_Listing::have_letters()
-	 * @deprecated use A_Z_Listing::have_letters()
+	 * @see AlphaListing::have_letters()
+	 * @deprecated use AlphaListing::have_letters()
 	 * @return bool True if we have more letters to iterate, otherwise false
 	 */
 	public function have_a_z_letters(): bool {
-		_deprecated_function( __METHOD__, '1.0.0', 'A_Z_Listing::have_letters' );
+		_deprecated_function( __METHOD__, '1.0.0', 'AlphaListing::have_letters' );
 		return $this->have_letters();
 	}
 
@@ -792,8 +792,8 @@ class Query {
 	 *
 	 * @since 0.7
 	 * @since 1.0.0 deprecated.
-	 * @see A_Z_Listing::have_items()
-	 * @deprecated use A_Z_Listing::have_items()
+	 * @see AlphaListing::have_items()
+	 * @deprecated use AlphaListing::have_items()
 	 * @return bool True if there are posts left to iterate within the current letter, otherwise false.
 	 */
 	public function have_a_z_posts(): bool {
@@ -804,8 +804,8 @@ class Query {
 	/**
 	 * Used by theme templates. Returns true when we still have items/posts within the current letter.
 	 *
-	 * To advance the letter use A_Z_Listing::the_letter()
-	 * To advance the item/post use A_Z_Listing::the_item()
+	 * To advance the letter use AlphaListing::the_letter()
+	 * To advance the item/post use AlphaListing::the_item()
 	 *
 	 * @since 1.0.0
 	 * @return bool True if there are posts left to iterate within the current letter, otherwise false.
@@ -836,12 +836,12 @@ class Query {
 	 *
 	 * @since 0.7
 	 * @since 1.0.0 deprecated.
-	 * @see A_Z_Listing::the_item()
-	 * @deprecated use A_Z_Listing::the_item()
+	 * @see AlphaListing::the_item()
+	 * @deprecated use AlphaListing::the_item()
 	 * @return void
 	 */
 	public function the_a_z_post() {
-		_deprecated_function( __METHOD__, '1.0.0', 'A_Z_Listing::the_item' );
+		_deprecated_function( __METHOD__, '1.0.0', 'AlphaListing::the_item' );
 		$this->the_item();
 	}
 
@@ -965,12 +965,12 @@ class Query {
 	 *
 	 * @since 0.7
 	 * @since 1.0.0 deprecated.
-	 * @see A_Z_Listing::get_the_letter_items_count()
-	 * @deprecated use A_Z_Listing::get_the_letter_items_count()
+	 * @see AlphaListing::get_the_letter_items_count()
+	 * @deprecated use AlphaListing::get_the_letter_items_count()
 	 * @return int The number of items.
 	 */
 	public function num_a_z_posts(): int {
-		_deprecated_function( __METHOD__, '1.0.0', 'A_Z_Listing::get_the_letter_items_count' );
+		_deprecated_function( __METHOD__, '1.0.0', 'AlphaListing::get_the_letter_items_count' );
 		return $this->get_the_letter_items_count();
 	}
 
@@ -979,12 +979,12 @@ class Query {
 	 *
 	 * @since 0.7
 	 * @since 1.0.0 deprecated.
-	 * @see A_Z_Listing::get_the_letter_items_count()
-	 * @deprecated use A_Z_Listing::get_the_letter_items_count()
+	 * @see AlphaListing::get_the_letter_items_count()
+	 * @deprecated use AlphaListing::get_the_letter_items_count()
 	 * @return int The number of posts.
 	 */
 	public function num_a_z_items(): int {
-		_deprecated_function( __METHOD__, '1.0.0', 'A_Z_Listing::get_the_letter_items_count' );
+		_deprecated_function( __METHOD__, '1.0.0', 'AlphaListing::get_the_letter_items_count' );
 		return $this->get_the_letter_items_count();
 	}
 
@@ -996,7 +996,7 @@ class Query {
 	 * @return void
 	 */
 	public function the_letter_count() {
-		_deprecated_function( __METHOD__, '4.0.0', 'A_Z_Listing::the_letter_items_count' );
+		_deprecated_function( __METHOD__, '4.0.0', 'AlphaListing::the_letter_items_count' );
 		$this->the_letter_items_count();
 	}
 
@@ -1008,7 +1008,7 @@ class Query {
 	 * @return int The number of items.
 	 */
 	public function get_the_letter_count(): int {
-		_deprecated_function( __METHOD__, '4.0.0', 'A_Z_Listing::get_the_letter_items_count' );
+		_deprecated_function( __METHOD__, '4.0.0', 'AlphaListing::get_the_letter_items_count' );
 		return $this->get_the_letter_items_count();
 	}
 
@@ -1054,7 +1054,7 @@ class Query {
 		if ( $this->alphabet->get_unknown_letter() === $id ) {
 			$id = '_';
 		}
-		return "a-z-listing-letter-$id-{$this->instance_id}";
+		return "alphalisting-letter-$id-{$this->instance_id}";
 	}
 
 	/**
@@ -1232,6 +1232,6 @@ function _do_template( Query $a_z_query ) {
 	if ( func_get_arg( 1 ) ) {
 		require func_get_arg( 1 );
 	} else {
-		require A_Z_LISTING_DEFAULT_TEMPLATE;
+		require ALPHALISTING_DEFAULT_TEMPLATE;
 	}
 }

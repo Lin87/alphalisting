@@ -1,42 +1,42 @@
 jQuery( function( $ ) {
-	const wireup_a_z_listing = function() {
-		jQuery( '.a-z-listing-widget' ).each( function( idx, el ) {
+	const wireup_alphalisting = function() {
+		jQuery( '.alphalisting-widget' ).each( function( idx, el ) {
 			el = $( el );
-			const target_post = el.find( '.a-z-listing-target-post' );
+			const target_post = el.find( '.alphalisting-target-post' );
 			const target_post_title = el.find(
-				'.a-z-listing-target-post-title'
+				'.alphalisting-target-post-title'
 			);
-			const display_type = el.find( '.a-z-listing-display-type' );
-			const listing_post_type = el.find( '.a-z-listing-post-type' );
+			const display_type = el.find( '.alphalisting-display-type' );
+			const listing_post_type = el.find( '.alphalisting-post-type' );
 			const listing_post_type_wrapper = el.find(
-				'.a-z-listing-post-type-wrapper'
+				'.alphalisting-post-type-wrapper'
 			);
-			const listing_parent_post = el.find( '.a-z-listing-parent-post' );
+			const listing_parent_post = el.find( '.alphalisting-parent-post' );
 			const listing_parent_post_title = el.find(
-				'.a-z-listing-parent-post-title'
+				'.alphalisting-parent-post-title'
 			);
 			const listing_parent_post_wrapper = el.find(
-				'.a-z-listing-parent-post-wrapper'
+				'.alphalisting-parent-post-wrapper'
 			);
-			const listing_taxonomy = el.find( '.a-z-listing-taxonomy' );
+			const listing_taxonomy = el.find( '.alphalisting-taxonomy' );
 			const listing_taxonomy_wrapper = el.find(
-				'.a-z-listing-taxonomy-wrapper'
+				'.alphalisting-taxonomy-wrapper'
 			);
-			const listing_parent_term = el.find( '.a-z-listing-parent-term' );
+			const listing_parent_term = el.find( '.alphalisting-parent-term' );
 			const listing_parent_term_wrapper = el.find(
-				'.a-z-listing-parent-term-wrapper'
+				'.alphalisting-parent-term-wrapper'
 			);
 			const listing_hide_empty_terms = el.find(
-				'.a-z-listing-hide-empty-terms'
+				'.alphalisting-hide-empty-terms'
 			);
 			const listing_hide_empty_terms_wrapper = el.find(
-				'.a-z-listing-hide-empty-terms-wrapper'
+				'.alphalisting-hide-empty-terms-wrapper'
 			);
 			const listing_exclude_terms = el.find(
-				'.a-z-listing-exclude-terms'
+				'.alphalisting-exclude-terms'
 			);
 			const listing_exclude_terms_wrapper = el.find(
-				'.a-z-listing-exclude-terms-wrapper'
+				'.alphalisting-exclude-terms-wrapper'
 			);
 			const listing_wpnonce = el.find(
 				'#_posts_by_title_wpnonce'
@@ -79,12 +79,12 @@ jQuery( function( $ ) {
 				source( post_title, response ) {
 					jQuery.ajax( {
 						url:
-							a_z_listing_widget_admin.ajax_url ||
+							alphalisting_widget_admin.ajax_url ||
 							'/wp-admin/admin-ajax.php',
 						type: 'POST',
 						dataType: 'json',
 						data: {
-							action: 'get_a_z_listing_autocomplete_post_titles',
+							action: 'get_alphalisting_autocomplete_post_titles',
 							_posts_by_title_wpnonce: listing_wpnonce.value,
 							post_type: '',
 							post_title,
@@ -110,12 +110,12 @@ jQuery( function( $ ) {
 				source( post_title, response ) {
 					jQuery.ajax( {
 						url:
-							a_z_listing_widget_admin.ajax_url ||
+							alphalisting_widget_admin.ajax_url ||
 							'/wp-admin/admin-ajax.php',
 						type: 'POST',
 						dataType: 'json',
 						data: {
-							action: 'get_a_z_listing_autocomplete_post_titles',
+							action: 'get_alphalisting_autocomplete_post_titles',
 							post_type: listing_post_type.val(),
 							post_title,
 						},
@@ -138,8 +138,8 @@ jQuery( function( $ ) {
 		} );
 	};
 
-	wireup_a_z_listing();
+	wireup_alphalisting();
 	$( document ).on( 'widget-updated widget-added', function() {
-		wireup_a_z_listing();
+		wireup_alphalisting();
 	} );
 } );

@@ -5,8 +5,8 @@ $defaultColumnWidth: 15em;
 $defaultColumnGap: 0.6em;
 
 .az-letters,
-.a-z-listing-widget .az-letters,
-.a-z-listing-widget.widget .az-letters {
+.alphalisting-widget .az-letters,
+.alphalisting-widget.widget .az-letters {
 	white-space: initial;
 	> ul.az-links {
 		padding: 0;
@@ -62,9 +62,9 @@ div.letter-section {
 		column-count: $defaultColumnCount;
 		column-gap: $defaultColumnGap;
 		column-width: $defaultColumnWidth;
-		column-count: var(--a-z-listing-column-count, #{$defaultColumnCount});
-		column-gap: var(--a-z-listing-column-gap, #{$defaultColumnGap});
-		column-width: var(--a-z-listing-column-width, #{$defaultColumnWidth});
+		column-count: var(--alphalisting-column-count, #{$defaultColumnCount});
+		column-gap: var(--alphalisting-column-gap, #{$defaultColumnGap});
+		column-width: var(--alphalisting-column-width, #{$defaultColumnWidth});
 
 		> li {
 			padding: 0;
@@ -76,18 +76,18 @@ div.letter-section {
 		@for $column from 1 to 17 {
 			&.max-#{$column}-columns {
 				column-count: $column;
-				column-count: min(var(--a-z-listing-column-count, $defaultColumnCount), $column);
+				column-count: min(var(--alphalisting-column-count, $defaultColumnCount), $column);
 				// Legacy
 				max-width:
 					($column * $defaultColumnWidth)
 					+ (($column - 1) * $defaultColumnGap);
 				// Browsers that support calc() and var()
-				max-width: unquote('calc((min(var(--a-z-listing-column-count, #{$defaultColumnCount}), #{$column}) * var(--a-z-listing-column-width, #{$defaultColumnWidth})) + ((min(var(--a-z-listing-column-count, #{$defaultColumnCount}), #{$column}) - 1) * var(--a-z-listing-column-gap, #{$defaultColumnGap})))');
+				max-width: unquote('calc((min(var(--alphalisting-column-count, #{$defaultColumnCount}), #{$column}) * var(--alphalisting-column-width, #{$defaultColumnWidth})) + ((min(var(--alphalisting-column-count, #{$defaultColumnCount}), #{$column}) - 1) * var(--alphalisting-column-gap, #{$defaultColumnGap})))');
 			}
 		}
 	}
 	div.back-to-top {
-		display: var(--a-z-listing-back-to-top-display, block);
+		display: var(--alphalisting-back-to-top-display, block);
 		width: 100%;
 		text-align: right;
 		a {

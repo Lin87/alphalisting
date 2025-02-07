@@ -1,5 +1,5 @@
 {
-  "name": "wp-a-z-listing",
+  "name": "alphalisting",
   "version": "4.3.1",
   "main": "build/index.js",
   "author": "Ethan Lin",
@@ -32,8 +32,8 @@
     "sass": "^1.36.0"
   },
   "wp-env": {
-    "plugin-dir": "a-z-listing",
-    "plugin-name": "A-Z Listing",
+    "plugin-dir": "alphalisting",
+    "plugin-name": "AlphaListing",
     "welcome-logo": [
       ",⁻⁻⁻·       .                 |",
       "|  ،⁓’.   . |---  ,---. ,---. |---. ,---. ,---. ,---.",

@@ -1,8 +1,8 @@
 <?php
 /**
- * Definition for the a-z-listing's main widget
+ * Definition for the alphalisting's main widget
  *
- * @package  a-z-listing
+ * @package  alphalisting
  */
 
 declare(strict_types=1);
@@ -12,11 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Definition for the AZ_Widget which displays alphabetically-ordered list of latin letters linking to the A-Z Listing page
+ * Definition for the AlphaListing_Widget which displays alphabetically-ordered list of latin letters linking to the AlphaListing page
  *
  * @since 0.1
  */
-class A_Z_Listing_Widget extends WP_Widget {
+class AlphaListing_Widget extends WP_Widget {
 	/**
 	 * Register the widget's meta information
 	 *
@@ -30,20 +30,20 @@ class A_Z_Listing_Widget extends WP_Widget {
 	 *                                             information on accepted arguments. Default empty array.
 	 */
 	public function __construct( $id_base = '', $name = '', $widget_options = array(), $control_options = array() ) {
-		$widget_options['classname']   = $widget_options['classname'] ?? 'a-z-listing-widget';
+		$widget_options['classname']   = $widget_options['classname'] ?? 'alphalisting-widget';
 		$widget_options['description'] = $widget_options['description'] ?? __(
 			'Alphabetised links to the A-Z site map',
-			'a-z-listing'
+			'alphalisting'
 		);
 
 		parent::__construct(
 			$id_base ?? 'bh_az_widget',
-			$name ?? __( 'A-Z Site Map', 'a-z-listing' ),
+			$name ?? __( 'A-Z Site Map', 'alphalisting' ),
 			$widget_options,
 			$control_options
 		);
 
-		add_action( 'admin_enqueue_scripts', 'a_z_listing_enqueue_widget_admin_script' );
+		add_action( 'admin_enqueue_scripts', 'alphalisting_enqueue_widget_admin_script' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_if_active' ) );
 	}
 
@@ -55,7 +55,7 @@ class A_Z_Listing_Widget extends WP_Widget {
 	 */
 	public function enqueue_if_active() {
 		if ( false !== is_active_widget( false, false, $this->id_base, true ) ) {
-			a_z_listing_do_enqueue();
+			alphalisting_do_enqueue();
 		}
 	}
 
@@ -127,29 +127,29 @@ class A_Z_Listing_Widget extends WP_Widget {
 		wp_nonce_field( 'posts-by-title', '_posts_by_title_wpnonce', false, true );
 		?>
 
-		<div class="a-z-listing-widget">
-			<div class="a-z-listing-widget-title-wrapper">
+		<div class="alphalisting-widget">
+			<div class="alphalisting-widget-title-wrapper">
 				<p>
 					<label for="<?php echo esc_attr( $widget_title_id ); ?>">
-						<?php esc_html_e( 'Widget Title', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Widget Title', 'alphalisting' ); ?>
 					</label>
-					<input type="text" class="widefat a-z-listing-title"
+					<input type="text" class="widefat alphalisting-title"
 						id="<?php echo esc_attr( $widget_title_id ); ?>"
 						name="<?php echo esc_attr( $widget_title_name ); ?>"
-						placeholder="<?php esc_attr_e( 'Widget Title', 'a-z-listing' ); ?>"
+						placeholder="<?php esc_attr_e( 'Widget Title', 'alphalisting' ); ?>"
 						value="<?php echo esc_attr( $widget_title ); ?>" />
 				</p>
 				<p style="color: #333;">
-					<?php esc_html_e( 'Leave the title field blank, above, to use the title from the page set in the next field', 'a-z-listing' ); ?>
+					<?php esc_html_e( 'Leave the title field blank, above, to use the title from the page set in the next field', 'alphalisting' ); ?>
 				</p>
 			</div>
 
-			<div class="a-z-listing-target-post-wrapper">
+			<div class="alphalisting-target-post-wrapper">
 				<p>
 					<label for="<?php echo esc_attr( $target_post_title_id ); ?>">
-						<?php esc_html_e( 'Sitemap A-Z page', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Sitemap A-Z page', 'alphalisting' ); ?>
 					</label>
-					<input type="text" class="widefat a-z-listing-target-post-title"
+					<input type="text" class="widefat alphalisting-target-post-title"
 						id="<?php echo esc_attr( $target_post_title_id ); ?>"
 						name="<?php echo esc_attr( $target_post_title_name ); ?>"
 						value="<?php echo esc_attr( $target_post_title ); ?>" />
@@ -159,37 +159,37 @@ class A_Z_Listing_Widget extends WP_Widget {
 						value="<?php echo esc_attr( $target_post ); ?>" />
 				</p>
 				<p>
-					<?php esc_html_e( 'Type some or all of the title of the page you want links to point at. Ensure this input field is not selected when you save the settings.', 'a-z-listing' ); ?>
-					<?php esc_html_e( 'Matching posts will be shown as you type. Click on the correct post from the matches to update the setting.', 'a-z-listing' ); ?>
+					<?php esc_html_e( 'Type some or all of the title of the page you want links to point at. Ensure this input field is not selected when you save the settings.', 'alphalisting' ); ?>
+					<?php esc_html_e( 'Matching posts will be shown as you type. Click on the correct post from the matches to update the setting.', 'alphalisting' ); ?>
 				</p>
 			</div>
 
-			<div class="a-z-listing-display-type-wrapper">
+			<div class="alphalisting-display-type-wrapper">
 				<p>
 					<label for="<?php echo esc_attr( $display_type_id ); ?>">
-						<?php esc_html_e( 'Display posts or terms?', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Display posts or terms?', 'alphalisting' ); ?>
 					</label>
-					<select class="widefat a-z-listing-display-type"
+					<select class="widefat alphalisting-display-type"
 						id="<?php echo esc_attr( $display_type_id ); ?>"
 						name="<?php echo esc_attr( $display_type_name ); ?>">
 						<option value="posts"
 							<?php echo ( 'terms' !== $display_type ) ? 'selected' : ''; ?>>
-							<?php esc_html_e( 'Posts', 'a-z-listing' ); ?>
+							<?php esc_html_e( 'Posts', 'alphalisting' ); ?>
 						</option>
 						<option value="terms"
 							<?php echo ( 'terms' === $display_type ) ? 'selected' : ''; ?>>
-							<?php esc_html_e( 'Taxonomy terms', 'a-z-listing' ); ?>
+							<?php esc_html_e( 'Taxonomy terms', 'alphalisting' ); ?>
 						</option>
 					</select>
 				</p>
 			</div>
 
-			<div class="a-z-listing-post-type-wrapper" <?php echo ( 'terms' !== $display_type ) ? '' : 'style="display: none;"'; ?>>
+			<div class="alphalisting-post-type-wrapper" <?php echo ( 'terms' !== $display_type ) ? '' : 'style="display: none;"'; ?>>
 				<p>
 					<label for="<?php echo esc_attr( $listing_post_type_id ); ?>">
-						<?php esc_html_e( 'Post-type to display', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Post-type to display', 'alphalisting' ); ?>
 					</label>
-					<select class="widefat a-z-listing-post-type"
+					<select class="widefat alphalisting-post-type"
 						id="<?php echo esc_attr( $listing_post_type_id ); ?>"
 						name="<?php echo esc_attr( $listing_post_type_name ); ?>"
 						<?php echo ( 'terms' !== $display_type ) ? '' : 'disabled'; ?>>
@@ -203,12 +203,12 @@ class A_Z_Listing_Widget extends WP_Widget {
 				</p>
 			</div>
 
-			<div class="a-z-listing-parent-post-wrapper" <?php echo ( 'terms' !== $display_type ) ? '' : 'style="display: none"'; ?>>
+			<div class="alphalisting-parent-post-wrapper" <?php echo ( 'terms' !== $display_type ) ? '' : 'style="display: none"'; ?>>
 				<p>
 					<label for="<?php echo esc_attr( $listing_parent_post_title_id ); ?>">
-						<?php esc_html_e( 'Show only children of this post (ID)', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Show only children of this post (ID)', 'alphalisting' ); ?>
 					</label>
-					<input type="text" class="widefat a-z-listing-parent-post-title"
+					<input type="text" class="widefat alphalisting-parent-post-title"
 						id="<?php echo esc_attr( $listing_parent_post_title_id ); ?>"
 						name="<?php echo esc_attr( $listing_parent_post_title_name ); ?>"
 						<?php echo ( 'terms' !== $display_type ) ? '' : 'disabled'; ?>
@@ -219,26 +219,26 @@ class A_Z_Listing_Widget extends WP_Widget {
 						value="<?php echo esc_attr( $listing_parent_post ); ?>" />
 				</p>
 				<p>
-					<?php esc_html_e( 'Type some or all of the title of the post to limit the listing to only the children of that post. Ensure this input field is not selected when you save the settings.', 'a-z-listing' ); ?>
-					<?php esc_html_e( 'Matching posts will be shown as you type. Click on the correct post from the matches to update the setting.', 'a-z-listing' ); ?>
+					<?php esc_html_e( 'Type some or all of the title of the post to limit the listing to only the children of that post. Ensure this input field is not selected when you save the settings.', 'alphalisting' ); ?>
+					<?php esc_html_e( 'Matching posts will be shown as you type. Click on the correct post from the matches to update the setting.', 'alphalisting' ); ?>
 				</p>
 				<p>
 					<label for="<?php echo esc_attr( $listing_all_children_id ); ?>">
-						<?php esc_html_e( 'Include grand-children?', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Include grand-children?', 'alphalisting' ); ?>
 					</label>
-					<input type="checkbox" class="a-z-listing-all-children"
+					<input type="checkbox" class="alphalisting-all-children"
 						id="<?php echo esc_attr( $listing_all_children_id ); ?>"
 						name="<?php echo esc_attr( $listing_all_children_name ); ?>"
 						<?php echo ( isset( $listing_all_children ) && 'true' === $listing_all_children ) ? 'checked' : ''; ?> />
 				</p>
 			</div>
 
-			<div class="a-z-listing-taxonomy-wrapper" <?php echo ( 'terms' === $display_type ) ? '' : 'style="display: none;"'; ?>>
+			<div class="alphalisting-taxonomy-wrapper" <?php echo ( 'terms' === $display_type ) ? '' : 'style="display: none;"'; ?>>
 				<p>
 					<label for="<?php echo esc_attr( $listing_taxonomy_id ); ?>">
-						<?php esc_html_e( 'Taxonomy to display', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Taxonomy to display', 'alphalisting' ); ?>
 					</label>
-					<select class="widefat a-z-listing-taxonomy"
+					<select class="widefat alphalisting-taxonomy"
 						id="<?php echo esc_attr( $listing_taxonomy_id ); ?>"
 						name="<?php echo esc_attr( $listing_taxonomy_name ); ?>"
 						<?php echo ( 'terms' === $display_type ) ? '' : 'disabled'; ?>>
@@ -252,48 +252,48 @@ class A_Z_Listing_Widget extends WP_Widget {
 				</p>
 			</div>
 
-			<div class="a-z-listing-parent-term-wrapper" <?php echo ( 'terms' === $display_type ) ? '' : 'style="display: none;"'; ?>>
+			<div class="alphalisting-parent-term-wrapper" <?php echo ( 'terms' === $display_type ) ? '' : 'style="display: none;"'; ?>>
 				<p>
 					<label for="<?php echo esc_attr( $listing_parent_term_id ); ?>">
-						<?php esc_html_e( 'Parent term to display children of', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Parent term to display children of', 'alphalisting' ); ?>
 					</label>
-					<input type="text" class="widefat a-z-listing-parent-term"
+					<input type="text" class="widefat alphalisting-parent-term"
 						id="<?php echo esc_attr( $listing_parent_term_id ); ?>"
 						name="<?php echo esc_attr( $listing_parent_term_name ); ?>"
 						value="<?php echo esc_attr( $listing_parent_term ); ?>" />
 				</p>
 			</div>
 
-			<div class="a-z-listing-include-terms-wrapper">
+			<div class="alphalisting-include-terms-wrapper">
 				<p>
 					<label for="<?php echo esc_attr( $listing_terms_include_id ); ?>">
-						<?php esc_html_e( 'Terms to include (IDs)', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Terms to include (IDs)', 'alphalisting' ); ?>
 					</label>
-					<input type="text" class="widefat a-z-listing-include-terms"
+					<input type="text" class="widefat alphalisting-include-terms"
 						id="<?php echo esc_attr( $listing_terms_include_id ); ?>"
 						name="<?php echo esc_attr( $listing_terms_include_name ); ?>"
 						value="<?php echo esc_attr( $listing_terms_include ); ?>" />
 				</p>
 			</div>
 
-			<div class="a-z-listing-exclude-terms-wrapper" <?php echo ( 'terms' === $display_type ) ? '' : 'style="display: none;"'; ?>>
+			<div class="alphalisting-exclude-terms-wrapper" <?php echo ( 'terms' === $display_type ) ? '' : 'style="display: none;"'; ?>>
 				<p>
 					<label for="<?php echo esc_attr( $listing_terms_exclude_id ); ?>">
-						<?php esc_html_e( 'Terms to exclude (IDs)', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Terms to exclude (IDs)', 'alphalisting' ); ?>
 					</label>
-					<input type="text" class="widefat a-z-listing-exclude-terms"
+					<input type="text" class="widefat alphalisting-exclude-terms"
 						id="<?php echo esc_attr( $listing_terms_exclude_id ); ?>"
 						name="<?php echo esc_attr( $listing_terms_exclude_name ); ?>"
 						value="<?php echo esc_attr( $listing_terms_exclude ); ?>" />
 				</p>
 			</div>
 
-			<div class="a-z-listing-hide-empty-terms-wrapper" <?php echo ( 'terms' === $display_type ) ? '' : 'style="display: none;"'; ?>>
+			<div class="alphalisting-hide-empty-terms-wrapper" <?php echo ( 'terms' === $display_type ) ? '' : 'style="display: none;"'; ?>>
 				<p>
 					<label for="<?php echo esc_attr( $listing_hide_empty_terms_id ); ?>">
-						<?php esc_html_e( 'Hide empty terms', 'a-z-listing' ); ?>
+						<?php esc_html_e( 'Hide empty terms', 'alphalisting' ); ?>
 					</label>
-					<input type="checkbox" class="a-z-listing-hide-empty-terms"
+					<input type="checkbox" class="alphalisting-hide-empty-terms"
 						id="<?php echo esc_attr( $listing_hide_empty_terms_id ); ?>"
 						name="<?php echo esc_attr( $listing_hide_empty_terms_name ); ?>"
 						<?php echo ( isset( $listing_hide_empty_terms ) && 'true' === $listing_hide_empty_terms ) ? 'checked' : ''; ?> />
@@ -404,7 +404,7 @@ function get_the_section_az_widget( array $args, array $instance ): string {
  * @return  string The complete A-Z Widget HTML ready for echoing to the page.
  */
 function get_the_section_a_z_widget( array $args, array $instance ): string { //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-	do_action( 'a_z_listing_log', 'A-Z Listing: Running widget' );
+	do_action( 'alphalisting_log', 'AlphaListing: Running widget' );
 
 	$instance = wp_parse_args(
 		$instance,
@@ -437,7 +437,7 @@ function get_the_section_a_z_widget( array $args, array $instance ): string { //
 			$title = get_the_title( $target_id );
 		}
 	} elseif ( empty( $title ) ) {
-		$title = esc_html__( 'A-Z Listing', 'a-z-listing' );
+		$title = esc_html__( 'AlphaListing', 'alphalisting' );
 	}
 
 	$hide_empty_terms = true === $instance['hide_empty_terms'] ? 'true' : 'false';
@@ -450,7 +450,7 @@ function get_the_section_a_z_widget( array $args, array $instance ): string { //
 	$ret .= $args['after_title'];
 
 	$ret .= do_shortcode(
-		"[a-z-listing
+		"[alphalisting
             alphabet=''
             display='{$instance['type']}'
             exclude-posts=''
@@ -483,7 +483,7 @@ function get_the_section_a_z_widget( array $args, array $instance ): string { //
  * @param WP_Query $wp_query The WP_Query.
  * @return string The updated search database query snippet.
  */
-function a_z_listing_search_titles_only( $search, $wp_query ) {
+function alphalisting_search_titles_only( $search, $wp_query ) {
 	if ( empty( $search ) || empty( $wp_query->query_vars['search_terms'] ) ) {
 		return $search;
 	}
@@ -513,7 +513,7 @@ function a_z_listing_search_titles_only( $search, $wp_query ) {
  * @param string $post_type the post type to search within.
  * @return array<int,object> the post IDs that are found.
  */
-function a_z_listing_get_posts_by_title( string $post_title, string $post_type = '' ): array {
+function alphalisting_get_posts_by_title( string $post_title, string $post_type = '' ): array {
 	global $wpdb;
 
 	$params = array(
@@ -525,21 +525,21 @@ function a_z_listing_get_posts_by_title( string $post_title, string $post_type =
 		$params['post_type'] = $post_type;
 	}
 
-	add_filter( 'posts_search', 'a_z_listing_search_titles_only', 10, 2 );
+	add_filter( 'posts_search', 'alphalisting_search_titles_only', 10, 2 );
 	$query   = new WP_Query( $params );
 	$results = $query->posts;
-	remove_filter( 'posts_search', 'a_z_listing_search_titles_only' );
+	remove_filter( 'posts_search', 'alphalisting_search_titles_only' );
 
 	return $results;
 }
 
 /**
- * Ajax responder for A_Z_Listing_Widget configuration
+ * Ajax responder for AlphaListing_Widget configuration
  *
  * @since 2.0.0
  * @return void
  */
-function a_z_listing_autocomplete_post_titles() {
+function alphalisting_autocomplete_post_titles() {
 	check_ajax_referer( 'posts-by-title' );
 
 	$nonce = '';
@@ -547,7 +547,7 @@ function a_z_listing_autocomplete_post_titles() {
 		$nonce = sanitize_text_field( wp_unslash( $_REQUEST['_posts_by_title_wpnonce'] ) );
 	}
 	if ( ! wp_verify_nonce( $nonce, 'posts-by-title' ) ) {
-		die( esc_html( __( 'Security check failed', 'a-z-listing' ) ) );
+		die( esc_html( __( 'Security check failed', 'alphalisting' ) ) );
 	}
 
 	$post_title = '';
@@ -559,7 +559,7 @@ function a_z_listing_autocomplete_post_titles() {
 		$post_type = sanitize_text_field( wp_unslash( $_POST['post_type'] ) );
 	}
 
-	$results = a_z_listing_get_posts_by_title( $post_title, $post_type );
+	$results = alphalisting_get_posts_by_title( $post_title, $post_type );
 
 	$titles = array();
 	foreach ( $results as $result ) {
@@ -573,8 +573,8 @@ function a_z_listing_autocomplete_post_titles() {
 
 	exit();
 }
-add_action( 'wp_ajax_nopriv_get_a_z_listing_autocomplete_post_titles', 'a_z_listing_autocomplete_post_titles' );
-add_action( 'wp_ajax_get_a_z_listing_autocomplete_post_titles', 'a_z_listing_autocomplete_post_titles' );
+add_action( 'wp_ajax_nopriv_get_alphalisting_autocomplete_post_titles', 'alphalisting_autocomplete_post_titles' );
+add_action( 'wp_ajax_get_alphalisting_autocomplete_post_titles', 'alphalisting_autocomplete_post_titles' );
 
 /**
  * Register the A_Z_Widget widget
@@ -582,10 +582,10 @@ add_action( 'wp_ajax_get_a_z_listing_autocomplete_post_titles', 'a_z_listing_aut
  * @since 2.0.0
  * @return void
  */
-function a_z_listing_widget() {
-	register_widget( 'A_Z_Listing_Widget' );
+function alphalisting_widget() {
+	register_widget( 'AlphaListing_Widget' );
 }
-add_action( 'widgets_init', 'a_z_listing_widget' );
+add_action( 'widgets_init', 'alphalisting_widget' );
 
 /**
  * Enqueue the jquery-ui autocomplete script
@@ -593,7 +593,7 @@ add_action( 'widgets_init', 'a_z_listing_widget' );
  * @since 2.0.0
  * @return void
  */
-function a_z_listing_autocomplete_script() {
+function alphalisting_autocomplete_script() {
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 }
-add_action( 'admin_enqueue_scripts', 'a_z_listing_autocomplete_script' );
+add_action( 'admin_enqueue_scripts', 'alphalisting_autocomplete_script' );

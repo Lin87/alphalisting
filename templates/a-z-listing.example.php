@@ -1,6 +1,6 @@
 <?php
 /**
- * Example template for the A-Z Listing plugin
+ * Example template for the AlphaListing plugin
  *
  * This template will be given the variable `$a_z_query` which is an instance of
  * `A_Z_Listing`.
@@ -46,7 +46,7 @@
 
 						<div class="back-to-top">
 							<a href="#<?php $a_z_query->the_instance_id(); ?>">
-								<?php esc_html_e( 'Back to top', 'a-z-listing' ); ?>
+								<?php esc_html_e( 'Back to top', 'alphalisting' ); ?>
 							</a>
 						</div>
 					</div>
@@ -56,6 +56,6 @@
 	</div>
 </div>
 <?php else : ?>
-	<p><?php esc_html_e( 'There are no posts included in this index.', 'a-z-listing' ); ?></p>
+	<p><?php esc_html_e( 'There are no posts included in this index.', 'alphalisting' ); ?></p>
 	<?php
 endif;

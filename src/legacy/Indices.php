@@ -2,7 +2,7 @@
 /**
  * Default legacy compatilibity index parsing functions.
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
@@ -12,6 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class A_Z_Listing_Indices
+ * Class AlphaListing_Indices
  */
-class A_Z_Listing_Indices extends \A_Z_Listing\Indices {}
+class AlphaListing_Indices extends \AlphaListing\Indices {}

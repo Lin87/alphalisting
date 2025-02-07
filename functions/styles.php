@@ -1,8 +1,8 @@
 <?php
 /**
- * A-Z Listing Styles
+ * AlphaListing Styles
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
@@ -19,8 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param bool $unused Not used.
  * @return void
  */
-function a_z_listing_enqueue_styles( bool $unused = false ) {
-	wp_enqueue_style( 'a-z-listing' );
+function alphalisting_enqueue_styles( bool $unused = false ) {
+	wp_enqueue_style( 'alphalisting' );
 }
 
 /**
@@ -29,30 +29,30 @@ function a_z_listing_enqueue_styles( bool $unused = false ) {
  * @since 2.1.0
  * @return void
  */
-function a_z_listing_customize_enqueue_styles() {
-	wp_enqueue_style( 'a-z-listing-admin' );
+function alphalisting_customize_enqueue_styles() {
+	wp_enqueue_style( 'alphalisting-admin' );
 }
 
 /**
- * Forcibly enqueue styling. This is a helper function which can be hooked in-place of the default hook added in `a_z_listing_add_styling`
+ * Forcibly enqueue styling. This is a helper function which can be hooked in-place of the default hook added in `alphalisting_add_styling`
  *
  * @since 1.3.0
  * @since 4.0.0 deprecated
  * @deprecated
  * @return void
  */
-function a_z_listing_force_enqueue_styles() {
+function alphalisting_force_enqueue_styles() {
 	// no-op.
 }
 
 /**
- * Replace the default styling enqueue function with `a_z_listing_force_enqueue_styles` to always add the styling to pages
+ * Replace the default styling enqueue function with `alphalisting_force_enqueue_styles` to always add the styling to pages
  *
  * @since 1.3.0
  * @since 4.0.0 deprecated
  * @deprecated
  * @return void
  */
-function a_z_listing_force_enable_styles() {
+function alphalisting_force_enable_styles() {
 	// no-op.
 }

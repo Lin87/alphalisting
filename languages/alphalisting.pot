@@ -1,10 +1,10 @@
 # Copyright (C) 2025 Ethan Lin
-# This file is distributed under the same license as the A-Z Listing package.
+# This file is distributed under the same license as the AlphaListing package.
 msgid ""
 msgstr ""
-"Project-Id-Version: A-Z Listing 4.3.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/AlphaListing\n"
-"POT-Creation-Date: 2025-02-07 16:49:54+00:00\n"
+"Project-Id-Version: AlphaListing 4.3.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alphalisting\n"
+"POT-Creation-Date: 2025-02-07 20:17:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,7 +29,7 @@ msgid "A to Z Listing plugin"
 msgstr ""
 
 #: functions/health-check.php:41
-msgid "A-Z Listing: PHP mbstring module is enabled"
+msgid "AlphaListing: PHP mbstring module is enabled"
 msgstr ""
 
 #: functions/health-check.php:44
@@ -38,18 +38,18 @@ msgstr ""
 
 #: functions/health-check.php:49
 msgid ""
-"The mbstring PHP module improves support for non-latin languages in the A-Z "
-"Listing plugin."
+"The mbstring PHP module improves support for non-latin languages in the "
+"AlphaListing plugin."
 msgstr ""
 
 #: functions/health-check.php:57
-msgid "A-Z Listing: PHP mbstring module is not enabled"
+msgid "AlphaListing: PHP mbstring module is not enabled"
 msgstr ""
 
 #: functions/health-check.php:61
 msgid ""
 "The mbstring PHP module is not enabled on your server. This module improves "
-"support for non-latin languages in the A-Z Listing plugin."
+"support for non-latin languages in the AlphaListing plugin."
 msgstr ""
 
 #: functions/health-check.php:63
@@ -93,98 +93,98 @@ msgstr ""
 msgid "There are no posts included in this index."
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:34
+#: widgets/class-alphalisting-widget.php:34
 msgid "Alphabetised links to the A-Z site map"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:41
+#: widgets/class-alphalisting-widget.php:41
 msgid "A-Z Site Map"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:134
-#: widgets/class-a-z-listing-widget.php:139
+#: widgets/class-alphalisting-widget.php:134
+#: widgets/class-alphalisting-widget.php:139
 msgid "Widget Title"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:143
+#: widgets/class-alphalisting-widget.php:143
 msgid ""
 "Leave the title field blank, above, to use the title from the page set in "
 "the next field"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:150
+#: widgets/class-alphalisting-widget.php:150
 msgid "Sitemap A-Z page"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:162
+#: widgets/class-alphalisting-widget.php:162
 msgid ""
 "Type some or all of the title of the page you want links to point at. "
 "Ensure this input field is not selected when you save the settings."
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:163
-#: widgets/class-a-z-listing-widget.php:223
+#: widgets/class-alphalisting-widget.php:163
+#: widgets/class-alphalisting-widget.php:223
 msgid ""
 "Matching posts will be shown as you type. Click on the correct post from "
 "the matches to update the setting."
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:170
+#: widgets/class-alphalisting-widget.php:170
 msgid "Display posts or terms?"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:177
+#: widgets/class-alphalisting-widget.php:177
 msgid "Posts"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:181
+#: widgets/class-alphalisting-widget.php:181
 msgid "Taxonomy terms"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:190
+#: widgets/class-alphalisting-widget.php:190
 msgid "Post-type to display"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:209
+#: widgets/class-alphalisting-widget.php:209
 msgid "Show only children of this post (ID)"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:222
+#: widgets/class-alphalisting-widget.php:222
 msgid ""
 "Type some or all of the title of the post to limit the listing to only the "
 "children of that post. Ensure this input field is not selected when you "
 "save the settings."
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:227
+#: widgets/class-alphalisting-widget.php:227
 msgid "Include grand-children?"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:239
+#: widgets/class-alphalisting-widget.php:239
 msgid "Taxonomy to display"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:258
+#: widgets/class-alphalisting-widget.php:258
 msgid "Parent term to display children of"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:270
+#: widgets/class-alphalisting-widget.php:270
 msgid "Terms to include (IDs)"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:282
+#: widgets/class-alphalisting-widget.php:282
 msgid "Terms to exclude (IDs)"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:294
+#: widgets/class-alphalisting-widget.php:294
 msgid "Hide empty terms"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "A-Z Listing"
+msgid "AlphaListing"
 msgstr ""
 
-#: widgets/class-a-z-listing-widget.php:550
+#: widgets/class-alphalisting-widget.php:550
 msgid "Security check failed"
 msgstr ""
 

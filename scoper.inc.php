@@ -6,7 +6,7 @@ use Isolated\Symfony\Component\Finder\Finder;
 
 return [
     // The prefix configuration. If a non null value will be used, a random prefix will be generated.
-    'prefix' => 'A_Z_Listing',
+    'prefix' => 'AlphaListing',
 
     // By default when running php-scoper add-prefix, it will prefix all relevant code found in the current working
     // directory. You can however define which files should be scoped by defining a collection of Finders in the
@@ -52,10 +52,10 @@ return [
             return $contents;
         },
         static function (string $filePath, string $prefix, string $contents): string {
-            $contents = str_replace( '\A_Z_Listing\WP_Post', '\WP_Post', $contents );
-            $contents = str_replace( '\A_Z_Listing\WP_Term', '\WP_Term', $contents );
-            $contents = str_replace( '\A_Z_Listing\WP_Query', '\WP_Query', $contents );
-            $contents = str_replace( '\A_Z_Listing\WP_Error', '\WP_Error', $contents );
+            $contents = str_replace( '\AlphaListing\WP_Post', '\WP_Post', $contents );
+            $contents = str_replace( '\AlphaListing\WP_Term', '\WP_Term', $contents );
+            $contents = str_replace( '\AlphaListing\WP_Query', '\WP_Query', $contents );
+            $contents = str_replace( '\AlphaListing\WP_Error', '\WP_Error', $contents );
             return $contents;
         },
         // static function (string $filePath, string $prefix, string $contents): string {
@@ -77,7 +77,7 @@ return [
         // 'PHPUnit\Framework\*',          // The whole namespace
         // '*',                            // Everything
         'Symfony\Polyfill\*',
-        'A_Z_Listing\*',
+        'AlphaListing\*',
     ],
 
     // If `true` then the user defined constants belonging to the global namespace will not be prefixed.

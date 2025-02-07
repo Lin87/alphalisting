@@ -1,20 +1,20 @@
 <?php
 /**
- * A-Z Listing Alphabet grouping system
+ * AlphaListing Alphabet grouping system
  *
- * @package  a-z-listing
+ * @package  alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing;
+namespace AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * A-Z Listing Alphabet grouping system class
+ * AlphaListing Alphabet grouping system class
  *
  * @since 2.0.0
  */
@@ -45,7 +45,7 @@ class Grouping {
 		$this->grouping = $grouping;
 
 		if ( 1 < $grouping ) {
-			add_filter( 'a-z-listing-alphabet', array( $this, 'alphabet_filter' ), 2 );
+			add_filter( 'alphalisting-alphabet', array( $this, 'alphabet_filter' ), 2 );
 			add_filter( 'the-a-z-letter-title', array( $this, 'heading' ), 5 );
 		}
 	}
@@ -57,7 +57,7 @@ class Grouping {
 	 * @return void
 	 */
 	public function teardown() {
-		remove_filter( 'a-z-listing-alphabet', array( $this, 'alphabet_filter' ), 2 );
+		remove_filter( 'alphalisting-alphabet', array( $this, 'alphabet_filter' ), 2 );
 		remove_filter( 'the-a-z-letter-title', array( $this, 'heading' ), 5 );
 	}
 

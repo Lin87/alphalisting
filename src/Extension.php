@@ -1,20 +1,20 @@
 <?php
 /**
- * A-Z Listing Extension interface
+ * AlphaListing Extension interface
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing;
+namespace AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * A-Z Listing Extension interface
+ * AlphaListing Extension interface
  */
 interface Extension {
 	/**

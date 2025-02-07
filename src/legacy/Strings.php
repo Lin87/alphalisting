@@ -1,8 +1,8 @@
 <?php
 /**
- * Legacy A-Z Listing String functions
+ * Legacy AlphaListing String functions
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
@@ -12,6 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Legacy A-Z Listing String functions class
+ * Legacy AlphaListing String functions class
  */
-class A_Z_Listing_Strings extends Strings {}
+class AlphaListing_Strings extends Strings {}

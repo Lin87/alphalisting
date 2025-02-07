@@ -115,7 +115,7 @@ export function PostParent( { pageId, postTypeSlug, onChange } ) {
 
 	return (
 		<ComboboxControl
-			label={ __( 'Parent post', 'a-z-listing' ) }
+			label={ __( 'Parent post', 'alphalisting' ) }
 			value={ parentPostId }
 			options={ parentOptions }
 			onFilterValueChange={ debounce( handleKeydown, 300 ) }

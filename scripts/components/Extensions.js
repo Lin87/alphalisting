@@ -1,6 +1,6 @@
 import { createSlotFill } from '@wordpress/components';
 
-export const { Fill, Slot } = createSlotFill( 'AZListingExtensions' );
+export const { Fill, Slot } = createSlotFill( 'AlphaListingExtensions' );
 
 const Extensions = ( { children } ) => <Fill>{ children }</Fill>;
 

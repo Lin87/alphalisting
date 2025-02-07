@@ -1,13 +1,13 @@
 <?php
 /**
- * A-Z Listing numbers functionality
+ * AlphaListing numbers functionality
  *
- * @package  a-z-listing
+ * @package  alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing;
+namespace AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -43,8 +43,8 @@ class Numbers {
 	public function __construct( string $position = 'hide', bool $group = false ) {
 		if ( 'before' === $position || 'after' === $position ) {
 			$this->position = $position;
-			$this->group    = a_z_listing_is_truthy( $group );
-			add_filter( 'a-z-listing-alphabet', array( $this, 'add_to_alphabet' ) );
+			$this->group    = alphalisting_is_truthy( $group );
+			add_filter( 'alphalisting-alphabet', array( $this, 'add_to_alphabet' ) );
 			add_filter( 'the-a-z-letter-title', array( $this, 'title' ) );
 		}
 	}
@@ -56,7 +56,7 @@ class Numbers {
 	 * @return void
 	 */
 	public function teardown() {
-		remove_filter( 'a-z-listing-alphabet', array( $this, 'add_to_alphabet' ) );
+		remove_filter( 'alphalisting-alphabet', array( $this, 'add_to_alphabet' ) );
 		remove_filter( 'the-a-z-letter-title', array( $this, 'title' ) );
 	}
 
@@ -101,7 +101,7 @@ class Numbers {
 }
 
 /**
- * Sets the A-Z Listing to include numbers.
+ * Sets the AlphaListing to include numbers.
  *
  * @since 1.7.0
  * @since 1.8.0 Add $group parameter and functionality to group numbers into a single collection.

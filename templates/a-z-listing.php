@@ -1,14 +1,14 @@
 <?php
 /**
- * Default multicolumn template for the A-Z Listing plugin
+ * Default multicolumn template for the AlpahListing plugin
  *
  * This template will be given the variable `$a_z_query` which is an instance
- * of `A_Z_Listing`.
+ * of `AlphaListing`.
  *
  * You can override this template by copying this file into your theme
  * directory.
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 /**
@@ -66,7 +66,7 @@ $a_z_listing_minpercol = 10;
 
 						<div class="back-to-top">
 							<a href="#<?php $a_z_query->the_instance_id(); ?>">
-								<?php esc_html_e( 'Back to top', 'a-z-listing' ); ?>
+								<?php esc_html_e( 'Back to top', 'alphalisting' ); ?>
 							</a>
 						</div>
 					</div>
@@ -77,6 +77,6 @@ $a_z_listing_minpercol = 10;
 		</div>
 	</div>
 	<?php else : ?>
-		<p><?php esc_html_e( 'There are no posts included in this index.', 'a-z-listing' ); ?></p>
+		<p><?php esc_html_e( 'There are no posts included in this index.', 'alphalisting' ); ?></p>
 	<?php endif; ?>
 </div>

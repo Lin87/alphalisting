@@ -2,19 +2,19 @@
 /**
  * Alphabet class
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
 declare(strict_types=1);
 
-namespace A_Z_Listing;
+namespace AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * A-Z Listing Alphabet handler class
+ * AlphaListing Alphabet handler class
  *
  * @since 4.0.0
  */
@@ -68,9 +68,9 @@ class Alphabet {
 	 */
 	public function __construct() {
 		/* translators: List the aphabet of your language in the order that your language prefers. list as groups of identical meanings but different characters together, e.g. in English we group A with a because they are both the same letter but different character-code. Each character group should be followed by a comma separating it from the next group. Any amount of characters per group are acceptible, and there is no requirement for all the groups to contain the same amount of characters as all the others. Be careful with the character you place first in each group as that will be used as the identifier for the group which gets displayed on the page, e.g. in English a group definition of "Aa" will indicate that we display all the posts in the group, i.e. whose titles begin with either "A" or "a", listed under a heading of "A" (the first character in the definition). */
-		$alphabet = __( 'AÁÀÄÂaáàäâ,Bb,CÇcç,Dd,EÉÈËÊeéèëê,Ff,Gg,Hh,IÍÌÏÎiíìïî,Jj,Kk,Ll,Mm,Nn,OÓÒÖÔoóòöô,Pp,Qq,Rr,Ssß,Tt,UÚÙÜÛuúùüû,Vv,Ww,Xx,Yy,Zz', 'a-z-listing' );
+		$alphabet = __( 'AÁÀÄÂaáàäâ,Bb,CÇcç,Dd,EÉÈËÊeéèëê,Ff,Gg,Hh,IÍÌÏÎiíìïî,Jj,Kk,Ll,Mm,Nn,OÓÒÖÔoóòöô,Pp,Qq,Rr,Ssß,Tt,UÚÙÜÛuúùüû,Vv,Ww,Xx,Yy,Zz', 'alphalisting' );
 		/* translators: This should be a single character to denote "all entries that didn't fit under one of the alphabet character groups defined". This is used in English to categorise posts whose title begins with a numeric (0 through to 9), or some other character that is not a standard English alphabet letter. */
-		$others = __( '#', 'a-z-listing' );
+		$others = __( '#', 'alphalisting' );
 
 		/**
 		 * Filters the alphabet. The string should contain groups of similar or
@@ -80,7 +80,7 @@ class Alphabet {
 		 * @since 1.7.1
 		 * @param string $alphabet The $alphabet
 		 */
-		$alphabet = apply_filters( 'a_z_listing_alphabet', $alphabet );
+		$alphabet = apply_filters( 'alphalisting_alphabet', $alphabet );
 		/**
 		 * Filters the alphabet. The string should contain groups of similar or
 		 * identical characters separated by commas. The first character in each
@@ -89,7 +89,7 @@ class Alphabet {
 		 * @since 1.7.1
 		 * @param string $alphabet The $alphabet.
 		 */
-		$alphabet = apply_filters( 'a-z-listing-alphabet', $alphabet ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$alphabet = apply_filters( 'alphalisting-alphabet', $alphabet ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		/**
 		 * Specifies the character used for all non-alphabetic titles, such as
@@ -99,7 +99,7 @@ class Alphabet {
 		 * @since 1.7.1
 		 * @param string $non_alpha_char The character for non-alphabetic post titles.
 		 */
-		$others = apply_filters( 'a_z_listing_non_alpha_char', $others );
+		$others = apply_filters( 'alphalisting_non_alpha_char', $others );
 		/**
 		 * Specifies the character used for all non-alphabetic titles, such as numeric
 		 * titles in the default setup for English. Defaults to '#' unless overridden
@@ -108,11 +108,11 @@ class Alphabet {
 		 * @since 1.7.1
 		 * @param string $non_alpha_char The character for non-alphabetic post titles.
 		 */
-		$others = apply_filters( 'a-z-listing-non-alpha-char', $others ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$others = apply_filters( 'alphalisting-non-alpha-char', $others ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		$alphabet_groups = explode( ',', $alphabet );
-		if ( defined( 'A_Z_LISTING_LOG' ) && A_Z_LISTING_LOG > 1 ) {
-			do_action( 'a_z_listing_log', 'A-Z Listing: Alphabet Groups', $alphabet_groups );
+		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 1 ) {
+			do_action( 'alphalisting_log', 'AlphaListing: Alphabet Groups', $alphabet_groups );
 		}
 		$letters = array_reduce(
 			$alphabet_groups,
@@ -147,12 +147,12 @@ class Alphabet {
 			array()
 		);
 
-		if ( defined( 'A_Z_LISTING_LOG' ) && A_Z_LISTING_LOG > 2 ) {
-			do_action( 'a_z_listing_log', 'A-Z Listing: Alphabet', $letters );
+		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 2 ) {
+			do_action( 'alphalisting_log', 'AlphaListing: Alphabet', $letters );
 		}
 
 		$this->unknown_letter          = $others;
-		$this->unknown_letter_is_first = ! ! apply_filters( 'a_z_listing_unknown_letter_is_first', false );
+		$this->unknown_letter_is_first = ! ! apply_filters( 'alphalisting_unknown_letter_is_first', false );
 		$this->alphabet_keys           = array_values( array_unique( $letters ) );
 		$this->keyed_alphabet          = $letters;
 	}

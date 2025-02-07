@@ -57,8 +57,8 @@ import PostParent from '../components/PostParent';
  * Filters to kill any stale state when selections are changed in the editor
  */
 addFilter(
-	'a_z_listing_selection_changed_for__display',
-	'a_z_listing',
+	'alphalisting_selection_changed_for__display',
+	'alphalisting',
 	( attributes ) => ( {
 		...attributes,
 		'post-type': defaults['post-type'].default,
@@ -68,8 +68,8 @@ addFilter(
 	5
 );
 addFilter(
-	'a_z_listing_selection_changed_for__post-type',
-	'a_z_listing',
+	'alphalisting_selection_changed_for__post-type',
+	'alphalisting',
 	( attributes ) => ( {
 		...attributes,
 		taxonomy: defaults.taxonomy.default,
@@ -78,8 +78,8 @@ addFilter(
 	5
 );
 addFilter(
-	'a_z_listing_selection_changed_for__taxonomy',
-	'a_z_listing',
+	'alphalisting_selection_changed_for__taxonomy',
+	'alphalisting',
 	( attributes ) => ( {
 		...attributes,
 		terms: defaults.terms.default,
@@ -87,13 +87,13 @@ addFilter(
 	5
 );
 const displayTypes = applyFilters(
-	'a_z_listing_display_types',
+	'alphalisting_display_types',
 	[
-		{ value: 'posts', label: __( 'Posts', 'a-z-listing' ) },
-		{ value: 'terms', label: __( 'Taxonomy Terms', 'a-z-listing' ) },
+		{ value: 'posts', label: __( 'Posts', 'alphalisting' ) },
+		{ value: 'terms', label: __( 'Taxonomy Terms', 'alphalisting' ) },
 	]
 );
-const defaultAlphabet = __( 'AÁÀÄÂaáàäâ,Bb,CÇcç,Dd,EÉÈËÊeéèëê,Ff,Gg,Hh,IÍÌÏÎiíìïî,Jj,Kk,Ll,Mm,Nn,OÓÒÖÔoóòöô,Pp,Qq,Rr,Ssß,Tt,UÚÙÜÛuúùüû,Vv,Ww,Xx,Yy,Zz', 'a-z-listing' );
+const defaultAlphabet = __( 'AÁÀÄÂaáàäâ,Bb,CÇcç,Dd,EÉÈËÊeéèëê,Ff,Gg,Hh,IÍÌÏÎiíìïî,Jj,Kk,Ll,Mm,Nn,OÓÒÖÔoóòöô,Pp,Qq,Rr,Ssß,Tt,UÚÙÜÛuúùüû,Vv,Ww,Xx,Yy,Zz', 'alphalisting' );
 
 const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 	const { postTypes, allTaxonomies } = useSelect( ( select ) => {
@@ -158,7 +158,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 			errors.push(
 				__(
 					`You must set a taxonomy when display mode is set to 'terms'.`,
-					'a-z-listing'
+					'alphalisting'
 				)
 			);
 		}
@@ -245,18 +245,18 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 							) }
 						</PanelBody> */}
 
-						<PanelBody title={ __( 'Item selection', 'a-z-listing' ) }>
+						<PanelBody title={ __( 'Item selection', 'alphalisting' ) }>
 							<ItemSelection.Slot>
 								{ ( subFills ) => (
 									<>
 										<SelectControl
-											label={ __( 'Display mode', 'a-z-listing' ) }
+											label={ __( 'Display mode', 'alphalisting' ) }
 											value={ attributes.display ?? defaults['display'].default }
 											options={ displayTypes }
 											onChange={ ( value ) =>
 												setAttributes(
 													applyFilters(
-														'a_z_listing_selection_changed_for__display',
+														'alphalisting_selection_changed_for__display',
 														{ display: value }
 													)
 												)
@@ -265,13 +265,13 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 
 										{ 'posts' === attributes.display && (
 											<SelectControl
-												label={ __( 'Post Type', 'a-z-listing' ) }
+												label={ __( 'Post Type', 'alphalisting' ) }
 												value={ attributes['post-type'] ?? defaults['post-type'].default }
 												options={ postTypesSelectOptions }
 												onChange={ ( value ) =>
 													setAttributes(
 														applyFilters(
-															'a_z_listing_selection_changed_for__post-type',
+															'alphalisting_selection_changed_for__post-type',
 															{ 'post-type': value }
 														)
 													)
@@ -295,7 +295,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											'terms' === attributes.display
 										) && (
 											<SelectControl
-												label={ __( 'Taxonomy', 'a-z-listing' ) }
+												label={ __( 'Taxonomy', 'alphalisting' ) }
 												value={ attributes.taxonomy ?? '' }
 												options={
 													'posts' === attributes.display
@@ -305,7 +305,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 												onChange={ ( value ) =>
 													setAttributes(
 														applyFilters(
-															'a_z_listing_selection_changed_for__taxonomy',
+															'alphalisting_selection_changed_for__taxonomy',
 															{ taxonomy: value }
 														)
 													)
@@ -316,7 +316,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 										{ 'posts' === attributes.display &&
 											!! attributes.taxonomy && (
 												<FormTokenField
-													label={ __( 'Taxonomy terms', 'a-z-listing' ) }
+													label={ __( 'Taxonomy terms', 'alphalisting' ) }
 													value={ attributes.terms ?? [] }
 													onChange={ ( value ) =>
 														setAttributes( { terms: value } )
@@ -330,61 +330,61 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 							</ItemSelection.Slot>
 						</PanelBody>
 
-						<PanelBody title={ __( 'Display options', 'a-z-listing' ) }>
+						<PanelBody title={ __( 'Display options', 'alphalisting' ) }>
 							<DisplayOptions.Slot>
 								{ ( subFills ) => (
 									<>
 										<TextControl
-											label={ __( 'Listing ID', 'a-z-listing' ) }
+											label={ __( 'Listing ID', 'alphalisting' ) }
 											value={ attributes['instance-id'] ?? uuid() }
 											onChange={ (value) =>
 												setAttributes( { 'instance-id': value } )
 											}
 										/>
 										<TextControl
-											label={ __( 'CSS class names', 'a-z-listing' ) }
+											label={ __( 'CSS class names', 'alphalisting' ) }
 											value={ attributes.className ?? '' }
 											onChange={ ( value ) =>
 												setAttributes( { className: value } )
 											}
 										/>
 										<TextControl
-											label={ __( 'Alphabet', 'a-z-listing' ) }
+											label={ __( 'Alphabet', 'alphalisting' ) }
 											value={ attributes.alphabet ?? defaults['alphabet'].default }
 											onChange={ ( value ) =>
 												setAttributes( { alphabet: value } )
 											}
 										/>
 										<SelectControl
-											label={ __( 'Numbers', 'a-z-listing' ) }
+											label={ __( 'Numbers', 'alphalisting' ) }
 											value={ attributes.numbers ?? defaults['numbers'].default }
 											options={ [
 												{
 													value: 'hide',
 													label: __(
 														'Hide numbers',
-														'a-z-listing'
+														'alphalisting'
 													),
 												},
 												{
 													value: 'before',
 													label: __(
 														'Prepend before alphabet',
-														'a-z-listing'
+														'alphalisting'
 													),
 												},
 												{
 													value: 'after',
 													label: __(
 														'Append after alphabet',
-														'a-z-listing'
+														'alphalisting'
 													),
 												},
 											] }
 											onChange={ ( value ) =>
 												setAttributes(
 													applyFilters(
-														'a_z_listing_selection_changed_for__numbers',
+														'alphalisting_selection_changed_for__numbers',
 														{ numbers: value }
 													)
 												)
@@ -392,10 +392,10 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 										/>
 
 										<RangeControl
-											label={ __( 'Group letters', 'a-z-listing' ) }
+											label={ __( 'Group letters', 'alphalisting' ) }
 											help={ __(
 												'The number of letters to include in a single group',
-												'a-z-listing'
+												'alphalisting'
 											) }
 											value={ attributes.grouping ?? defaults['grouping'].default }
 											min={ 1 }
@@ -403,7 +403,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											onChange={ ( value ) =>
 												setAttributes(
 													applyFilters(
-														'a_z_listing_selection_changed_for__grouping',
+														'alphalisting_selection_changed_for__grouping',
 														{ grouping: value }
 													)
 												)
@@ -418,17 +418,17 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 												<ToggleControl
 													label={ __(
 														'Group numbers',
-														'a-z-listing'
+														'alphalisting'
 													) }
 													help={ __(
 														'Group 0-9 as a single letter',
-														'a-z-listing'
+														'alphalisting'
 													) }
 													checked={ !! attributes['group-numbers'] }
 													onChange={ ( value ) =>
 														setAttributes(
 															applyFilters(
-																'a_z_listing_selection_changed_for__group-numbers',
+																'alphalisting_selection_changed_for__group-numbers',
 																{
 																	'group-numbers': !! value,
 																}
@@ -439,7 +439,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											) }
 
 										<ToggleControl
-											label={ __( 'Display symbols entry first', 'a-z-listing' ) }
+											label={ __( 'Display symbols entry first', 'alphalisting' ) }
 											checked={ !!attributes['symbols-first'] }
 											onChange={ ( value ) =>
 												setAttributes( { 'symbols-first': value } )
@@ -447,7 +447,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 										/>
 
 										<RangeControl
-											label={ __( 'Columns', 'a-z-listing' ) }
+											label={ __( 'Columns', 'alphalisting' ) }
 											value={ attributes.columns ?? MAX_POSTS_COLUMNS }
 											onChange={ ( value ) =>
 												setAttributes( { columns: value } )
@@ -459,7 +459,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 										/>
 										{/* Waiting for UnitControl to stabilise in Gutenberg */}
 										{/* <UnitControl
-											label={ __( 'Column width', 'a-z-listing' ) }
+											label={ __( 'Column width', 'alphalisting' ) }
 											value={ attributes['column-width'] }
 											onChange={ ( value ) =>
 												setAttributes( { 'column-width': value } )
@@ -468,7 +468,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 										/>
 										{/* Waiting for UnitControl to stabilise in Gutenberg */}
 										{/* <UnitControl
-											label={ __( 'Column gap', 'a-z-listing' ) }
+											label={ __( 'Column gap', 'alphalisting' ) }
 											value={ attributes['column-gap'] }
 											onChange={ ( value ) =>
 												setAttributes( { 'column-gap': value } )
@@ -476,7 +476,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											required
 										/> */}
 										<TextControl
-											label={ __( 'Column width', 'a-z-listing' ) }
+											label={ __( 'Column width', 'alphalisting' ) }
 											value={ attributes['column-width'] ?? defaults['column-width'].default }
 											onChange={ ( value ) =>
 												setAttributes( { 'column-width': value } )
@@ -484,7 +484,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											required
 										/>
 										<TextControl
-											label={ __( 'Column gap', 'a-z-listing' ) }
+											label={ __( 'Column gap', 'alphalisting' ) }
 											value={ attributes['column-gap'] ?? defaults['column-gap'].default }
 											onChange={ ( value ) =>
 												setAttributes( { 'column-gap': value } )
@@ -510,7 +510,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 	);
 
 	const errors = applyFilters(
-		'a-z-listing-validation-errors',
+		'alphalisting-validation-errors',
 		validationErrors
 	);
 
@@ -519,8 +519,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 			{ inspectorControls }
 
 			{ errors.length > 0 ? (
-				<Placeholder icon={ pin } label={ __( 'A-Z Listing', 'a-z-listing' ) }>
-					{ __( 'The A-Z Listing configuration is incomplete:', 'a-z-listing' ) }
+				<Placeholder icon={ pin } label={ __( 'AlphaListing', 'alphalisting' ) }>
+					{ __( 'The AlphaListing configuration is incomplete:', 'alphalisting' ) }
 					<ul>
 						{ errors.map( ( error, idx ) => (
 							<li key={ idx }>{ error }</li>
@@ -529,25 +529,25 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 				</Placeholder>
 			) : (
 				<ServerSideRender
-					block="a-z-listing/block"
+					block="alphalisting/block"
 					attributes={ attributes }
 					LoadingResponsePlaceholder={ () => <Spinner /> }
 					ErrorResponsePlaceholder={ () => (
 						<Placeholder
 							icon={ pin }
-							label={ __( 'A-Z Listing', 'a-z-listing' ) }
+							label={ __( 'AlphaListing', 'alphalisting' ) }
 						>
-							{ __( 'Error Loading the listing...', 'a-z-listing' ) }
+							{ __( 'Error Loading the listing...', 'alphalisting' ) }
 						</Placeholder>
 					) }
 					EmptyResponsePlaceholder={ () => (
 						<Placeholder
 							icon={ pin }
-							label={ __( 'A-Z Listing', 'a-z-listing' ) }
+							label={ __( 'AlphaListing', 'alphalisting' ) }
 						>
 							{ __(
 								'The listing has returned an empty page. This is likely an error.',
-								'a-z-listing'
+								'alphalisting'
 							) }
 						</Placeholder>
 					) }
