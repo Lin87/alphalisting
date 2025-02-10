@@ -5,6 +5,6 @@
  * @package alphalisting
  */
 
-$a_z_listing_path = dirname( __DIR__ );
-$a_z_listing_data = get_plugin_data( trailingslashit( $a_z_listing_path ) . 'alphalisting.php', false, false );
-$wp_version       = $a_z_listing_data['Version'];
+$alphalisting_path = dirname( __DIR__ );
+$alphalisting_data = get_plugin_data( trailingslashit( $alphalisting_path ) . 'alphalisting.php', false, false );
+$wp_version       = $alphalisting_data['Version'];

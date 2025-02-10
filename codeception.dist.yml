@@ -14,11 +14,11 @@ settings:
 coverage:
     enabled: true
     remote: false
-    c3_url: '%WP_URL%/wp-content/plugins/a-z-listing/c3.php'
+    c3_url: '%WP_URL%/wp-content/plugins/alphalisting/c3.php'
     include:
         - src/*.php
     exclude:
-        - a-z-listing.php
+        - alphalisting.php
         - vendor/*
     show_only_summary: false
 extensions:
@@ -73,7 +73,7 @@ modules:
             adminEmail: '%ADMIN_EMAIL%'
             title: 'Test'
             plugins:
-                - a-z-listing/a-z-listing.php
+                - alphalisting/alphalisting.php
             activatePlugins:
-                - a-z-listing/a-z-listing.php
+                - alphalisting/alphalisting.php
             configFile: 'tests/_data/config.php'
