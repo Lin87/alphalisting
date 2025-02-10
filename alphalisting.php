@@ -32,12 +32,7 @@ if ( ! defined( 'ALPHALISTING_LOG' ) ) {
 define( 'ALPHALISTING_PLUGIN_FILE', __FILE__ );
 define( 'ALPHALISTING_DEFAULT_TEMPLATE', __DIR__ . '/templates/a-z-listing.php' );
 
-if ( file_exists( __DIR__ . '/build/vendor/scoper-autoload.php' ) ) {
-	require_once __DIR__ . '/build/vendor/scoper-autoload.php';
-} else {
-	require_once __DIR__ . '/vendor/autoload.php';
-}
-
+require_once __DIR__ . '/build/vendor/autoload.php';
 require_once __DIR__ . '/functions/i18n.php';
 require_once __DIR__ . '/functions/health-check.php';
 require_once __DIR__ . '/functions/helpers.php';
