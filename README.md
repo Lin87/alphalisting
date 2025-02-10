@@ -3,7 +3,7 @@
 **Contributors:** [eslin87](https://profiles.wordpress.org/eslin87/), [diddledani](https://profiles.wordpress.org/diddledani/)  
 **Tags:** a to z, a-z, archive, listing, widget, index  
 **Requires at least:** 5.0  
-**Requires PHP:** 8.3  
+**Requires PHP:** 8.0  
 **Tested up to:** 6.7.1  
 **Stable tag:** 4.3.1  
 **License:** GPLv2 or later  
