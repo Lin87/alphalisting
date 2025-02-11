@@ -95,34 +95,16 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-
-		copy: {
-			main: {
-				files: [
-
-                    // Copy the autoload.php file
-                    {src: 'vendor/autoload.php', dest: 'build/vendor/autoload.php'},
-
-                    // Copy the composer directory
-                    {expand: true, cwd: 'vendor/composer', src: ['**'], dest: 'build/vendor/composer'},
-
-                    // Copy the symfony directory
-                    {expand: true, cwd: 'vendor/symfony', src: ['**'], dest: 'build/vendor/symfony'}
-				],
-			}
-		},
 		
 	} );
 
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 	grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
 	grunt.loadNpmTasks( 'grunt-sass' );
-	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.registerTask( 'default', ['build'] );
 	grunt.registerTask( 'build', [ 'i18n','readme','sass' ] );
 	grunt.registerTask( 'i18n', ['addtextdomain', 'makepot'] );
 	grunt.registerTask( 'readme', ['wp_readme_to_markdown'] );
-	grunt.registerTask( 'default', ['copy'] );
 
 	grunt.util.linefeed = '\n';
 
