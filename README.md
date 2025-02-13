@@ -1,6 +1,6 @@
 # AlphaListing #
 
-**Contributors:** [eslin87](https://profiles.wordpress.org/eslin87/), [diddledani](https://profiles.wordpress.org/diddledani/)  
+**Contributors:** [eslin87](https://profiles.wordpress.org/eslin87/)  
 **Tags:** a to z, a-z, archive, listing, widget, index  
 **Requires at least:** 5.0  
 **Requires PHP:** 8.0  
@@ -27,7 +27,7 @@ This section describes how to install the plugin and get it working.
 
 ### Requirements ###
 
-1. PHP 8.3 is the minimum version you should be using.
+1. PHP 8.0 is the minimum version you should be using.
 1. The plugin requires `mbstring` turned-on in your PHP installation. Without this feature the plugin might behave oddly or fail.
 
 ### Instructions ###
