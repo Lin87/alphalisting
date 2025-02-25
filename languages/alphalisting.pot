@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the AlphaListing package.
 msgid ""
 msgstr ""
-"Project-Id-Version: AlphaListing 4.3.1\n"
+"Project-Id-Version: AlphaListing 4.3.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alphalisting\n"
-"POT-Creation-Date: 2025-02-13 17:09:06+00:00\n"
+"POT-Creation-Date: 2025-02-25 17:28:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -217,11 +217,11 @@ msgid "Terms to filter by"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "https://profiles.wordpress.org/eslin87/"
+msgid "https://github.com/Lin87/alphalisting"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Display an A to Z listing of posts (based on work by Dani Llewellyn)"
+msgid "Display an A to Z listing of posts (based on work by Dani Llewellyn)."
 msgstr ""
 
 #. Author of the plugin/theme
@@ -229,5 +229,5 @@ msgid "Ethan Lin"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "https://github.com/Lin87"
+msgid "https://profiles.wordpress.org/eslin87/"
 msgstr ""

@@ -5,7 +5,7 @@
 **Requires at least:** 5.0  
 **Requires PHP:** 8.0  
 **Tested up to:** 6.7.1  
-**Stable tag:** 4.3.1  
+**Stable tag:** 4.3.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -447,68 +447,10 @@ If there is code already in your functions.php then add just the lines between `
 
 ## Changelog ##
 
-### 4.3.1 ###
+### 4.3.2 ###
 
-* Bugfix: Add whitespace trimming of the titles before detecting the index letter for an item. This should fix issues with the Search and Replace extension, and custom coded title manipulations that some users have written, that caused all entries to be indexed under the "other" category (i.e. `#`).
-
-### 4.3.0 ###
-
-* Update to better support the premium extensions in the block editor
-
-### 4.2.1 ###
-
-* Fix broken `hide-empty-terms` feature.
-* Fix empty listings when combining `display-posts`, `post-parent` and `get-all-children`.
-
-### 4.2.0 ###
-
-* Ensure that we wait for the block editor to be fully loaded before registering the block
-  * Fixes: extension plugins registration order
-
-### 4.1.3 ###
-
-* Fix CSS Style rules to ensure the expected number of columns is displayed
-
-### 4.1.2 ###
-
-* Reimplement obsoleted template tag methods that were incorrectly removed in version 4.0.0:
-  * `the_letter_count`
-  * `get_the_letter_count`
-* Fix block editor crash when opening a post or page that holds a previously written A-Z Listing shortcode
-
-### 4.1.1 ###
-
-* Fix undefined `A_Z_Listing\Alphabet::$symbols_first` error
-
-### 4.1.0 ###
-
-* Introduce more robust sorting mechanism that fixes sorting errors introduced by version 4.0.0
-
-### 4.0.1 ###
-
-Bug fixes for the 4.0.0 release
-
-### 4.0.0 ###
-
-This is a major version change, which means that it might break your site when you upgrade. Please check in a test site first!
-
-* NEW: Block Editor support
-* NEW: symbols-first display
-* NEW: post-ID and parent-post name
-* Bump minimum PHP requirement to 7.0
-* Bump minimum WordPress requirement to 5.0
-* Update stylesheet to use CSS Variables
-* Refactor for better maintainability
-* Namespace all classes
-* Improve documentation
-* Add legacy non-namespaced backwards-compatibility classes
-* Add PHP type hints
-* Add strict PHP types checking
-* Add extra template name to match the displayed post-type
-* Always load CSS styles to reduce unstyled listings cases
-* Use php-scoper to reduce conflicts with other plugins
-* Update NPM dependencies
+* Bugfix: Fix the listing order under grouped letters so that items are now correctly sorted alphabetically in ascending order.
 
 ### Previous ###
 
-See the file called `changelog.md` for the full release history.
+This plugin is based on the original A-Z Listing by Dani Llewellyn. The last version released by Dani was 4.3.1. Starting from version 4.3.2, this plugin has diverged from the original A-Z Listing. For the full release history, including Dani's releases, refer to the `changelog.md` file.
