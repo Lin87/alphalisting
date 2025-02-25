@@ -3,6 +3,7 @@
 ## 4.3.2 ##
 
 * Bugfix: Fix the listing order under grouped letters so that items are now correctly sorted alphabetically in ascending order.
+* Update packages and fix deprecation warnings
 
 ## Previous A-Z Listing Releases By Dani Llewellyn ##
 

@@ -7,9 +7,10 @@
  * Author URI:      	https://profiles.wordpress.org/eslin87/
  * Original Author: 	Dani Llewellyn
  * Original Author URI: https://profiles.wordpress.org/diddledani/
- * Text Domain:     	a-z-listing
+ * Text Domain:     	alphalisting
  * Domain Path:     	/languages
  * Version:         	4.3.2
+ * License:				GPLv2 or later
  *
  * @package         alphalisting
  */

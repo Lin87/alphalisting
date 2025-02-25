@@ -1,4 +1,5 @@
-@import "mixins.scss";
+@use "mixins.scss";
+@use "sass:string";
 
 $defaultColumnCount: 3;
 $defaultColumnWidth: 15em;
@@ -82,7 +83,7 @@ div.letter-section {
 					($column * $defaultColumnWidth)
 					+ (($column - 1) * $defaultColumnGap);
 				// Browsers that support calc() and var()
-				max-width: unquote('calc((min(var(--alphalisting-column-count, #{$defaultColumnCount}), #{$column}) * var(--alphalisting-column-width, #{$defaultColumnWidth})) + ((min(var(--alphalisting-column-count, #{$defaultColumnCount}), #{$column}) - 1) * var(--alphalisting-column-gap, #{$defaultColumnGap})))');
+				max-width: string.unquote('calc((min(var(--alphalisting-column-count, #{$defaultColumnCount}), #{$column}) * var(--alphalisting-column-width, #{$defaultColumnWidth})) + ((min(var(--alphalisting-column-count, #{$defaultColumnCount}), #{$column}) - 1) * var(--alphalisting-column-gap, #{$defaultColumnGap})))');
 			}
 		}
 	}

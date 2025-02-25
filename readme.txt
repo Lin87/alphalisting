@@ -1,7 +1,7 @@
 === AlphaListing ===
 
 Contributors: eslin87
-Tags: a to z, a-z, archive, listing, widget, index
+Tags: a to z, a-z, archive, listing, widget
 Requires at least: 5.0
 Requires PHP: 8.0
 Tested up to: 6.7.1
@@ -9,9 +9,7 @@ Stable tag: 4.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Provides an A to Z index page and widget. The widget links to the index page at the appropriate letter.
-
-This plugin is based on the original A-Z Listing by Dani Llewellyn, which is no longer maintained. 
+Provides an A to Z index page and widget. This plugin is based on the original A-Z Listing by Dani Llewellyn, which is no longer maintained. 
 
 == Description ==
 
@@ -446,6 +444,7 @@ If there is code already in your functions.php then add just the lines between `
 = 4.3.2 =
 
 * Bugfix: Fix the listing order under grouped letters so that items are now correctly sorted alphabetically in ascending order.
+* Update packages and fix deprecation warnings
 
 = Previous =
 
