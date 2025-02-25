@@ -58,7 +58,7 @@ div.letter-section {
 		width: 100%;
 		float: initial;
 		box-sizing: border-box;
-		line-height: 1.6em;
+		line-height: 1.3em;
 		column-count: $defaultColumnCount;
 		column-gap: $defaultColumnGap;
 		column-width: $defaultColumnWidth;
@@ -68,7 +68,7 @@ div.letter-section {
 
 		> li {
 			padding: 0;
-			margin: 0 0 0.6em;
+			margin: 0 0 0.8em;
 			list-style: none;
 			display: block;
 		}

@@ -62,7 +62,7 @@ div.letter-section > ul.az-columns {
   width: 100%;
   float: initial;
   box-sizing: border-box;
-  line-height: 1.6em;
+  line-height: 1.3em;
   column-count: 3;
   column-gap: 0.6em;
   column-width: 15em;
@@ -72,7 +72,7 @@ div.letter-section > ul.az-columns {
 }
 div.letter-section > ul.az-columns > li {
   padding: 0;
-  margin: 0 0 0.6em;
+  margin: 0 0 0.8em;
   list-style: none;
   display: block;
 }

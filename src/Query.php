@@ -827,6 +827,9 @@ class Query {
 		$key                        = $this->alphabet->get_key_for_offset( $this->current_letter_offset );
 		if ( isset( $this->matched_item_indices[ $key ] ) ) {
 			$this->current_letter_items = &$this->matched_item_indices[ $key ];
+			usort($this->current_letter_items, function ($a, $b) {
+				return strcasecmp($a['title'], $b['title']);
+			});
 		}
 		++$this->current_letter_offset;
 	}
