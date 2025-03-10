@@ -11,6 +11,8 @@
  * @package a-z-listing
  */
 
+ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 ?>
 <div id="<?php $a_z_query->the_instance_id(); ?>" style="<?php echo $a_z_query->get_customized_column_styles(); ?>" class="az-listing">
 	<div class="az-letters-wrap">
