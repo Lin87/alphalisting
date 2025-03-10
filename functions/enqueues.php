@@ -48,6 +48,7 @@ function alphalisting_do_enqueue() {
 		ALPHALISTING_VERSION,
 		true
 	);
+	
 	wp_localize_script(
 		'alphalisting-widget-admin',
 		'alphalisting_widget_admin',

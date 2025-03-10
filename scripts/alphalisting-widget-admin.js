@@ -78,9 +78,7 @@ jQuery( function( $ ) {
 			$( target_post_title ).autocomplete( {
 				source( post_title, response ) {
 					jQuery.ajax( {
-						url:
-							alphalisting_widget_admin.ajax_url ||
-							'/wp-admin/admin-ajax.php',
+						url: lphalisting_widget_admin.ajax_url,
 						type: 'POST',
 						dataType: 'json',
 						data: {
@@ -110,8 +108,7 @@ jQuery( function( $ ) {
 				source( post_title, response ) {
 					jQuery.ajax( {
 						url:
-							alphalisting_widget_admin.ajax_url ||
-							'/wp-admin/admin-ajax.php',
+							alphalisting_widget_admin.ajax_url,
 						type: 'POST',
 						dataType: 'json',
 						data: {
