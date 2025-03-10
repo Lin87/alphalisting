@@ -35,7 +35,6 @@ define( 'ALPHALISTING_DEFAULT_TEMPLATE', __DIR__ . '/templates/a-z-listing.php' 
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-require_once __DIR__ . '/functions/i18n.php';
 require_once __DIR__ . '/functions/health-check.php';
 require_once __DIR__ . '/functions/helpers.php';
 require_once __DIR__ . '/functions/styles.php';
