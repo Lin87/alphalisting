@@ -131,6 +131,7 @@ function alphalisting_register_rest_api() {
 		array(
 			'methods'  => 'GET',
 			'callback' => 'alphalisting_posts_api_handler',
+			'permission_callback' => '__return_true',
 			'args'     => array(
 				'post_type' => array(
 					'description'       => __( 'Post type', 'alphalisting' ),
@@ -154,6 +155,7 @@ function alphalisting_register_rest_api() {
 		array(
 			'methods'  => 'GET',
 			'callback' => 'alphalisting_terms_api_handler',
+			'permission_callback' => '__return_true',
 			'args'     => array(
 				$default_args,
 			),
