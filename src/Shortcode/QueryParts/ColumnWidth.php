@@ -59,6 +59,6 @@ class ColumnWidth extends Extension {
 	 * @return string
 	 */
 	public function return_styles( $styles, $alphalisting, $instance_id ): string {
-		return "$styles\n#alphalisting-$instance_id { --alphalisting-column-width: $this->column_width; }";
+		return "$styles --alphalisting-column-width: $this->column_width; ";
 	}
 }

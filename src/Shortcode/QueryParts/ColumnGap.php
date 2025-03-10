@@ -59,6 +59,6 @@ class ColumnGap extends Extension {
 	 * @return string
 	 */
 	public function return_styles( $styles, $alphalisting, $instance_id ): string {
-		return "$styles\n#alphalisting-$instance_id { --alphalisting-column-gap: $this->column_gap; }";
+		return "$styles --alphalisting-column-gap: $this->column_gap; ";
 	}
 }

@@ -59,6 +59,6 @@ class Columns extends Extension {
 	 * @return string
 	 */
 	public function return_styles( $styles, $alphalisting, $instance_id ): string {
-		return "$styles\n#alphalisting-$instance_id { --alphalisting-column-count: $this->columns; }";
+		return "$styles --alphalisting-column-count: $this->columns; ";
 	}
 }

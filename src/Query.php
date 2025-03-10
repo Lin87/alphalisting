@@ -713,27 +713,20 @@ class Query {
 				'a-z-listing-' . $post->post_name . '.php'
 			);
 		}
-
-		/**
-		 * Filter the stylesheet applied to the listing
-		 *
-		 * @param string                  $styles      The styles
-		 * @param AlphaListing\AlphaListing $a_z_query   The AlphaListing Query object
-		 * @param string                  $instance_id The instance ID
-		 */
-		$styles = apply_filters( 'alphalisting_styles', '', $this, $this->instance_id );
 		
-		add_action( 'wp_head', function() use ( $styles ) {
-			var_dump( 'hello' );
-			var_dump( $styles );
-			if ( ! empty( $styles ) ) {
-				wp_add_inline_style( 'alphalisting', $styles );
-			}
-		}, 10, 0 );
-
 		_do_template( $this, locate_template( $templates ) );
 		
 		wp_reset_postdata();
+	}
+
+	/**
+	 * Retrieve column number, gap, and column width
+	 *
+	 * @since 4.3.2
+	 * @return string The inline style properities for column.
+	 */
+	public function get_customized_column_styles(): string {
+		return apply_filters( 'alphalisting_styles', '', $this, $this->instance_id );
 	}
 
 	/**
