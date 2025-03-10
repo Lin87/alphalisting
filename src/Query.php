@@ -722,12 +722,17 @@ class Query {
 		 * @param string                  $instance_id The instance ID
 		 */
 		$styles = apply_filters( 'alphalisting_styles', '', $this, $this->instance_id );
-		echo "<style>\n";
-		echo esc_html( $styles );
-		echo "\n</style>";
+		
+		add_action( 'wp_head', function() use ( $styles ) {
+			var_dump( 'hello' );
+			var_dump( $styles );
+			if ( ! empty( $styles ) ) {
+				wp_add_inline_style( 'alphalisting', $styles );
+			}
+		}, 10, 0 );
 
 		_do_template( $this, locate_template( $templates ) );
-
+		
 		wp_reset_postdata();
 	}
 
