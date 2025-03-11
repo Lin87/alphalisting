@@ -85,7 +85,7 @@ module.exports = function( grunt ) {
 
 		sass: {
 			options: {
-				sourceMap: true,
+				sourceMap: false,
 				implementation: sass
 			},
 			dist: {
