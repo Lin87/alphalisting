@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace AlphaListing;
+namespace eslin87\AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -89,11 +89,11 @@ function alphalisting_do_enqueue() {
 	if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG ) {
 		do_action( 'alphalisting_log', 'AlphaListing: Add Styles', $add_styles );
 	}
-	if ( true === $add_styles && ! has_action( 'wp_enqueue_scripts', 'alphalisting_enqueue_styles' ) ) {
-		add_action( 'wp_enqueue_scripts', 'alphalisting_enqueue_styles' );
+	if ( true === $add_styles && ! has_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_enqueue_styles' ) ) {
+		add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_enqueue_styles' );
 	}
 
-	add_action( 'customize_controls_enqueue_scripts', 'alphalisting_customize_enqueue_styles' );
+	add_action( 'customize_controls_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_customize_enqueue_styles' );
 
 	$tabify = get_option( 'alphalisting-add-tabs', false );
 	/**
@@ -114,8 +114,8 @@ function alphalisting_do_enqueue() {
 	if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG ) {
 		do_action( 'alphalisting_log', 'AlphaListing: Tabify', $tabify );
 	}
-	if ( true === $tabify && ! has_action( 'wp_enqueue_scripts', 'alphalisting_enqueue_tabs' ) ) {
-		add_action( 'wp_enqueue_scripts', 'alphalisting_enqueue_tabs' );
+	if ( true === $tabify && ! has_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_enqueue_tabs' ) ) {
+		add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_enqueue_tabs' );
 	}
 }
-add_action( 'init', 'alphalisting_do_enqueue' );
+add_action( 'init', __NAMESPACE__ . '\\alphalisting_do_enqueue' );

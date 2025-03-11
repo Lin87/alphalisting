@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace AlphaListing\Shortcode;
+namespace eslin87\AlphaListing\Shortcode;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

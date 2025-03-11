@@ -5,7 +5,7 @@
  * @package alphalisting
  */
 
- namespace AlphaListing;
+ namespace eslin87\AlphaListing;
 
 /**
  * Shared REST API handler
@@ -89,7 +89,7 @@ function alphalisting_api_handler_defaults( WP_REST_Request $request ) {
 	return $args;
 }
 
-add_action( 'rest_api_init', 'alphalisting_register_rest_api' );
+add_action( 'rest_api_init', __NAMESPACE__ . '\\alphalisting_register_rest_api' );
 /**
  * Register the REST API extensions for the plugin
  *

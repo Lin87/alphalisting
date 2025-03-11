@@ -84,7 +84,7 @@ jQuery( function( $ ) {
 						type: 'POST',
 						dataType: 'json',
 						data: {
-							action: 'get_alphalisting_autocomplete_post_titles',
+							action: 'alphalisting_get_autocomplete_post_titles',
 							_posts_by_title_wpnonce: listing_wpnonce.val(),
 							post_type: '',
 							post_title,
@@ -114,7 +114,7 @@ jQuery( function( $ ) {
 						type: 'POST',
 						dataType: 'json',
 						data: {
-							action: 'get_alphalisting_autocomplete_post_titles',
+							action: 'alphalisting_get_autocomplete_post_titles',
 							_posts_by_title_wpnonce: listing_wpnonce.val(),
 							post_type: listing_post_type.val(),
 							post_title,

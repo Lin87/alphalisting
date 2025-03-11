@@ -7,14 +7,14 @@
 
 declare(strict_types=1);
 
-namespace AlphaListing\Shortcode;
+namespace eslin87\AlphaListing\Shortcode;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \AlphaListing\Extension;
-use \AlphaListing\Singleton;
+use \eslin87\AlphaListing\Extension;
+use \eslin87\AlphaListing\Singleton;
 
 /**
  * Query Type extension parent class

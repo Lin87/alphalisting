@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace AlphaListing;
+namespace eslin87\AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 0.1
  */
-class AlphaListing_Widget extends WP_Widget {
+class AlphaListing_Widget extends \WP_Widget {
 	/**
 	 * Register the widget's meta information
 	 *
@@ -45,7 +45,7 @@ class AlphaListing_Widget extends WP_Widget {
 			$control_options
 		);
 
-		add_action( 'admin_enqueue_scripts', 'alphalisting_enqueue_widget_admin_script' );
+		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_enqueue_widget_admin_script' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_if_active' ) );
 	}
 
@@ -526,10 +526,10 @@ function alphalisting_get_posts_by_title( string $post_title, string $post_type 
 		$params['post_type'] = $post_type;
 	}
 
-	add_filter( 'posts_search', 'alphalisting_search_titles_only', 10, 2 );
-	$query   = new WP_Query( $params );
+	add_filter( 'posts_search', __NAMESPACE__ . '\\alphalisting_search_titles_only', 10, 2 );
+	$query   = new \WP_Query( $params );
 	$results = $query->posts;
-	remove_filter( 'posts_search', 'alphalisting_search_titles_only' );
+	remove_filter( 'posts_search', __NAMESPACE__ . '\\alphalisting_search_titles_only' );
 
 	return $results;
 }
@@ -540,7 +540,7 @@ function alphalisting_get_posts_by_title( string $post_title, string $post_type 
  * @since 2.0.0
  * @return void
  */
-function get_alphalisting_autocomplete_post_titles() {
+function alphalisting_get_autocomplete_post_titles() {
 	check_ajax_referer( 'posts-by-title', '_posts_by_title_wpnonce' );
 
 	$nonce = '';
@@ -575,8 +575,8 @@ function get_alphalisting_autocomplete_post_titles() {
 	exit();
 }
 
-add_action( 'wp_ajax_get_alphalisting_autocomplete_post_titles', 'get_alphalisting_autocomplete_post_titles' );
-add_action( 'wp_ajax_nopriv_get_alphalisting_autocomplete_post_titles', 'get_alphalisting_autocomplete_post_titles' );
+add_action( 'wp_ajax_alphalisting_get_autocomplete_post_titles', __NAMESPACE__ . '\\alphalisting_get_autocomplete_post_titles' );
+add_action( 'wp_ajax_nopriv_alphalisting_get_autocomplete_post_titles', __NAMESPACE__ . '\\alphalisting_get_autocomplete_post_titles' );
 
 /**
  * Register the A_Z_Widget widget
@@ -585,9 +585,9 @@ add_action( 'wp_ajax_nopriv_get_alphalisting_autocomplete_post_titles', 'get_alp
  * @return void
  */
 function alphalisting_widget() {
-	register_widget( 'AlphaListing_Widget' );
+	register_widget( __NAMESPACE__ . '\\AlphaListing_Widget' );
 }
-add_action( 'widgets_init', 'alphalisting_widget' );
+add_action( 'widgets_init', __NAMESPACE__ . '\\alphalisting_widget' );
 
 /**
  * Enqueue the jquery-ui autocomplete script
@@ -598,4 +598,4 @@ add_action( 'widgets_init', 'alphalisting_widget' );
 function alphalisting_autocomplete_script() {
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 }
-add_action( 'admin_enqueue_scripts', 'alphalisting_autocomplete_script' );
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_autocomplete_script' );

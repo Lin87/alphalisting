@@ -48,31 +48,31 @@ require_once __DIR__ . '/widgets/class-alphalisting-widget.php';
  * @return void
  */
 function alphalisting_init() {
-	\AlphaListing\Indices::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\GutenBlock::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Indices::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\GutenBlock::instance()->activate( __FILE__ )->initialize();
 
 	// Shortcode handler.
-	\AlphaListing\Shortcode::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\PostsQuery::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\TermsQuery::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\PostsQuery::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\TermsQuery::instance()->activate( __FILE__ )->initialize();
 
 	// Shortcode attribute handlers.
-	\AlphaListing\Shortcode\QueryParts\Alphabet::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\Columns::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\ColumnGap::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\ColumnWidth::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\ExcludePosts::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\ExcludeTerms::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\HideEmpty_Deprecated::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\HideEmptyTerms::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\InstanceId::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\ParentPost::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\ParentTermId::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\ParentTermSlugOrId::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\PostsTerms::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\PostType::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\SymbolsFirst::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\Taxonomy::instance()->activate( __FILE__ )->initialize();
-	\AlphaListing\Shortcode\QueryParts\TermsTerms::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Alphabet::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Columns::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\ColumnGap::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\ColumnWidth::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\ExcludePosts::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\ExcludeTerms::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\HideEmpty_Deprecated::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\HideEmptyTerms::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\InstanceId::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\ParentPost::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\ParentTermId::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\ParentTermSlugOrId::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\PostsTerms::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\PostType::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\SymbolsFirst::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Taxonomy::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\TermsTerms::instance()->activate( __FILE__ )->initialize();
 }
 add_action( 'init', 'alphalisting_init', 5 );

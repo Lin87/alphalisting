@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace AlphaListing;
+namespace eslin87\AlphaListing;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -29,7 +29,7 @@ function alphalisting_add_health_check( array $tests ): array {
 	);
 	return $tests;
 }
-add_filter( 'site_status_tests', 'alphalisting_add_health_check' );
+add_filter( 'site_status_tests', __NAMESPACE__ . '\\alphalisting_add_health_check' );
 
 /**
  * The mbstring health check
@@ -83,4 +83,4 @@ function alphalisting_php_modules_health_check( array $modules ): array {
 	}
 	return $modules;
 }
-add_filter( 'site_status_test_php_modules', 'alphalisting_php_modules_health_check' );
+add_filter( 'site_status_test_php_modules', __NAMESPACE__ . '\\alphalisting_php_modules_health_check' );

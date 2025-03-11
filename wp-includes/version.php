@@ -5,7 +5,7 @@
  * @package alphalisting
  */
 
- namespace AlphaListing;
+ namespace eslin87\AlphaListing;
 
  if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

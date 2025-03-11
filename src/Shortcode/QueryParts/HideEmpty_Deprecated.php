@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace AlphaListing\Shortcode\QueryParts;
+namespace eslin87\AlphaListing\Shortcode\QueryParts;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \AlphaListing\Shortcode\Extension;
+use \eslin87\AlphaListing\Shortcode\Extension;
 
 /**
  * Deprecated Hide Empty Terms Query Part extension

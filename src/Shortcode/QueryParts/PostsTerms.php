@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace AlphaListing\Shortcode\QueryParts;
+namespace eslin87\AlphaListing\Shortcode\QueryParts;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \AlphaListing\Strings;
+use \eslin87\AlphaListing\Strings;
 
 /**
  * Taxonomy Terms Query Part extension for posts

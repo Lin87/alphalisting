@@ -7,18 +7,18 @@
 
 declare(strict_types=1);
 
-namespace AlphaListing\Shortcode;
+namespace eslin87\AlphaListing\Shortcode;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \AlphaListing\Singleton;
+use \eslin87\AlphaListing\Singleton;
 
 /**
  * Shortcode Extension
  */
-abstract class Extension extends Singleton implements \AlphaListing\Extension {
+abstract class Extension extends Singleton implements \eslin87\AlphaListing\Extension {
 	/**
 	 * The attribute for this shortcode extension.
 	 *
