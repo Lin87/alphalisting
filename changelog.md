@@ -1,5 +1,14 @@
 # Full Changelog #
 
+## 4.3.3 ##
+
+* Remove hardcoded admin-ajax.php URLs.
+* Remove the minor version from the "Tested up to" value in the readme.txt.
+* Move inline CSS style as style attribute in the template files.
+* Add permission callback to register_rest_route.
+* Remove load_plugin_textdomain as it is no longer necessary.
+* Prevent direct file access to plugin files.
+
 ## 4.3.2 ##
 
 * Bugfix: Fix the listing order under grouped letters so that items are now correctly sorted alphabetically in ascending order.

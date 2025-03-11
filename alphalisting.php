@@ -9,7 +9,7 @@
  * Original Author URI: https://profiles.wordpress.org/diddledani/
  * Text Domain:     	alphalisting
  * Domain Path:     	/languages
- * Version:         	4.3.2
+ * Version:         	4.3.3
  * License:				GPLv2 or later
  *
  * @package         alphalisting
