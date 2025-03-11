@@ -37,8 +37,8 @@ class AlphaListing_Widget extends WP_Widget {
 		);
 
 		parent::__construct(
-			$id_base ?? 'bh_az_widget',
-			$name ?? __( 'A-Z Site Map', 'alphalisting' ),
+			'alphalisting_az_widget',
+			__( 'A-Z Site Map', 'alphalisting' ),
 			$widget_options,
 			$control_options
 		);
@@ -123,11 +123,10 @@ class AlphaListing_Widget extends WP_Widget {
 		$listing_hide_empty_terms      = $instance['hide_empty_terms'] ?? '';
 		$listing_hide_empty_terms_id   = $this->get_field_id( 'hide_empty_terms' );
 		$listing_hide_empty_terms_name = $this->get_field_name( 'hide_empty_terms' );
-
-		wp_nonce_field( 'posts-by-title', '_posts_by_title_wpnonce', false, true );
 		?>
 
 		<div class="alphalisting-widget">
+			<?php wp_nonce_field( 'posts-by-title', '_posts_by_title_wpnonce', false, true ); ?>
 			<div class="alphalisting-widget-title-wrapper">
 				<p>
 					<label for="<?php echo esc_attr( $widget_title_id ); ?>">
@@ -437,7 +436,7 @@ function get_the_section_a_z_widget( array $args, array $instance ): string { //
 			$title = get_the_title( $target_id );
 		}
 	} elseif ( empty( $title ) ) {
-		$title = esc_html__( 'AlphaListing', 'alphalisting' );
+		$title = esc_html__( 'A-Z Site Map', 'alphalisting' );
 	}
 
 	$hide_empty_terms = true === $instance['hide_empty_terms'] ? 'true' : 'false';
@@ -539,8 +538,8 @@ function alphalisting_get_posts_by_title( string $post_title, string $post_type 
  * @since 2.0.0
  * @return void
  */
-function alphalisting_autocomplete_post_titles() {
-	check_ajax_referer( 'posts-by-title' );
+function get_alphalisting_autocomplete_post_titles() {
+	check_ajax_referer( 'posts-by-title', '_posts_by_title_wpnonce' );
 
 	$nonce = '';
 	if ( isset( $_REQUEST['_posts_by_title_wpnonce'] ) ) {
@@ -573,8 +572,9 @@ function alphalisting_autocomplete_post_titles() {
 
 	exit();
 }
-add_action( 'wp_ajax_nopriv_get_alphalisting_autocomplete_post_titles', 'alphalisting_autocomplete_post_titles' );
-add_action( 'wp_ajax_get_alphalisting_autocomplete_post_titles', 'alphalisting_autocomplete_post_titles' );
+
+add_action( 'wp_ajax_get_alphalisting_autocomplete_post_titles', 'get_alphalisting_autocomplete_post_titles' );
+add_action( 'wp_ajax_nopriv_get_alphalisting_autocomplete_post_titles', 'get_alphalisting_autocomplete_post_titles' );
 
 /**
  * Register the A_Z_Widget widget

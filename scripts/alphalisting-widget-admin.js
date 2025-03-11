@@ -2,6 +2,7 @@ jQuery( function( $ ) {
 	const wireup_alphalisting = function() {
 		jQuery( '.alphalisting-widget' ).each( function( idx, el ) {
 			el = $( el );
+			
 			const target_post = el.find( '.alphalisting-target-post' );
 			const target_post_title = el.find(
 				'.alphalisting-target-post-title'
@@ -77,13 +78,14 @@ jQuery( function( $ ) {
 
 			$( target_post_title ).autocomplete( {
 				source( post_title, response ) {
+					
 					jQuery.ajax( {
-						url: lphalisting_widget_admin.ajax_url,
+						url: alphalisting_widget_admin.ajax_url,
 						type: 'POST',
 						dataType: 'json',
 						data: {
 							action: 'get_alphalisting_autocomplete_post_titles',
-							_posts_by_title_wpnonce: listing_wpnonce.value,
+							_posts_by_title_wpnonce: listing_wpnonce.val(),
 							post_type: '',
 							post_title,
 						},
@@ -113,6 +115,7 @@ jQuery( function( $ ) {
 						dataType: 'json',
 						data: {
 							action: 'get_alphalisting_autocomplete_post_titles',
+							_posts_by_title_wpnonce: listing_wpnonce.val(),
 							post_type: listing_post_type.val(),
 							post_title,
 						},
