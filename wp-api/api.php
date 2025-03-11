@@ -5,6 +5,8 @@
  * @package alphalisting
  */
 
+ namespace AlphaListing;
+
 /**
  * Shared REST API handler
  *

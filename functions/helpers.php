@@ -7,10 +7,11 @@
 
 declare(strict_types=1);
 
+namespace AlphaListing;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
 
 add_action( 'alphalisting_log', 'alphalisting_log' );
 

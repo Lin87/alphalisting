@@ -5,6 +5,8 @@
  * @package alphalisting
  */
 
+ namespace AlphaListing;
+
  if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 $alphalisting_path = dirname( __DIR__ );

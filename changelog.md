@@ -1,5 +1,9 @@
 # Full Changelog #
 
+## 4.3.4 ##
+
+* Add namespace AlphaListing to all necessary PHP files.
+
 ## 4.3.3 ##
 
 * Bugfix: fix widget name not displaying on Widgets page.
