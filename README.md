@@ -447,6 +447,8 @@ If there is code already in your functions.php then add just the lines between `
 
 ### 4.3.3 ###
 
+* Bugfix: fix widget name not displaying on Widgets page.
+* Bugfix: fix widget autocomplete input fields.
 * Remove hardcoded admin-ajax.php URLs.
 * Remove the minor version from the "Tested up to" value in the readme.txt.
 * Move inline CSS style as style attribute in the template files.

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AlphaListing 4.3.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alphalisting\n"
-"POT-Creation-Date: 2025-03-11 14:20:53+00:00\n"
+"POT-Creation-Date: 2025-03-11 18:00:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -98,93 +98,90 @@ msgid "Alphabetised links to the A-Z site map"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:41
+#: widgets/class-alphalisting-widget.php:439
 msgid "A-Z Site Map"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:134
-#: widgets/class-alphalisting-widget.php:139
+#: widgets/class-alphalisting-widget.php:133
+#: widgets/class-alphalisting-widget.php:138
 msgid "Widget Title"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:143
+#: widgets/class-alphalisting-widget.php:142
 msgid ""
 "Leave the title field blank, above, to use the title from the page set in "
 "the next field"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:150
+#: widgets/class-alphalisting-widget.php:149
 msgid "Sitemap A-Z page"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:162
+#: widgets/class-alphalisting-widget.php:161
 msgid ""
 "Type some or all of the title of the page you want links to point at. "
 "Ensure this input field is not selected when you save the settings."
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:163
-#: widgets/class-alphalisting-widget.php:223
+#: widgets/class-alphalisting-widget.php:162
+#: widgets/class-alphalisting-widget.php:222
 msgid ""
 "Matching posts will be shown as you type. Click on the correct post from "
 "the matches to update the setting."
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:170
+#: widgets/class-alphalisting-widget.php:169
 msgid "Display posts or terms?"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:177
+#: widgets/class-alphalisting-widget.php:176
 msgid "Posts"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:181
+#: widgets/class-alphalisting-widget.php:180
 msgid "Taxonomy terms"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:190
+#: widgets/class-alphalisting-widget.php:189
 msgid "Post-type to display"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:209
+#: widgets/class-alphalisting-widget.php:208
 msgid "Show only children of this post (ID)"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:222
+#: widgets/class-alphalisting-widget.php:221
 msgid ""
 "Type some or all of the title of the post to limit the listing to only the "
 "children of that post. Ensure this input field is not selected when you "
 "save the settings."
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:227
+#: widgets/class-alphalisting-widget.php:226
 msgid "Include grand-children?"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:239
+#: widgets/class-alphalisting-widget.php:238
 msgid "Taxonomy to display"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:258
+#: widgets/class-alphalisting-widget.php:257
 msgid "Parent term to display children of"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:270
+#: widgets/class-alphalisting-widget.php:269
 msgid "Terms to include (IDs)"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:282
+#: widgets/class-alphalisting-widget.php:281
 msgid "Terms to exclude (IDs)"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:294
+#: widgets/class-alphalisting-widget.php:293
 msgid "Hide empty terms"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-msgid "AlphaListing"
-msgstr ""
-
-#: widgets/class-alphalisting-widget.php:550
+#: widgets/class-alphalisting-widget.php:549
 msgid "Security check failed"
 msgstr ""
 
@@ -214,6 +211,10 @@ msgstr ""
 
 #: wp-api/api.php:143
 msgid "Terms to filter by"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "AlphaListing"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
