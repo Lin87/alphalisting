@@ -725,8 +725,9 @@ class Query {
 	 * @since 4.3.2
 	 * @return string The inline style properities for column.
 	 */
-	public function get_customized_column_styles(): string {
-		return apply_filters( 'alphalisting_styles', '', $this, $this->instance_id );
+	public function get_customized_column_styles() {
+		$styles = apply_filters( 'alphalisting_styles', '', $this, $this->instance_id );
+		echo esc_attr( $styles );
 	}
 
 	/**

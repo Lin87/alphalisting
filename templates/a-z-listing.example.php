@@ -14,7 +14,7 @@
  if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 ?>
-<div id="<?php $a_z_query->the_instance_id(); ?>" style="<?php echo $a_z_query->get_customized_column_styles(); ?>" class="az-listing">
+<div id="<?php $a_z_query->the_instance_id(); ?>" style="<?php $a_z_query->get_customized_column_styles(); ?>" class="az-listing">
 	<div class="az-letters-wrap">
 		<div class="az-letters">
 			<?php $a_z_query->the_letters(); ?>
