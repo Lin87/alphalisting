@@ -7,13 +7,11 @@
 
 declare(strict_types=1);
 
-namespace eslin87\AlphaListing;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'alphalisting_log', __NAMESPACE__ . '\\alphalisting_log' );
+add_action( 'alphalisting_log', 'alphalisting_log' );
 
 /**
  * AlphaListing Logging wrapper function.

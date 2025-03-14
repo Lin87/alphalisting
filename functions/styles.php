@@ -7,8 +7,6 @@
 
 declare(strict_types=1);
 
-namespace eslin87\AlphaListing;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }

@@ -45,7 +45,7 @@ class AlphaListing_Widget extends \WP_Widget {
 			$control_options
 		);
 
-		add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_enqueue_widget_admin_script' );
+		add_action( 'admin_enqueue_scripts', 'alphalisting_enqueue_widget_admin_script' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_if_active' ) );
 	}
 

@@ -44,7 +44,7 @@
     },
     "autoload": {
         "psr-4": {
-            "eslin87\\AlphaListing\\": ["src/", "functions/", "widgets/", "wp-api/", "wp-includes/"]
+            "eslin87\\AlphaListing\\": ["src/", "widgets/", "wp-api/", "wp-includes/"]
         }
     },
     "scripts": {

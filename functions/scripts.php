@@ -7,8 +7,6 @@
 
 declare(strict_types=1);
 
-namespace eslin87\AlphaListing;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -44,10 +42,10 @@ function alphalisting_force_enqueue_tabs() {
  * @return void
  */
 function alphalisting_force_enable_tabs() {
-	if ( false !== has_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_enqueue_tabs' ) ) {
-		remove_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_enqueue_tabs' );
+	if ( false !== has_action( 'wp_enqueue_scripts', 'alphalisting_enqueue_tabs' ) ) {
+		remove_action( 'wp_enqueue_scripts', 'alphalisting_enqueue_tabs' );
 	}
-	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_force_enqueue_tabs' );
+	add_action( 'wp_enqueue_scripts', 'alphalisting_force_enqueue_tabs' );
 }
 
 /**
