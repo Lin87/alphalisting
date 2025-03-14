@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: AlphaListing 4.3.4\n"
+"Project-Id-Version: AlphaListing 4.3.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alphalisting\n"
-"POT-Creation-Date: 2025-03-11 18:42:51+00:00\n"
+"POT-Creation-Date: 2025-03-14 16:49:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,35 +24,35 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: functions/health-check.php:27
+#: functions/health-check.php:25
 msgid "A to Z Listing plugin"
 msgstr ""
 
-#: functions/health-check.php:43
+#: functions/health-check.php:41
 msgid "AlphaListing: PHP mbstring module is enabled"
 msgstr ""
 
-#: functions/health-check.php:46
+#: functions/health-check.php:44
 msgid "Compatibility"
 msgstr ""
 
-#: functions/health-check.php:51
+#: functions/health-check.php:49
 msgid ""
 "The mbstring PHP module improves support for non-latin languages in the "
 "AlphaListing plugin."
 msgstr ""
 
-#: functions/health-check.php:59
+#: functions/health-check.php:57
 msgid "AlphaListing: PHP mbstring module is not enabled"
 msgstr ""
 
-#: functions/health-check.php:63
+#: functions/health-check.php:61
 msgid ""
 "The mbstring PHP module is not enabled on your server. This module improves "
 "support for non-latin languages in the AlphaListing plugin."
 msgstr ""
 
-#: functions/health-check.php:65
+#: functions/health-check.php:63
 msgid ""
 "Contact your web host to request that the mbstring PHP module is enabled "
 "for your site."
@@ -222,7 +222,7 @@ msgid "https://github.com/Lin87/alphalisting"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Display an A to Z listing of posts (based on work by Dani Llewellyn)."
+msgid "Display an A to Z listing of posts."
 msgstr ""
 
 #. Author of the plugin/theme

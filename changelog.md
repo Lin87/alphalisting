@@ -1,5 +1,10 @@
 # Full Changelog #
 
+## 4.3.5 ##
+
+* Bugfix: fix critical error issues caused by namespaced functions in the files within the functions directory.
+* Bugifx: correct the conditional logic inside the `get_the_item_object()` function of the `Query` class by changing the checks for `post` to `posts` and `term` to `terms`.
+
 ## 4.3.4 ##
 
 * Add namespace AlphaListing to all necessary PHP files.

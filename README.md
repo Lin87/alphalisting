@@ -1,23 +1,25 @@
 # AlphaListing #
 
 **Contributors:** [eslin87](https://profiles.wordpress.org/eslin87/)  
-**Tags:** a to z, a-z, archive, listing, widget  
+**Tags:** a to z, a-z, index, listing, widget  
 **Requires at least:** 5.0  
 **Requires PHP:** 8.0  
 **Tested up to:** 6.7  
-**Stable tag:** 4.3.4  
+**Stable tag:** 4.3.5  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
-Provides an A to Z index page and widget. This plugin is based on the original A-Z Listing by Dani Llewellyn, which is no longer maintained. 
+Provides an A to Z index page and widget. 
 
 ## Description ##
 
-Show your posts, pages, and terms alphabetically in a Rolodex-, catalogue-, or directory-style list with the AlphaListing plugin!
+Display posts, pages, and terms alphabetically in a Rolodex-, catalog-, or directory-style list with the AlphaListing plugin!  
 
-The plugin has a short-code for the list, and a widget so you can link to the list from anywhere on your site. If a letter doesn't have any pages then the widget will display the letter unlinked. The list page will omit the display for that letter entirely.
+This plugin includes a block and shortcode for the list, along with a widget for linking to the list from any location on a site. If a letter has no associated pages, the widget will display the letter unlinked, while the list page will omit the letter entirely.  
 
-Show posts from any or multiple post types including the in-built posts and pages. Also supported are post-types from plugins like WooCommerce products. Alternatively, show terms like categories or tags.
+Show posts from any single or multiple post types, including built-in posts and pages. Post types from plugins like WooCommerce products are also supported. Alternatively, display terms such as categories or tags.
+
+** This plugin is based on the original A-Z Listing by Lucy (formerly Dani) Llewellyn, which is no longer maintained. Using a custom template is not guaranteed to continue working. For the latest example of the template, see the [example template](https://raw.githubusercontent.com/Lin87/alphalisting/refs/heads/main/templates/a-z-listing.example.php).**
 
 ## Installation ##
 
@@ -25,23 +27,23 @@ This section describes how to install the plugin and get it working.
 
 ### Requirements ###
 
-1. PHP 8.0 is the minimum version you should be using.
-1. The plugin requires `mbstring` turned-on in your PHP installation. Without this feature the plugin might behave oddly or fail.
+1. PHP 8.0 or higher is required.
+1. The plugin requires mbstring to be enabled in the PHP installation. Without this feature, the plugin may behave unexpectedly or fail.
 
 ### Instructions ###
 
-1. Upload the alphalisting folder to the `/wp-content/plugins/` directory.
-1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Use the `[alphalisting]` short-code or block in the block editor (gutenberg) on the page or post that you want to show the listing.
-1. Add the A-Z Site Map widget to a sidebar.
+1. Upload the `alphalisting` folder to the `/wp-content/plugins/` directory.
+1. Activate the plugin through the "Plugins" menu in WordPress.
+1. Use the AlphaListing block in the (Gutenberg) block editor or the `[alphalisting]` shortcode on the desired page or post.
+1. (Optional) Add the A-Z Site Map widget to a sidebar.
 
-## block ##
+## Gutenberg Block ##
 
-Version 4.0.0 introduces new block editor support. You should use the block in most cases, as it helps to guide you through configuring the various options.
+Use the AplhaListing block in most cases, as it provides guidance for configuring various options.
 
-## short-code for compatibility and PHP use ##
+## Shortcode for compatibility and PHP use ##
 
-The plugin supplies a short-code for the full AlphaListing allowing use without modifying your theme's templates.
+The plugin provides a shortcode for the full AlphaListing, enabling use without modifying theme templates.
 
 Basic usage is as follows:
 
@@ -87,7 +89,7 @@ The numbers can also be shown before the alphabet:
 
     [alphalisting display="posts" numbers="before"]
 
-You can group the numbers into a single collection for all posts beginning with a numeral:
+Group the numbers into a single collection for all posts beginning with a numeral.:
 
     [alphalisting numbers="after" group-numbers="yes"]
 
@@ -115,7 +117,7 @@ To group the alphabet letters into a range:
   * Must be set to any positive number greater than `1` or the value `numbers`.
   * Any value other than a positive number or the value `numbers` will default to disabling all grouping functionality.
   * When set to a number higher than `1` the listing will group letters together into ranges.
-    * For example, if you chose `3` then a Latin alphabet will group together `A`, `B`, and `C` into `A-C`. Likewise for `D-F`, `G-I` and so-on.
+    * For example, choosing `3` groups the Latin alphabet so that `A`, `B`, and `C` become `A-C`, followed by `D-F`, `G-I`, and so on.
     * When using this setting, if numbers are also shown via the `numbers="before"` or `numbers="after"` attribute then they will be shown as a single separate group `0-9`.
   * When set to the value `numbers` it will group numerals into a single group `0-9`.
     * This requires the numbers to be displayed via the `numbers="before"` or `numbers="after"` attributes.
@@ -127,13 +129,13 @@ To group the alphabet letters into a range:
   * Default value: `false`.
   * May only contain one value.
   * Must be set to `true`, `yes`, `on`, or `1` to put the symbols group before the alphabet. All other values will keep the default behaviour.
-* `alphabet`: allows you to override the alphabet that the plugin uses.
+* `alphabet`: overrides the alphabet used by the plugin..
   * Default value: `unset`.
-  * When this attribute is not defined, the plugin will either use the untranslated default, or if [glotpress](https://translate.wordpress.org/projects/wp-plugins/alphalisting) includes a translation for your site's language as set in `Admin -> Settings -> Site Language` it will use that translation.
+  * If this attribute is not defined, the plugin uses either the untranslated default or a translation from [glotpress](https://translate.wordpress.org/projects/wp-plugins/alphalisting) if available for the site's language, as set in `Admin -> Settings -> Site` Language.
   * The current untranslated default is: `AÁÀÄÂaáàäâ,Bb,Cc,Dd,EÉÈËÊeéèëê,Ff,Gg,Hh,IÍÌÏÎiíìïî,Jj,Kk,Ll,Mm,Nn,OÓÒÖÔoóòöô,Pp,Qq,Rr,Ssß,Tt,UÚÙÜÛuúùüû,Vv,Ww,Xx,Yy,Zz`.
   * Accepts a single line of letters/symbols, which need to be separated via the comma character `,`.
   * Including more than one letter/symbol in each group will display posts starting with any of those under the same section.
-  * The first letter/symbol in each group is used as the group's heading when displayed on your site.
+  * The first letter or symbol in each group serves as the group's heading when displayed on the site.
 
 ### Posts options ###
 
@@ -194,7 +196,7 @@ To group the alphabet letters into a range:
 
 ### Internal-use options for completeness ###
 
-** You should not need to touch these, as they are meant for internal use by the plugin only**
+** These are intended for internal use by the plugin and should not require any modifications.**
 
 * `target`: the default target for a listing that doesn't show any items.
   * Default value: `unset`.
@@ -219,13 +221,13 @@ Multiple column layout is the default on wide screens. A letter's group of items
 
 The plugin allows the site owner, developer, or themer to provide custom templates for the AlphaListing output.
 
-To add a template to your theme, you need a file similar to the `templates/a-z-listing.php` file in the plugin folder. Your copy needs to be placed within your theme at the theme root directory and called `a-z-listing.php` or `a-z-listing-section.php` (where `-section` is an optional top-level page slug for the section-targeting feature).
+To add a template to a theme, create a file similar to `templates/a-z-listing.php` from the plugin folder. Place the copy in the theme's root directory and name it `a-z-listing.php` or `a-z-listing-section.php` (with `-section` as an optional top-level page slug for the section-targeting feature).
 
 ### The Loop ###
 
 The theme system this plugin implements is *very* similar to [the standard WordPress loop](https://codex.wordpress.org/The_Loop), with a few added bits.
 
-Important functions to use in your template are as follows:
+Important functions to include in the template are:
 
 * `$a_z_query->the_letters()` prints the full alphabet, and links the letters that have posts to their section within the index page.
 * `$a_z_query->have_letters()` returns true or false depending on whether there are any letters left to loop-through. This is part of the Letter Loop.
@@ -233,9 +235,9 @@ Important functions to use in your template are as follows:
 * `$a_z_query->the_letter()` similar to Core's `the_post()`, this will set-up the next iteration of the AlphaListing's Letter Loop. This needs to wrap-around the Item Loop.
 * `$a_z_query->the_item()` similar to Core's `the_post()`, this will set-up the next iteration of the AlphaListing's Item Loop, the same way the normal WordPress Loop works. This needs to be _within_ the Letter Loop.
 
-When you are within the Item Loop you may utilise all in-built WordPress Core post-related functions such as `the_content()`. Note that titles and permalinks have helper functions to cope with the AlphaListing showing taxonomy terms (see the next section).
+Within the Item Loop, all built-in WordPress Core post-related functions, such as `the_content()`, can be used. Titles and permalinks have helper functions to accommodate AlphaListing's display of taxonomy terms (see the next section).
 
-I advise that you start with a copy of the default template template when customizing your own version. The supplied templates show the usage of most of the functions this plugin provides.
+Starting with a copy of the [default template](https://raw.githubusercontent.com/Lin87/alphalisting/refs/heads/main/templates/a-z-listing.example.php) is recommended when creating a custom version. The provided template demonstrate the usage of most functions available in the plugin.
 
 ### Helper functions ###
 
@@ -247,26 +249,28 @@ These helper functions cope with the dual usage of the plugin supporting both `W
 * `$a_z_query->get_the_title()` returns the current item's Title but does not print it directly
 * `$a_z_query->the_permalink()` prints the current item's Permalink
 * `$a_z_query->get_the_permalink()` returns the current item's Permalink but does not print it directly
+* `$a_z_query->the_item_id()` prints the current item's ID
+* `$a_z_query->get_the_item_id()` returns the current item's ID but does not print it directly
 
 ## Frequently Asked Questions ##
 
 ### Why is the list layout completely broken? ###
 
-If you are using a page-builder such as WPBakery or Elementor you need to ensure that you put the short-code into a normal text area. Placing the short-code into a preformatted text area will add `<pre>` tags around the listing output. These extra tags break the layout considerably.
+When using a page builder like WPBakery or Elementor, place the shortcode in a regular text area. Using a preformatted text area adds `<pre>` tags around the listing output, which can significantly disrupt the layout.
 
 ### Why is my list in a single column? ###
 
-The list of items under each letter heading needs to have at least 11 items for a second column to be created. Once you hit the magic 11 items, the list will break into two columns with 6 items in the first column and 5 items in the second. When you get to 21 items a third column will be added if there is room on your page; and so-on up to a maximum of 15 columns if there is enough space, though it is unexpected that any web-page be wide enough for more than a few columns to fit. The columns will fill-up evenly once you have more than one column on the page.
+Each letter heading requires at least 11 items for a second column to appear. At 11 items, the list splits into two columns, with 6 items in the first and 5 in the second. A third column is added at 21 items if space allows, continuing up to a maximum of 15 columns. However, most web pages are unlikely to accommodate more than a few columns. Once multiple columns are present, items distribute evenly across them.
 
 ### How do I show posts of a different post-type (not pages) or multiple post-types (e.g. posts AND pages)? ###
 
-This can be achieved using the short-code or PHP. In these examples the generic phrase `post-type-slug` is used to describe the concept. The default post types provided by WordPress are called "Posts" and "Pages". Their slugs are `post` and `page` respectively. You need to use these names in place of the examples (i.e. `your-post-type-slug`, `type1-slug`, and `type1-slug`).
+This can be achieved using either the shortcode or PHP. In these examples, `post-type-slug` represents a placeholder. WordPress provides default post types called "Posts" and "Pages," with slugs `post` and `page`, respectively. Replace example placeholders (e.g., `post-type-slug`, `type1-slug`) with the appropriate post type names.
 
-#### short-code method ####
+#### shortcode method ####
 
 ##### Single post-type #####
 
-    [alphalisting post-type="your-post-type-slug"]
+    [alphalisting post-type="post-type-slug"]
 
 ##### Multiple post-types #####
 
@@ -276,14 +280,14 @@ For multiple post-types just separate them with a comma.
 
 #### PHP method ####
 
-PHP code needs to be added to your theme files, and cannot be used as post or page content in the way that a short-code can.
+PHP code must be added to theme files and cannot be used within post or page content like a shortcode.
 
 ##### Single post-type #####
 
 ```php
 <?php
 the_alphalisting( array(
-    'post_type' => 'your-post-type-slug'
+    'post_type' => 'post-type-slug'
 ) );
 ?>
 ```
@@ -300,13 +304,13 @@ the_alphalisting( array(
 
 The argument to `the_alphalisting()` is an [array](https://secure.php.net/manual/en/language.types.array.php) and takes the same parameters as [WP_Query](https://codex.wordpress.org/Class_Reference/WP_Query)
 
-The code above needs to be within a php block which is denoted by the `<?php` and `?>` pair. Depending on your theme, you might not need the opening and closing php tags shown in the above snippet; if that is the case, you are free to omit them in your code.
+The code must be placed within a PHP block, denoted by the `<?php` and `?>` tags. Depending on the theme, these tags may not be necessary, and they can be omitted if the surrounding code is already within a PHP block.
 
 ### How do I show posts from a specific category only? ###
 
-This can be achieved using the short-code or PHP. In these examples the generic phrase `taxonomy` and `term` are used to describe the concept. The default taxonomies provided by WordPress are called "Categories" and "Tags". Their slugs are `category` and `post_tag` respectively. Each Category and Tag are then known as "terms". You need to use the slug for each individual category or tag in place of the example slugs (i.e. `term-slug`, `term1-slug`, and `term1-slug`).
+This can be achieved using either a shortcode or PHP. In these examples, `taxonomy` and `term` serve as placeholders. WordPress provides default taxonomies called "Categories" and "Tags," with slugs `category` and `post_tag`, respectively. Each category or tag is referred to as a "term." Replace the example slugs (e.g., `term-slug`, `term1-slug`) with the actual slugs of the desired categories or tags.
 
-#### short-code method ####
+#### shortcode method ####
 
 ##### Single term #####
 
@@ -320,13 +324,13 @@ For multiple terms just separate them with a comma.
 
 #### PHP method ####
 
-PHP code needs to be added to your theme files, and cannot be used as post or page content in the way that a short-code can.
+PHP code must be added to theme files and cannot be used within post or page content like a shortcode.
 
 ```php
 <?php
 the_alphalisting( array(
     'tax_query' => array(
-        'taxonomy' => 'your-taxonomy-slug',
+        'taxonomy' => 'taxonomy-slug',
         'field' => 'slug',
         'terms' => array( 'term1-slug', 'term2-slug' )
     )
@@ -338,13 +342,13 @@ Any number of terms may be added to the `terms` [array](https://secure.php.net/m
 
 The argument to `the_alphalisting()` is an [array](https://secure.php.net/manual/en/language.types.array.php) and takes the same parameters as [WP_Query](https://codex.wordpress.org/Class_Reference/WP_Query)
 
-The code above needs to be within a php block which is denoted by the `<?php` and `?>` pair. Depending on your theme, you might not need the opening and closing php tags shown in the above snippet; if that is the case, you are free to omit them in your code.
+The code must be placed within a PHP block, denoted by the `<?php` and `?>` tags. Depending on the theme, these tags may not be necessary and can be omitted if the surrounding code is already within a PHP block.
 
 ### How do I show terms from a taxonomy instead of posts? ###
 
-This can be achieved using the short-code or PHP. In these examples the generic phrase `taxonomy` and `term` are used to describe the concept. The default taxonomies provided by WordPress are called "Categories" and "Tags". Their slugs are `category` and `post_tag` respectively. You need to use the slug for the taxonomy in place of the example slugs (i.e. `taxonomy-slug`).
+This can be achieved using either a shortcode or PHP. In these examples, `taxonomy` and `term` serve as placeholders. WordPress provides default taxonomies called "Categories" and "Tags," with slugs `category` and `post_tag`, respectively. Replace `taxonomy-slug` with the actual slug of the desired taxonomy.
 
-#### short-code method ####
+#### shortcode method ####
 
     [alphalisting taxonomy="taxonomy-slug" display="terms"]
 
@@ -354,7 +358,7 @@ The `display="terms"` attribute is required to display taxonomy terms instead of
 
 #### PHP method ####
 
-PHP code needs to be added to your theme files, and cannot be used as post or page content in the way that a short-code can.
+PHP code must be added to theme files and cannot be used within post or page content like a shortcode.
 
 ```php
 <?php
@@ -364,11 +368,11 @@ the_alphalisting( 'taxonomy-slug' );
 
 The argument to `the_alphalisting()` is a [string](https://secure.php.net/manual/en/language.types.string.php) and contains the slug of a single taxonomy, e.g. `category` or `post_tag`.
 
-The code above needs to be within a php block which is denoted by the `<?php` and `?>` pair. Depending on your theme, you might not need the opening and closing php tags shown in the above snippet; if that is the case, you are free to omit them in your code.
+The code must be placed within a PHP block, denoted by the `<?php` and `?>` tags. Depending on the theme, these tags may not be necessary and can be omitted if the surrounding code is already within a PHP block.
 
 ### How do I remove section targeting or limit which sections are available? ###
 
-In your theme's `functions.php` file add the following code:
+Add the following code to the theme's `functions.php` file:
 
 ```php
 <?php
@@ -378,11 +382,11 @@ add_filter( 'alphalisting-sections', '__return_empty_array' );
 
 This filter may also be used, by removing entries which are standard $post variables, to limit which top-level pages are used as section identifiers.
 
-If there is code already in your functions.php then add just the lines between `<?php` and `?>` on the line directly after the very first instance of `<?php`.
+If `functions.php` already contains code, add only the lines between `<?php` and `?>`, placing them directly after the first occurrence of `<?php`.
 
-### I am not using the short-code so the styles are not working, can I still use the in-built styles without the short-code? ###
+### I am not using the shortcode so the styles are not working, can I still use the built-in styles without the shortcode? ###
 
-Yes you can. This needs the following code added to your theme's `functions.php` file. We purposely only display the stylesheet on pages where the short-code is active.
+Yes, this is possible by adding the following code to the theme's `functions.php` file. The stylesheet is intentionally loaded only on pages where the shortcode is active.
 
 ```php
 <?php
@@ -390,17 +394,17 @@ add_action( 'init', 'alphalisting_force_enable_styles', 99 );
 ?>
 ```
 
-If there is code already in your theme's `functions.php` file then add just the lines between `<?php` and `?>` on the line directly after the very first instance of `<?php`.
+If `functions.php` already contains code, add only the lines between `<?php` and `?>`, placing them directly after the first occurrence of `<?php`.
 
 The sidebar widget styling also works in a similar manner, and will also respond to the same code above to forcibly enable it.
 
-You can add code which detects the page which the user is browsing and only enable the override on that page so that network requests are kept to a minimum (this is the same reason we detect usage of the short-code).
+Code can be added to detect the page the user is browsing and enable the override only on that page, minimizing network requests. This approach is similar to detecting shortcode usage.
 
 ```php
 <?php
-add_action( 'init', 'your_override_wrapper_function', 99 );
-function your_override_wrapper_function() {
-    if ( ! is_page( 'your-alphalisting-page-slug-or-ID' ) ) { // ID is numeric, slug is a string.
+add_action( 'init', 'custom_override_wrapper_function', 99 );
+function custom_override_wrapper_function() {
+    if ( ! is_page( 'custom-alphalisting-page-slug-or-ID' ) ) { // ID is numeric, slug is a string.
         return; // we don't want to run for anything except the page we're interested in.
     }
     alphalisting_force_enable_styles(); // this is the page we want, so run the function to enqueue the styles.
@@ -408,11 +412,11 @@ function your_override_wrapper_function() {
 ?>
 ```
 
-If there is code already in your theme's `functions.php` file then add just the lines between `<?php` and `?>` on the line directly after the very first instance of `<?php`.
+If `functions.php` already contains code, add only the lines between `<?php` and `?>`, placing them directly after the first occurrence of `<?php`.
 
-### How do I disable the in-built styling? ###
+### How do I disable the built-in styling? ###
 
-In your theme's functions.php add the following code:
+Add the following code to the theme's `functions.php` file:
 
 ```php
 <?php
@@ -420,11 +424,11 @@ add_filter( 'alphalisting-add-styling', '__return_false' );
 ?>
 ```
 
-If there is code already in your functions.php then add just the lines between `<?php` and `?>` on the line directly after the very first instance of `<?php`.
+If `functions.php` already contains code, add only the lines between `<?php` and `?>`, placing them directly after the first occurrence of `<?php`.
 
 ### How do I display the listing as a tabbed panel? ###
 
-In your theme's functions.php add the following code:
+Add the following code to the theme's `functions.php` file:
 
 ```php
 <?php
@@ -432,7 +436,7 @@ add_filter( 'alphalisting-tabify', '__return_true' );
 ?>
 ```
 
-If there is code already in your functions.php then add just the lines between `<?php` and `?>` on the line directly after the very first instance of `<?php`.
+If `functions.php` already contains code, add only the lines between `<?php` and `?>`, placing them directly after the first occurrence of `<?php`.
 
 ## Screenshots ##
 
@@ -444,6 +448,11 @@ If there is code already in your functions.php then add just the lines between `
 
 
 ## Changelog ##
+
+### 4.3.5 ###
+
+* Bugfix: fix critical error issues caused by namespaced functions in the files within the functions directory.
+* Bugifx: correct the conditional logic inside the `get_the_item_object()` function of the `Query` class by changing the checks for `post` to `posts` and `term` to `terms`.
 
 ### 4.3.4 ###
 
@@ -467,4 +476,4 @@ If there is code already in your functions.php then add just the lines between `
 
 ### Previous ###
 
-This plugin is based on the original A-Z Listing by Dani Llewellyn. The last version released by Dani was 4.3.1. Starting from version 4.3.2, this plugin has diverged from the original A-Z Listing. For the full release history, including Dani's releases, refer to the `changelog.md` file.
+This plugin is based on the original A-Z Listing by Lucy (formerly Dani) Llewellyn. The last version released by Lucy was 4.3.1. Starting from version 4.3.2, this plugin has diverged from the original A-Z Listing. For the full release history, including Lucy's releases, refer to the [changelog.md](https://github.com/Lin87/alphalisting/blob/main/changelog.md) file.

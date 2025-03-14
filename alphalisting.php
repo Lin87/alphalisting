@@ -2,14 +2,14 @@
 /**
  * Plugin Name:     	AlphaListing
  * Plugin URI:      	https://github.com/Lin87/alphalisting
- * Description:     	Display an A to Z listing of posts (based on work by Dani Llewellyn).
+ * Description:     	Display an A to Z listing of posts.
  * Author:          	Ethan Lin
  * Author URI:      	https://profiles.wordpress.org/eslin87/
- * Original Author: 	Dani Llewellyn
+ * Original Author: 	Lucy (formerly Dani) Llewellyn
  * Original Author URI: https://profiles.wordpress.org/diddledani/
  * Text Domain:     	alphalisting
  * Domain Path:     	/languages
- * Version:         	4.3.4
+ * Version:         	4.3.5
  * License:				GPLv2 or later
  *
  * @package         alphalisting
