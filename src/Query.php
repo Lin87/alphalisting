@@ -869,14 +869,15 @@ class Query {
 		global $post;
 		if ( 'I understand the issues!' === $force ) {
 			$current_item = $this->current_item['item'];
+
 			if ( is_string( $current_item ) ) {
 				$item = explode( ':', $current_item, 2 );
 
 				if ( isset( $item[1] ) ) {
-					if ( 'term' === $item[0] ) {
+					if ( 'terms' === $item[0] ) {
 						return get_term( intval( $item[1] ) );
 					}
-					if ( 'post' === $item[0] ) {
+					if ( 'posts' === $item[0] ) {
 						$post = get_post( intval( $item[1] ) ); //phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 						\setup_postdata( $post );
 						return $post;
