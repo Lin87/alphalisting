@@ -261,6 +261,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 													)
 												)
 											}
+											__nextHasNoMarginBottom={true}
 										/>
 
 										{ 'posts' === attributes.display && (
@@ -276,6 +277,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 														)
 													)
 												}
+												__nextHasNoMarginBottom={true}
 											/>
 										) }
 
@@ -310,6 +312,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 														)
 													)
 												}
+												__nextHasNoMarginBottom={true}
 											/>
 										) }
 
@@ -340,6 +343,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											onChange={ (value) =>
 												setAttributes( { 'instance-id': value } )
 											}
+											__nextHasNoMarginBottom={true}
 										/>
 										<TextControl
 											label={ __( 'CSS class names', 'alphalisting' ) }
@@ -347,6 +351,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											onChange={ ( value ) =>
 												setAttributes( { className: value } )
 											}
+											__nextHasNoMarginBottom={true}
 										/>
 										<TextControl
 											label={ __( 'Alphabet', 'alphalisting' ) }
@@ -354,6 +359,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											onChange={ ( value ) =>
 												setAttributes( { alphabet: value } )
 											}
+											__nextHasNoMarginBottom={true}
 										/>
 										<SelectControl
 											label={ __( 'Numbers', 'alphalisting' ) }
@@ -389,6 +395,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 													)
 												)
 											}
+											__nextHasNoMarginBottom={true}
 										/>
 
 										<RangeControl
@@ -409,6 +416,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 												)
 											}
 											withInputField
+											__nextHasNoMarginBottom={true}
 										/>
 
 										{ 'hide' !== attributes.numbers &&
@@ -435,6 +443,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 															)
 														)
 													}
+													__nextHasNoMarginBottom={true}
 												/>
 											) }
 
@@ -444,6 +453,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											onChange={ ( value ) =>
 												setAttributes( { 'symbols-first': value } )
 											}
+											__nextHasNoMarginBottom={true}
 										/>
 
 										<RangeControl
@@ -456,6 +466,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											max={ MAX_POSTS_COLUMNS }
 											withInputField
 											required
+											__nextHasNoMarginBottom={true}
 										/>
 										{/* Waiting for UnitControl to stabilise in Gutenberg */}
 										{/* <UnitControl
@@ -482,6 +493,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 												setAttributes( { 'column-width': value } )
 											}
 											required
+											__nextHasNoMarginBottom={true}
 										/>
 										<TextControl
 											label={ __( 'Column gap', 'alphalisting' ) }
@@ -490,6 +502,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 												setAttributes( { 'column-gap': value } )
 											}
 											required
+											__nextHasNoMarginBottom={true}
 										/>
 
 										{ subFills }
