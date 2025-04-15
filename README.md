@@ -4,7 +4,7 @@
 **Tags:** a to z, a-z, index, listing, widget  
 **Requires at least:** 5.0  
 **Requires PHP:** 8.0  
-**Tested up to:** 6.7  
+**Tested up to:** 6.8  
 **Stable tag:** 4.3.5  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -19,7 +19,7 @@ This plugin includes a block and shortcode for the list, along with a widget for
 
 Show posts from any single or multiple post types, including built-in posts and pages. Post types from plugins like WooCommerce products are also supported. Alternatively, display terms such as categories or tags.
 
-**This plugin is based on the original A-Z Listing by Lucy (formerly Dani) Llewellyn, which is no longer maintained. Using a custom template is not guaranteed to continue working. For the latest example of the template, see the [example template](https://raw.githubusercontent.com/Lin87/alphalisting/refs/heads/main/templates/a-z-listing.example.php).**
+** This plugin is based on the original A-Z Listing by Lucy (formerly Dani) Llewellyn, which is no longer maintained. Using a custom template is not guaranteed to continue working. For the latest example of the template, see the [example template](https://raw.githubusercontent.com/Lin87/alphalisting/refs/heads/main/templates/a-z-listing.example.php).**
 
 ## Installation ##
 
@@ -97,7 +97,7 @@ To group the alphabet letters into a range:
 
     [alphalisting grouping="3"]
 
-**The arguments are all optional.**
+** The arguments are all optional **
 
 ### Common options ###
 
@@ -196,7 +196,7 @@ To group the alphabet letters into a range:
 
 ### Internal-use options for completeness ###
 
-**These are intended for internal use by the plugin and should not require any modifications.**
+** These are intended for internal use by the plugin and should not require any modifications.**
 
 * `target`: the default target for a listing that doesn't show any items.
   * Default value: `unset`.
