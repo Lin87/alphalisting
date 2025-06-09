@@ -19,7 +19,7 @@ This plugin includes a block and shortcode for the list, along with a widget for
 
 Show posts from any single or multiple post types, including built-in posts and pages. Post types from plugins like WooCommerce products are also supported. Alternatively, display terms such as categories or tags.
 
-** This plugin is based on the original A-Z Listing by Lucy (formerly Dani) Llewellyn, which is no longer maintained. Using a custom template is not guaranteed to continue working. For the latest example of the template, see the [example template](https://raw.githubusercontent.com/Lin87/alphalisting/refs/heads/main/templates/a-z-listing.example.php).**
+** This plugin is based on the original A-Z Listing by Lucy (formerly Dani) Llewellyn, which is no longer maintained. Custom templates from the original plugin may not continue to work reliably. For the latest example of the template, see the [example template](https://raw.githubusercontent.com/Lin87/alphalisting/refs/heads/main/templates/a-z-listing.example.php). **
 
 ## Installation ##
 
@@ -253,6 +253,12 @@ These helper functions cope with the dual usage of the plugin supporting both `W
 * `$a_z_query->get_the_item_id()` returns the current item's ID but does not print it directly
 
 ## Frequently Asked Questions ##
+
+### Can I list the same post under multiple letters? ###
+
+No. AlphaListing is designed to display each post, page, or term only once — based on the first letter of its title.
+
+Showing the same post under multiple letters is not supported and is beyond the scope of this plugin. AlphaListing focuses on providing a simple, predictable directory-style layout where each item appears in one place.
 
 ### Why is the list layout completely broken? ###
 
