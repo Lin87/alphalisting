@@ -68,21 +68,6 @@ module.exports = function( grunt ) {
 			}
 		},
 
-		// babel: {
-		// 	options: {
-		// 		sourceMap: true,
-		// 		plugins: [['transform-react-jsx', {"pragma": "wp.element.createElement"}]],
-		// 		presets: ['env', 'react']
-		// 	},
-		// 	jsx: {
-		// 		files: [{
-		// 			expand: true,
-		// 			src: ['**/*.jsx'],
-		// 			ext: '.js'
-		// 		}]
-		// 	}
-		// },
-
 		sass: {
 			options: {
 				sourceMap: false,

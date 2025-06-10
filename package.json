@@ -16,18 +16,13 @@
     "start": "wp-scripts start ./scripts/blocks/index.js"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^30.11.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "eslint": "^9.20.1",
-    "grunt": "^1.5.3",
-    "grunt-cli": "^1.4.3",
+    "@wordpress/scripts": "^30.18.0",
+    "grunt": "^1.6.1",
+    "grunt-cli": "^1.5.0",
     "grunt-sass": "^4.0.0",
     "grunt-wp-i18n": "^1.0.3",
-    "grunt-wp-readme-to-markdown": "^2.0.1",
-    "sass": "^1.36.0"
+    "grunt-wp-readme-to-markdown": "^2.1.0",
+    "sass": "^1.89.2"
   },
   
   "dependencies": {
