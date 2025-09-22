@@ -17,7 +17,7 @@ module.exports = function( grunt ) {
 				options: {
 					updateDomains: true
 				},
-				src: [ '*.php', '**/*.php', '!\.git/**/*', '!bin/**/*', '!node_modules/**/*', '!tests/**/*', '!build/**/*', '!vendor/**/*' ]
+				src: [ '*.php', '**/*.php', '!\.git/**/*', '!bin/**/*', '!node_modules/**/*', '!test/**/*', '!tests/**/*', '!build/**/*', '!vendor/**/*' ]
 			}
 		},
 
@@ -55,7 +55,7 @@ module.exports = function( grunt ) {
 			target: {
 				options: {
 					domainPath: '/languages',
-					exclude: [ '\.git/*', 'bin/*', 'node_modules/*', 'tests/*', 'vendor/*' ],
+					exclude: [ '\.git/*', 'bin/*', 'node_modules/*', 'test/*', 'tests/*', 'vendor/*' ],
 					mainFile: 'alphalisting.php',
 					potFilename: 'alphalisting.pot',
 					potHeaders: {
