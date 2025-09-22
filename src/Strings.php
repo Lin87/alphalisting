@@ -38,10 +38,10 @@ class Strings {
 				},
 				range( 0, mb_strlen( $string ) - 1 )
 			);
-		} else {
-			return explode( '', $string );
-		}
-	}
+               } else {
+                       return str_split( $string );
+               }
+       }
 
 	/**
 	 * Perform a multibyte substring operation if mbstring is loaded, else use substr.
