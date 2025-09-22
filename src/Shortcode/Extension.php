@@ -100,16 +100,20 @@ abstract class Extension extends Singleton implements \eslin87\AlphaListing\Exte
 	 * @param int      $order The order to call this function.
 	 * @param int      $arguments The number of arguments the function expects.
 	 */
-	final protected function remove_hook( string $type, string $name, callable $function, int $order = 10, int $arguments = 1 ) {
-		$hook = array( $name, $function, $order, $arguments );
-		call_user_func_array( "remove_$type", $hook );
-		array_filter(
-			$this->filters[ $type ],
-			function( $item ) use ( $hook ) {
-				return $item === $hook;
-			}
-		);
-	}
+        final protected function remove_hook( string $type, string $name, callable $function, int $order = 10, int $arguments = 1 ) {
+                $hook = array( $name, $function, $order, $arguments );
+                call_user_func_array( "remove_$type", $hook );
+                if ( isset( $this->hooks[ $type ] ) ) {
+                        $this->hooks[ $type ] = array_values(
+                                array_filter(
+                                        $this->hooks[ $type ],
+                                        function( $item ) use ( $hook ) {
+                                                return $item !== $hook;
+                                        }
+                                )
+                        );
+                }
+        }
 
 	/**
 	 * Unhook all our filters and actions.
