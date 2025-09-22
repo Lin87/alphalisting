@@ -127,40 +127,40 @@ function alphalisting_register_rest_api() {
 		),
 	);
 
-	register_rest_route(
-		'alphalisting/v1',
-		'/posts/(?P<post_type>[a-z0-9-]+)',
-		array(
-			'methods'  => 'GET',
-			'callback' => 'alphalisting_posts_api_handler',
-			'permission_callback' => '__return_true',
-			'args'     => array(
-				'post_type' => array(
-					'description'       => __( 'Post type', 'alphalisting' ),
-					'type'              => 'string',
-					'default'           => 'page',
-					'sanitize_callback' => 'sanitize_text_field',
-				),
-				'terms'     => array(
-					'description'       => __( 'Terms to filter by', 'alphalisting' ),
-					'type'              => 'string',
-					'default'           => '',
-					'sanitize_callback' => 'sanitize_text_field',
-				),
-				$default_args,
-			),
-		)
-	);
-	register_rest_route(
-		'alphalisting/v1',
-		'/terms/(?P<taxonomy>[a-z0-9-]+)',
-		array(
-			'methods'  => 'GET',
-			'callback' => 'alphalisting_terms_api_handler',
-			'permission_callback' => '__return_true',
-			'args'     => array(
-				$default_args,
-			),
-		)
-	);
+        register_rest_route(
+                'alphalisting/v1',
+                '/posts/(?P<post_type>[a-z0-9-]+)',
+                array(
+                        'methods'  => 'GET',
+                        'callback' => 'alphalisting_posts_api_handler',
+                        'permission_callback' => '__return_true',
+                        'args'     => array_merge(
+                                array(
+                                        'post_type' => array(
+                                                'description'       => __( 'Post type', 'alphalisting' ),
+                                                'type'              => 'string',
+                                                'default'           => 'page',
+                                                'sanitize_callback' => 'sanitize_text_field',
+                                        ),
+                                        'terms'     => array(
+                                                'description'       => __( 'Terms to filter by', 'alphalisting' ),
+                                                'type'              => 'string',
+                                                'default'           => '',
+                                                'sanitize_callback' => 'sanitize_text_field',
+                                        ),
+                                ),
+                                $default_args
+                        ),
+                )
+        );
+        register_rest_route(
+                'alphalisting/v1',
+                '/terms/(?P<taxonomy>[a-z0-9-]+)',
+                array(
+                        'methods'  => 'GET',
+                        'callback' => 'alphalisting_terms_api_handler',
+                        'permission_callback' => '__return_true',
+                        'args'     => $default_args,
+                )
+        );
 }
