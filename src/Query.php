@@ -462,10 +462,13 @@ class Query {
                                         $next_query['offset'] = $base_query_offset + $offset;
                                         $this->query          = new \WP_Query( $next_query );
                                 }
-                                $this->alphabet[ $this->unknown_letters ] = $this->unknown_letters;
+                                $unknown_letter = $this->alphabet->get_unknown_letter();
+                                if ( ! array_key_exists( $unknown_letter, $indexed_items ) || ! is_array( $indexed_items[ $unknown_letter ] ) ) {
+                                        $indexed_items[ $unknown_letter ] = array();
+                                }
                         }
-			wp_reset_postdata();
-		}
+                        wp_reset_postdata();
+                }
 
 		$alphabet = $this->alphabet;
 		$alphabet->loop(
