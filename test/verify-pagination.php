@@ -13,14 +13,16 @@ require_once __DIR__ . '/../src/Query.php';
 if (!function_exists('apply_filters')) {
     function apply_filters(string $hook_name, $value, ...$args) {
         global $alphalisting_processed_posts;
+        global $alphabet;
         if ('alphalisting_extract_item_indices' === $hook_name) {
             $item = $args[0];
             if (null === $item) {
                 return array();
             }
             $alphalisting_processed_posts[] = $item->ID;
+            $letter = 0 === $item->ID % 2 ? $alphabet->get_unknown_letter() : 'A';
             return array(
-                'A' => array(
+                $letter => array(
                     array(
                         'title'     => $item->post_title,
                         'permalink' => 'post-' . $item->ID,
@@ -197,8 +199,25 @@ function run_pagination_verification(array $dataset, array $query_args, array $e
         exit(1);
     }
 
-    if (!isset($result['A']) || count($result['A']) !== count($expected_ids)) {
-        fwrite(STDERR, "Unexpected index results.\n");
+    $unknown_letter      = $alphabet->get_unknown_letter();
+    $expected_unknown    = array_values(array_filter($expected_ids, function ($id) {
+        return 0 === $id % 2;
+    }));
+    $expected_known = count($expected_ids) - count($expected_unknown);
+
+    if (!isset($result['A']) || count($result['A']) !== $expected_known) {
+        fwrite(STDERR, "Unexpected index results for letter A.\n");
+        exit(1);
+    }
+
+    if (!isset($result[$unknown_letter]) || count($result[$unknown_letter]) !== count($expected_unknown)) {
+        fwrite(STDERR, "Unexpected index results for the unknown letter.\n");
+        exit(1);
+    }
+
+    $total_indexed = array_sum(array_map('count', $result));
+    if ($total_indexed !== count($expected_ids)) {
+        fwrite(STDERR, "Unexpected total indexed item count.\n");
         exit(1);
     }
 }
