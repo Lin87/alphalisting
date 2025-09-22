@@ -1,7 +1,14 @@
 <?php
 error_reporting(E_ALL & ~E_DEPRECATED);
 \define('ABSPATH', true);
-require __DIR__ . '/../vendor/autoload.php';
+$autoload = __DIR__ . '/../vendor/autoload.php';
+if (file_exists($autoload)) {
+    require $autoload;
+}
+
+require_once __DIR__ . '/../src/Strings.php';
+require_once __DIR__ . '/../src/Alphabet.php';
+require_once __DIR__ . '/../src/Query.php';
 
 if (!function_exists('apply_filters')) {
     function apply_filters(string $hook_name, $value, ...$args) {
@@ -98,6 +105,8 @@ class WP_Query {
 
     private $dataset;
     private $pointer = 0;
+    private $upper_bound = 0;
+    private static $instantiation_count = 0;
 
     public function __construct(array $args) {
         global $alphalisting_test_dataset;
@@ -109,12 +118,31 @@ class WP_Query {
         $this->posts_per_page = $this->query['posts_per_page'];
         $this->dataset        = $alphalisting_test_dataset;
         $this->found_posts    = count($this->dataset);
-        $this->pointer        = $this->query['offset'];
+        $paged                = isset($this->query['paged']) ? max(1, (int) $this->query['paged']) : 1;
+        $offset               = (int) $this->query['offset'];
+
+        ++self::$instantiation_count;
+        if (1 === self::$instantiation_count) {
+            $start = $offset;
+        } else {
+            $start = $offset + ($paged - 1) * $this->posts_per_page;
+        }
+
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $this->pointer      = $start;
+        $this->upper_bound  = $this->found_posts;
+    }
+
+    public static function reset_test_state(): void {
+        self::$instantiation_count = 0;
     }
 
     public function the_post() {
         global $post;
-        if ($this->pointer >= $this->found_posts) {
+        if ($this->pointer >= $this->upper_bound) {
             $post = null;
             return null;
         }
@@ -124,48 +152,77 @@ class WP_Query {
     }
 }
 
-$alphalisting_test_dataset = array();
-for ($i = 1; $i <= 25; ++$i) {
-    $post            = new stdClass();
-    $post->ID        = $i;
-    $post->post_title = 'Post ' . $i;
-    $alphalisting_test_dataset[] = $post;
+function create_dataset(int $count): array {
+    $dataset = array();
+    for ($i = 1; $i <= $count; ++$i) {
+        $post             = new stdClass();
+        $post->ID         = $i;
+        $post->post_title = 'Post ' . $i;
+        $dataset[]        = $post;
+    }
+    return $dataset;
 }
 
-$initial_query = new WP_Query(array(
-    'posts_per_page' => 10,
-));
+function run_pagination_verification(array $dataset, array $query_args, array $expected_ids, string $failure_message): void {
+    global $alphabet;
+    global $alphalisting_processed_posts;
+    global $alphalisting_test_dataset;
 
-$alphabet = new TestAlphabet();
+    $alphalisting_test_dataset = $dataset;
+    WP_Query::reset_test_state();
+    $initial_query             = new WP_Query($query_args);
 
-$ref   = new ReflectionClass(\eslin87\AlphaListing\Query::class);
-$query = $ref->newInstanceWithoutConstructor();
+    $alphabet = new TestAlphabet();
 
-$setup = \Closure::bind(function ($instance) use ($alphabet, $initial_query) {
-    $instance->alphabet = $alphabet;
-    $instance->query    = $initial_query;
-    $instance->items    = array();
-    $instance->unknown_letters = '#';
-}, null, \eslin87\AlphaListing\Query::class);
-$setup($query);
+    $ref    = new ReflectionClass(\eslin87\AlphaListing\Query::class);
+    $query  = $ref->newInstanceWithoutConstructor();
+    $method = $ref->getMethod('get_all_indices');
+    $method->setAccessible(true);
 
-$method = $ref->getMethod('get_all_indices');
-$method->setAccessible(true);
+    $setup = \Closure::bind(function ($instance) use ($alphabet, $initial_query) {
+        $instance->alphabet = $alphabet;
+        $instance->query    = $initial_query;
+        $instance->items    = array();
+        $instance->unknown_letters = '#';
+    }, null, \eslin87\AlphaListing\Query::class);
+    $setup($query);
 
-$alphalisting_processed_posts = array();
-$result = $method->invoke($query, array());
+    $alphalisting_processed_posts = array();
+    $result = $method->invoke($query, array());
 
-sort($alphalisting_processed_posts);
-$all_posts_present = $alphalisting_processed_posts === range(1, 25);
+    sort($alphalisting_processed_posts);
 
-if (!$all_posts_present) {
-    fwrite(STDERR, "Not all posts were indexed.\n");
-    exit(1);
+    if ($alphalisting_processed_posts !== $expected_ids) {
+        fwrite(STDERR, $failure_message . "\n");
+        exit(1);
+    }
+
+    if (!isset($result['A']) || count($result['A']) !== count($expected_ids)) {
+        fwrite(STDERR, "Unexpected index results.\n");
+        exit(1);
+    }
 }
 
-if (!isset($result['A']) || count($result['A']) !== 25) {
-    fwrite(STDERR, "Unexpected index results.\n");
-    exit(1);
-}
+// Baseline scenario where the initial query starts on the first page.
+run_pagination_verification(
+    create_dataset(25),
+    array(
+        'posts_per_page' => 10,
+    ),
+    range(1, 25),
+    'Not all posts were indexed for the baseline dataset.'
+);
+
+// Scenario where the original query begins on a later page.
+run_pagination_verification(
+    create_dataset(15),
+    array(
+        'posts_per_page' => 5,
+        'offset'         => 5,
+        'paged'          => 2,
+    ),
+    range(6, 15),
+    'Posts were skipped when the original query started on a later page.'
+);
 
 echo "All posts indexed successfully.\n";
