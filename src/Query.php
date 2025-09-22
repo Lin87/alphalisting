@@ -453,6 +453,12 @@ class Query {
                                 ++$offset;
                                 if ( $posts_per_page > 0 && 0 === $offset % $posts_per_page && $offset < $found_posts ) {
                                         $next_query = $base_query_args;
+                                        if ( isset( $next_query['paged'] ) ) {
+                                                unset( $next_query['paged'] );
+                                        }
+                                        if ( isset( $next_query['page'] ) ) {
+                                                unset( $next_query['page'] );
+                                        }
                                         $next_query['offset'] = $base_query_offset + $offset;
                                         $this->query          = new \WP_Query( $next_query );
                                 }
