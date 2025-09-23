@@ -1,7 +1,7 @@
 # Manual verification: `[alphalisting exclude-terms]`
 
 These steps exercise the shortcode, block, and widget flows to ensure the `exclude-terms`
-attribute removes posts assigned to the referenced taxonomy term IDs.
+attribute removes posts (and term listings) assigned to the referenced taxonomy term IDs.
 
 ## Prerequisites
 
@@ -29,6 +29,17 @@ attribute removes posts assigned to the referenced taxonomy term IDs.
 2. View the page on the front end.
 3. ✅ Expected: “Hidden Post B” is missing from the listing, while “Visible Post A” and
    “Visible Post C” remain visible.
+
+## Term listing regression check
+
+1. Create a new page containing:
+   ```
+   [alphalisting display="terms" taxonomy="category" exclude-terms="202"]
+   ```
+   (Replace `202` with the recorded term ID for `Manual Drop`.)
+2. View the page on the front end.
+3. ✅ Expected: The category picker omits the `Manual Drop` term while still listing
+   `Manual Keep` and `Manual Keep Too`.
 
 ## Block UI regression check
 
