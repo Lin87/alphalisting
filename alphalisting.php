@@ -2,14 +2,14 @@
 /**
  * Plugin Name:     	AlphaListing
  * Plugin URI:      	https://github.com/Lin87/alphalisting
- * Description:     	Display an A to Z listing of posts.
+ * Description:     	Display posts, pages, and terms alphabetically in a Rolodex-, catalog-, or directory-style list.
  * Author:          	Ethan Lin
  * Author URI:      	https://profiles.wordpress.org/eslin87/
  * Original Author: 	Lucy (formerly Dani) Llewellyn
  * Original Author URI: https://profiles.wordpress.org/diddledani/
  * Text Domain:     	alphalisting
  * Domain Path:     	/languages
- * Version:         	4.3.5
+ * Version:         	4.3.6
  * License:				GPLv2 or later
  *
  * @package         alphalisting
