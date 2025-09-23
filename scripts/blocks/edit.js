@@ -4,41 +4,15 @@
  * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
  */
 
-// import { get } from 'lodash';
-
-import { Component, useEffect, useMemo, useState } from '@wordpress/element';
-import {
-	// BaseControl,
-	FormTokenField,
-	PanelBody,
-	Placeholder,
-	RangeControl,
-	SelectControl,
-	Spinner,
-	ToggleControl,
-	TextControl,
-	// __experimentalUnitControl as UnitControl,
-	// ToolbarGroup,
-} from '@wordpress/components';
-import ServerSideRender from '@wordpress/server-side-render';
-import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
+import { useMemo } from '@wordpress/element';
+import { FormTokenField, PanelBody, Placeholder, RangeControl, SelectControl, Spinner, ToggleControl, TextControl } from '@wordpress/components';
+import * as ServerSideRenderModule from '@wordpress/server-side-render';
 import { __ } from '@wordpress/i18n';
-import {
-	InspectorControls,
-	// BlockAlignmentToolbar,
-	// BlockControls,
-	// __experimentalImageSizeControl as ImageSizeControl,
-} from '@wordpress/block-editor';
+import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
-import {
-	pin,
-	// list,
-	// grid
-} from '@wordpress/icons';
+import { pin } from '@wordpress/icons';
 import { addFilter, applyFilters } from '@wordpress/hooks';
-
 import {v4 as uuid} from 'uuid';
 
 /**
@@ -86,6 +60,8 @@ addFilter(
 	} ),
 	5
 );
+
+const ServerSideRender = ServerSideRenderModule.ServerSideRender || ServerSideRenderModule.default;
 const displayTypes = applyFilters(
 	'alphalisting_display_types',
 	[
@@ -93,7 +69,6 @@ const displayTypes = applyFilters(
 		{ value: 'terms', label: __( 'Taxonomy Terms', 'alphalisting' ) },
 	]
 );
-const defaultAlphabet = __( 'AÁÀÄÂaáàäâ,Bb,CÇcç,Dd,EÉÈËÊeéèëê,Ff,Gg,Hh,IÍÌÏÎiíìïî,Jj,Kk,Ll,Mm,Nn,OÓÒÖÔoóòöô,Pp,Qq,Rr,Ssß,Tt,UÚÙÜÛuúùüû,Vv,Ww,Xx,Yy,Zz', 'alphalisting' );
 
 const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 	const { postTypes, allTaxonomies } = useSelect( ( select ) => {
@@ -171,81 +146,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 			<AZInspectorControls.Slot>
 				{ ( fills ) => (
 					<>
-						{/* <PanelBody
-							title={ __( 'Featured image settings' ) }
-						>
-							<ToggleControl
-								label={ __( 'Display featured image' ) }
-								checked={ displayFeaturedImage }
-								onChange={ ( value ) =>
-									setAttributes( {
-										displayFeaturedImage: value,
-									} )
-								}
-							/>
-							{ displayFeaturedImage && (
-								<>
-									<ImageSizeControl
-										onChange={ ( value ) => {
-											const newAttrs = {};
-											if (
-												value.hasOwnProperty(
-													'width'
-												)
-											) {
-												newAttrs.featuredImageSizeWidth =
-													value.width;
-											}
-											if (
-												value.hasOwnProperty(
-													'height'
-												)
-											) {
-												newAttrs.featuredImageSizeHeight =
-													value.height;
-											}
-											setAttributes( newAttrs );
-										} }
-										slug={ featuredImageSizeSlug }
-										width={ featuredImageSizeWidth }
-										height={ featuredImageSizeHeight }
-										imageWidth={ defaultImageWidth }
-										imageHeight={ defaultImageHeight }
-										imageSizeOptions={
-											imageSizeOptions
-										}
-										onChangeImage={ ( value ) =>
-											setAttributes( {
-												featuredImageSizeSlug: value,
-												featuredImageSizeWidth: undefined,
-												featuredImageSizeHeight: undefined,
-											} )
-										}
-									/>
-									<BaseControl>
-										<BaseControl.VisualLabel>
-											{ __( 'Image alignment' ) }
-										</BaseControl.VisualLabel>
-										<BlockAlignmentToolbar
-											value={ featuredImageAlign }
-											onChange={ ( value ) =>
-												setAttributes( {
-													featuredImageAlign: value,
-												} )
-											}
-											controls={ [
-												'left',
-												'center',
-												'right',
-											] }
-											isCollapsed={ false }
-										/>
-									</BaseControl>
-								</>
-							) }
-						</PanelBody> */}
-
-						<PanelBody title={ __( 'Item selection', 'alphalisting' ) }>
+						<PanelBody title={ __( 'Listing selection', 'alphalisting' ) }>
 							<ItemSelection.Slot>
 								{ ( subFills ) => (
 									<>
@@ -261,7 +162,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 													)
 												)
 											}
-											__nextHasNoMarginBottom={true}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
 										/>
 
 										{ 'posts' === attributes.display && (
@@ -277,7 +179,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 														)
 													)
 												}
-												__nextHasNoMarginBottom={true}
+												__next40pxDefaultSize
+												__nextHasNoMarginBottom
 											/>
 										) }
 
@@ -312,7 +215,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 														)
 													)
 												}
-												__nextHasNoMarginBottom={true}
+												__next40pxDefaultSize
+												__nextHasNoMarginBottom
 											/>
 										) }
 
@@ -324,6 +228,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 													onChange={ ( value ) =>
 														setAttributes( { terms: value } )
 													}
+													__next40pxDefaultSize
+													__nextHasNoMarginBottom
 												/>
 											) }
 
@@ -343,7 +249,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											onChange={ (value) =>
 												setAttributes( { 'instance-id': value } )
 											}
-											__nextHasNoMarginBottom={true}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
 										/>
 										<TextControl
 											label={ __( 'CSS class names', 'alphalisting' ) }
@@ -351,7 +258,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											onChange={ ( value ) =>
 												setAttributes( { className: value } )
 											}
-											__nextHasNoMarginBottom={true}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
 										/>
 										<TextControl
 											label={ __( 'Alphabet', 'alphalisting' ) }
@@ -359,7 +267,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											onChange={ ( value ) =>
 												setAttributes( { alphabet: value } )
 											}
-											__nextHasNoMarginBottom={true}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
 										/>
 										<SelectControl
 											label={ __( 'Numbers', 'alphalisting' ) }
@@ -395,7 +304,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 													)
 												)
 											}
-											__nextHasNoMarginBottom={true}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
 										/>
 
 										<RangeControl
@@ -416,7 +326,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 												)
 											}
 											withInputField
-											__nextHasNoMarginBottom={true}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
 										/>
 
 										{ 'hide' !== attributes.numbers &&
@@ -443,7 +354,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 															)
 														)
 													}
-													__nextHasNoMarginBottom={true}
+													__next40pxDefaultSize
+													__nextHasNoMarginBottom
 												/>
 											) }
 
@@ -453,7 +365,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											onChange={ ( value ) =>
 												setAttributes( { 'symbols-first': value } )
 											}
-											__nextHasNoMarginBottom={true}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
 										/>
 
 										<RangeControl
@@ -466,26 +379,9 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											max={ MAX_POSTS_COLUMNS }
 											withInputField
 											required
-											__nextHasNoMarginBottom={true}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
 										/>
-										{/* Waiting for UnitControl to stabilise in Gutenberg */}
-										{/* <UnitControl
-											label={ __( 'Column width', 'alphalisting' ) }
-											value={ attributes['column-width'] }
-											onChange={ ( value ) =>
-												setAttributes( { 'column-width': value } )
-											}
-											required
-										/>
-										{/* Waiting for UnitControl to stabilise in Gutenberg */}
-										{/* <UnitControl
-											label={ __( 'Column gap', 'alphalisting' ) }
-											value={ attributes['column-gap'] }
-											onChange={ ( value ) =>
-												setAttributes( { 'column-gap': value } )
-											}
-											required
-										/> */}
 										<TextControl
 											label={ __( 'Column width', 'alphalisting' ) }
 											value={ attributes['column-width'] ?? defaults['column-width'].default }
@@ -493,7 +389,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 												setAttributes( { 'column-width': value } )
 											}
 											required
-											__nextHasNoMarginBottom={true}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
 										/>
 										<TextControl
 											label={ __( 'Column gap', 'alphalisting' ) }
@@ -502,7 +399,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 												setAttributes( { 'column-gap': value } )
 											}
 											required
-											__nextHasNoMarginBottom={true}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
 										/>
 
 										{ subFills }
