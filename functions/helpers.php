@@ -27,7 +27,7 @@ function alphalisting_log() {
  * Retrieve whether the query has any letters left
  *
  * @since 0.7
- * @param  array|string|WP_Query|\AlphaListing\Query $query a valid WordPress query or an AlphaListing\Query instance.
+ * @param  array|string|WP_Query|\eslin87\AlphaListing\Query $query a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return bool whether there are letters still to be iterated-over
  */
 function have_a_z_letters( $query = null ): bool {
@@ -51,7 +51,7 @@ function have_a_z_posts(): bool {
  * Whether the query has any posts left for the current letter
  *
  * @since 0.8.0
- * @param  array|string|WP_Query|\AlphaListing\Query $query a valid WordPress query or an AlphaListing\Query instance.
+ * @param  array|string|WP_Query|\eslin87\AlphaListing\Query $query a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return bool whether there are still posts available
  */
 function have_a_z_items( $query = null ): bool {
@@ -62,7 +62,7 @@ function have_a_z_items( $query = null ): bool {
  * Proceed to the next letter
  *
  * @since 0.7
- * @param array|string|WP_Query|\AlphaListing\Query $query a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return void
  */
 function the_a_z_letter( $query = null ) {
@@ -87,7 +87,7 @@ function the_a_z_post() {
  * Proceed to the next post
  *
  * @since 0.8.0
- * @param array|string|WP_Query|\AlphaListing\Query $query a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return void
  */
 function the_a_z_item( $query = null ) {
@@ -137,7 +137,7 @@ function num_a_z_items(): int {
  * Print the number of letters for the query
  *
  * @since 1.0.0
- * @param array|string|WP_Query|\AlphaListing\Query $query a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  */
 function the_a_z_letter_count( $query = null ) {
 	echo esc_html( alphalisting_cache( $query )->num_letters() );
@@ -147,7 +147,7 @@ function the_a_z_letter_count( $query = null ) {
  * Retrieve the number of items for the current letter
  *
  * @since 1.0.0
- * @param  array|string|WP_Query|\AlphaListing\Query $query a valid WordPress query or an AlphaListing\Query instance.
+ * @param  array|string|WP_Query|\eslin87\AlphaListing\Query $query a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return int the number of letters
  */
 function get_the_a_z_letter_count( $query = null ): int {
@@ -158,7 +158,7 @@ function get_the_a_z_letter_count( $query = null ): int {
  * Print the current letter ID
  *
  * @since 0.7
- * @param array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return void
  */
 function the_a_z_letter_id( $query = null ) {
@@ -169,7 +169,7 @@ function the_a_z_letter_id( $query = null ) {
  * Retrieve the current letter ID
  *
  * @since 0.7
- * @param  array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param  array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return string the current letter ID
  */
 function get_the_a_z_letter_id( $query = null ): string {
@@ -180,7 +180,7 @@ function get_the_a_z_letter_id( $query = null ): string {
  * Print the current letter title
  *
  * @since 0.7
- * @param array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return void
  */
 function the_a_z_letter_title( $query = null ) {
@@ -191,7 +191,7 @@ function the_a_z_letter_title( $query = null ) {
  * Retrieve the current letter title
  *
  * @since 0.7
- * @param  array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param  array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return string the letter title
  */
 function get_the_a_z_letter_title( $query = null ): string {
@@ -202,7 +202,7 @@ function get_the_a_z_letter_title( $query = null ): string {
  * Print the current item title
  *
  * @since 0.8.0
- * @param array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return void
  */
 function the_a_z_item_title( $query = null ) {
@@ -213,7 +213,7 @@ function the_a_z_item_title( $query = null ) {
  * Retrieve the current item title
  *
  * @since 0.8.0
- * @param  array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param  array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return string the post or taxonomy-term title
  */
 function get_the_a_z_item_title( $query = null ): string {
@@ -224,7 +224,7 @@ function get_the_a_z_item_title( $query = null ): string {
  * Print the current item permalink
  *
  * @since 0.8.0
- * @param array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return void
  */
 function the_a_z_item_permalink( $query = null ) {
@@ -235,7 +235,7 @@ function the_a_z_item_permalink( $query = null ) {
  * Retrieve the current item permalink
  *
  * @since 0.8.0
- * @param  array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param  array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return string the permalink
  */
 function get_the_a_z_item_permalink( $query = null ): string {
@@ -249,7 +249,7 @@ function get_the_a_z_item_permalink( $query = null ): string {
  * @since 0.8.0 deprecated
  * @see the_alphalisting()
  * @deprecated use the_alphalisting()
- * @param array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return void
  */
 function the_az_listing( $query = null ) {
@@ -261,7 +261,7 @@ function the_az_listing( $query = null ) {
  * Print the A-Z Index page content
  *
  * @since 0.8.0
- * @param array|string|WP_Query|\AlphaListing\Query $query     a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query     a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @param bool                                     $use_cache use the plugin's in-built query cache.
  * @return void
  */
@@ -276,7 +276,7 @@ function the_alphalisting( $query = null, $use_cache = true ) {
  * @since 0.8.0 deprecated
  * @see get_the_alphalisting()
  * @deprecated use get_the_alphalisting()
- * @param array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @return string The listing html content ready for echoing to the page.
  */
 function get_the_az_listing( $query = null ): string {
@@ -288,7 +288,7 @@ function get_the_az_listing( $query = null ): string {
  * Retrieve the index of posts ordered and segmented alphabetically
  *
  * @since 0.8.0
- * @param  array|string|WP_Query|\AlphaListing\Query $query     a valid WordPress query or an AlphaListing\Query instance.
+ * @param  array|string|WP_Query|\eslin87\AlphaListing\Query $query     a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @param  bool                                     $use_cache use the plugin's in-built query cache.
  * @return string The listing html content ready for echoing to the page.
  */
@@ -303,7 +303,7 @@ function get_the_alphalisting( $query = null, $use_cache = true ): string {
  * @since 0.8.0 deprecated
  * @see the_a_z_letters()
  * @deprecated use the_a_z_letters()
- * @param array|string|WP_Query|\AlphaListing\Query $query either a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query either a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @param bool|string                              $target URL of the page to send the browser when a letter is clicked.
  * @param string                                   $styling unused.
  * @return void
@@ -317,7 +317,7 @@ function the_az_letters( $query = null, $target = false, string $styling = '' ) 
  * Print the A-Z Letter list
  *
  * @since 0.8.0
- * @param array|string|WP_Query|\AlphaListing\Query $query a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @param bool|string                              $target URL of the page to send the browser when a letter is clicked.
  * @param string                                   $styling unused.
  * @param bool                                     $use_cache use the plugin's in-built query cache.
@@ -334,7 +334,7 @@ function the_a_z_letters( $query = null, string $target = '', string $styling = 
  * @since 0.8.0 deprecated
  * @see get_the_a_z_letters()
  * @deprecated use get_the_a_z_letters()
- * @param array|string|WP_Query|\AlphaListing\Query $query a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @param bool|string                              $target URL of the page to send the browser when a letter is clicked.
  * @param string                                   $styling unused.
  * @return string HTML ready for echoing containing the list of A-Z letters with anchor links to the A-Z Index page.
@@ -348,7 +348,7 @@ function get_the_az_letters( $query = null, string $target = '', string $styling
  * Retrieve the A-Z Letter list
  *
  * @since 0.8.0
- * @param array|string|WP_Query|\AlphaListing\Query $query a valid WordPress query or an AlphaListing\Query instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query a valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @param bool|string                              $target URL of the page to send the browser when a letter is clicked.
  * @param string                                   $styling unused.
  * @param bool                                     $use_cache use the plugin's in-built query cache.
@@ -361,13 +361,13 @@ function get_the_a_z_letters( $query = null, string $target = '', string $stylin
 /**
  * Get a saved copy of the AlphaListing instance if we have one, or make a new one and save it for later
  *
- * @param array|string|WP_Query|\AlphaListing\Query $query     A valid WordPress query or an AlphaListing instance.
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query     A valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @param string                                   $type      The type of items displayed in the listing: 'terms' or 'posts'.
  * @param bool                                     $use_cache Try to use a caching plugin. See https://alphalisting.com/ for the caching plugin we created to work with this feature.
- * @return \AlphaListing\Query A new or previously-saved instance of AlphaListing using the provided construct_query
+ * @return \eslin87\AlphaListing\Query A new or previously-saved instance of \eslin87\AlphaListing\Query using the provided construct_query
  */
 function alphalisting_cache( $query = null, string $type = '', bool $use_cache = true ) {
-	return new \AlphaListing\Query( $query, $type, $use_cache );
+        return new \eslin87\AlphaListing\Query( $query, $type, $use_cache );
 }
 
 /**
