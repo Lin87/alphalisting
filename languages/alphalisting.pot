@@ -185,31 +185,31 @@ msgstr ""
 msgid "Security check failed"
 msgstr ""
 
-#: wp-api/api.php:101
+#: includes/api.php:101
 msgid "Override default alphabet"
 msgstr ""
 
-#: wp-api/api.php:107
+#: includes/api.php:107
 msgid "Size of buckets to group the alphabet"
 msgstr ""
 
-#: wp-api/api.php:113
+#: includes/api.php:113
 msgid "Include numbers as separate group. Implies {numbers:true}"
 msgstr ""
 
-#: wp-api/api.php:118
+#: includes/api.php:118
 msgid "Taxonomy"
 msgstr ""
 
-#: wp-api/api.php:124
+#: includes/api.php:124
 msgid "Include the stylesheet tags in the output"
 msgstr ""
 
-#: wp-api/api.php:140
+#: includes/api.php:140
 msgid "Post type"
 msgstr ""
 
-#: wp-api/api.php:146
+#: includes/api.php:146
 msgid "Terms to filter by"
 msgstr ""
 
