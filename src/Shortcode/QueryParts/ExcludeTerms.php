@@ -49,7 +49,7 @@ class ExcludeTerms extends Extension {
 	public function shortcode_query_for_display_and_attribute( $query, string $display, string $key, $value, array $attributes ) {
 		$exclude_terms = Strings::maybe_mb_split( ',', $value );
 		$exclude_terms = array_map( 'trim', $exclude_terms );
-		$exclude_terms = array_map( 'intval', $exclude_terms );
+                $exclude_terms = array_map( 'intval', $exclude_terms );
 		$exclude_terms = array_filter(
 			$exclude_terms,
 			function( int $value ): bool {
@@ -67,7 +67,7 @@ class ExcludeTerms extends Extension {
 		$tax_query = array(
 			array(
 				'taxonomy' => $taxonomy,
-				'field'    => 'slug',
+                                'field'    => 'term_id',
 				'terms'    => $exclude_terms,
 				'operator' => 'NOT IN',
 			),
