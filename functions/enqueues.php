@@ -55,19 +55,6 @@ function alphalisting_do_enqueue() {
 		array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
 	);
 
-	wp_register_script(
-		'alphalisting-scroll-fix',
-		plugins_url( 'scripts/alphalisting-scroll-fix.js', dirname( __FILE__ ) ),
-		array(),
-		ALPHALISTING_VERSION,
-		true
-	);
-	wp_localize_script(
-		'alphalisting-scroll-fix',
-		'alphalisting_scroll_fix',
-		array( 'offset' => -120 )
-	);
-
 	$add_styles = get_option( 'alphalisting-add-styling', true );
 	/**
 	 * Determine whether to add default listing styling
