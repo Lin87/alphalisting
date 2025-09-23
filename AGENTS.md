@@ -18,7 +18,7 @@ This file tells AI coding agents how to work safely and effectively in this repo
   - `alphalisting.php` — plugin bootstrap & headers.
   - `src/`, `templates/`, `widgets/` — main code.
   - `languages/` — translation files.
-  - `functions/`, `wp-api/`, `test/`, `css/`, `scripts/` — helpers, REST endpoints, tests, styles, build.
+  - `functions/`, `includes/`, `test/`, `css/`, `scripts/` — helpers, REST endpoints, tests, styles, build.
   - `Gruntfile.js`, `package.json`, `composer.json` — build manifests.
   - `readme.txt` — WordPress.org readme (canonical changelog lives here).
   - `.wordpress-org/` — **do not touch** (assets for WP.org distribution).

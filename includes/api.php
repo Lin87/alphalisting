@@ -9,6 +9,38 @@
 namespace eslin87\AlphaListing;
 
 /**
+ * Proxy the shortcode renderer for REST API consumers.
+ *
+ * Normalises REST argument keys and value formats before delegating to the
+ * shortcode implementation so the REST API stays in sync with the public
+ * shortcode behaviour.
+ *
+ * @since 4.3.7
+ *
+ * @param array<string,mixed> $attributes Attributes gathered from the REST request.
+ * @return string Rendered AlphaListing markup.
+ */
+function alphalisting_shortcode_handler( array $attributes = array() ): string
+{
+        if ( isset( $attributes['post_type'] ) && ! isset( $attributes['post-type'] ) ) {
+                $attributes['post-type'] = $attributes['post_type'];
+                unset( $attributes['post_type'] );
+        }
+
+        if ( array_key_exists( 'numbers', $attributes ) ) {
+                $numbers = $attributes['numbers'];
+                if ( is_bool( $numbers ) || is_int( $numbers ) || '0' === $numbers || '1' === $numbers || 'true' === $numbers || 'false' === $numbers ) {
+                        $attributes['numbers'] = \alphalisting_is_truthy( $numbers ) ? 'after' : 'hide';
+                }
+        }
+
+        /** @var Shortcode $shortcode */
+        $shortcode = Shortcode::instance();
+
+        return $shortcode->handle( $attributes );
+}
+
+/**
  * Shared REST API handler
  *
  * @since 1.0.0

@@ -23,7 +23,7 @@ if (!function_exists('register_rest_route')) {
         }
 }
 
-require_once __DIR__ . '/../wp-api/api.php';
+require_once __DIR__ . '/../includes/api.php';
 
 \eslin87\AlphaListing\alphalisting_register_rest_api();
 
