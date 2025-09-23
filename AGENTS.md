@@ -18,7 +18,7 @@ This file tells AI coding agents how to work safely and effectively in this repo
   - `alphalisting.php` — plugin bootstrap & headers.
   - `src/`, `templates/`, `widgets/` — main code.
   - `languages/` — translation files.
-  - `functions/`, `includes/`, `test/`, `css/`, `scripts/` — helpers, REST endpoints, tests, styles, build.
+  - `functions/`, `test/`, `css/`, `scripts/` — helpers, tests, styles, build.
   - `Gruntfile.js`, `package.json`, `composer.json` — build manifests.
   - `readme.txt` — WordPress.org readme (canonical changelog lives here).
   - `.wordpress-org/` — **do not touch** (assets for WP.org distribution).
@@ -75,7 +75,7 @@ npx grunt         # watch
 
 ---
 
-## Public API & backward compatibility
+## Backward compatibility
 - **Shortcode `[alphalisting]`:** Must remain backward compatible. Arguments include:
   - `display`, `post-type`, `taxonomy`, `terms`, `parent-post`, `parent-term`, `get-all-children`, `alphabet`, `numbers`, `grouping`.
 - **Block attributes:** Treat as public API. Avoid breaking changes; default new attributes safely.
