@@ -124,6 +124,23 @@ npx grunt         # watch
 
 ---
 
+## Code style requirements
+When generating or modifying code in this repository:
+
+- **Indentation:** Always use **4 spaces** for indentation. Never use actual tab characters.
+- **Curly braces:** Place the **opening curly brace `{` on the same line** as the declaration or control structure.  
+  Example:
+    ```php
+    function my_example($arg) {
+        if ($arg) {
+            echo "Hello";
+        }
+    }
+    ```
+- **Language-specific:** Follow WordPress Coding Standards (WPCS) as much as possible, but this brace/indent style takes priority.
+
+---
+
 ## Safe vs risky areas
 - **Safe:** Internal helpers, new block controls (with safe defaults), new shortcode args (default off), added i18n, docs, tests.
 - **Risky:** Changing shortcode default behavior, renaming args, altering template markup IDs/classes, removing public hooks, or changing alphabet/numbering logic.
