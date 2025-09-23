@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AlphaListing 4.3.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alphalisting\n"
-"POT-Creation-Date: 2025-09-23 13:10:20+00:00\n"
+"POT-Creation-Date: 2025-09-23 15:55:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -183,34 +183,6 @@ msgstr ""
 
 #: widgets/class-alphalisting-widget.php:551
 msgid "Security check failed"
-msgstr ""
-
-#: includes/api.php:101
-msgid "Override default alphabet"
-msgstr ""
-
-#: includes/api.php:107
-msgid "Size of buckets to group the alphabet"
-msgstr ""
-
-#: includes/api.php:113
-msgid "Include numbers as separate group. Implies {numbers:true}"
-msgstr ""
-
-#: includes/api.php:118
-msgid "Taxonomy"
-msgstr ""
-
-#: includes/api.php:124
-msgid "Include the stylesheet tags in the output"
-msgstr ""
-
-#: includes/api.php:140
-msgid "Post type"
-msgstr ""
-
-#: includes/api.php:146
-msgid "Terms to filter by"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
