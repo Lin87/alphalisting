@@ -457,7 +457,11 @@ If `functions.php` already contains code, add only the lines between `<?php` and
 
 ### 4.3.6 ###
 
-
+* `[alphalisting exclude-terms]` now accepts explicit term listings and consistently filters by numeric term IDs for reliable exclusions.
+* Fixed `alphalisting_cache()` so template tags instantiate the namespaced query class without fatal errors.
+* Improved pagination to keep multi-page queries from skipping items and restored the unknown "#" bucket in edge cases.
+* Added an ASCII fallback when `mbstring` is unavailable so basic listings still render correctly.
+* Code improvements covering additional internal cleanups.
 
 ### 4.3.5 ###
 
