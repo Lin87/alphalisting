@@ -57,13 +57,3 @@ function alphalisting_force_enable_tabs() {
 function alphalisting_enqueue_widget_admin_script() {
 	wp_enqueue_script( 'alphalisting-widget-admin' );
 }
-
-/**
- * Enqueue Scrollfix script
- *
- * @since 4.0.0
- * @return void
- */
-function alphalisting_enqueue_scroll_fix() {
-	wp_enqueue_script( 'alphalisting-scroll-fix' );
-}

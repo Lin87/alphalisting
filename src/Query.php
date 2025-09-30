@@ -436,28 +436,39 @@ class Query {
 				}
 			}
 		} elseif ( $this->query instanceof \WP_Query ) {
-			$offset         = 0;
-			$posts_per_page = $this->query->posts_per_page;
-			$found_posts    = $this->query->found_posts;
-			while ( $offset < $found_posts ) {
-				$this->query->the_post();
+                        $offset            = 0;
+                        $posts_per_page    = $this->query->posts_per_page;
+                        $found_posts       = $this->query->found_posts;
+                        $base_query_args   = $this->query->query;
+                        $base_query_offset = isset( $base_query_args['offset'] ) ? (int) $base_query_args['offset'] : 0;
+                        while ( $offset < $found_posts ) {
+                                $this->query->the_post();
 
-				foreach ( $this->get_all_indices_for_item( $post ) as $key => $value ) {
-					foreach ( $value as $index_entry ) {
-						$indexed_items[ $key ][] = $index_entry;
-					}
-				}
+                                foreach ( $this->get_all_indices_for_item( $post ) as $key => $value ) {
+                                        foreach ( $value as $index_entry ) {
+                                                $indexed_items[ $key ][] = $index_entry;
+                                        }
+                                }
 
-				++$offset;
-				if ( 0 === $offset % $posts_per_page ) {
-					$q           = $this->query->query;
-					$q['offset'] = $offset * $posts_per_page;
-					$this->query = new \WP_Query( $q );
-				}
-				$this->alphabet[ $this->unknown_letters ] = $this->unknown_letters;
-			}
-			wp_reset_postdata();
-		}
+                                ++$offset;
+                                if ( $posts_per_page > 0 && 0 === $offset % $posts_per_page && $offset < $found_posts ) {
+                                        $next_query = $base_query_args;
+                                        if ( isset( $next_query['paged'] ) ) {
+                                                unset( $next_query['paged'] );
+                                        }
+                                        if ( isset( $next_query['page'] ) ) {
+                                                unset( $next_query['page'] );
+                                        }
+                                        $next_query['offset'] = $base_query_offset + $offset;
+                                        $this->query          = new \WP_Query( $next_query );
+                                }
+                                $unknown_letter = $this->alphabet->get_unknown_letter();
+                                if ( ! array_key_exists( $unknown_letter, $indexed_items ) || ! is_array( $indexed_items[ $unknown_letter ] ) ) {
+                                        $indexed_items[ $unknown_letter ] = array();
+                                }
+                        }
+                        wp_reset_postdata();
+                }
 
 		$alphabet = $this->alphabet;
 		$alphabet->loop(

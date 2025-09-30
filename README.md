@@ -5,7 +5,7 @@
 **Requires at least:** 5.0  
 **Requires PHP:** 8.0  
 **Tested up to:** 6.8  
-**Stable tag:** 4.3.5  
+**Stable tag:** 4.3.6  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -19,7 +19,7 @@ This plugin includes a block and shortcode for the list, along with a widget for
 
 Show posts from any single or multiple post types, including built-in posts and pages. Post types from plugins like WooCommerce products are also supported. Alternatively, display terms such as categories or tags.
 
-** This plugin is based on the original A-Z Listing by Lucy (formerly Dani) Llewellyn, which is no longer maintained. Custom templates from the original plugin may not continue to work reliably. For the latest example of the template, see the [example template](https://raw.githubusercontent.com/Lin87/alphalisting/refs/heads/main/templates/a-z-listing.example.php). **
+_This plugin is based on the original **A-Z Listing** by Lucy (formerly Dani) Llewellyn, which is no longer maintained. Custom templates built for the original plugin may not work reliably with this version. For the most up-to-date example template, see the [example template](https://raw.githubusercontent.com/Lin87/alphalisting/refs/heads/main/templates/a-z-listing.example.php)._
 
 ## Installation ##
 
@@ -454,6 +454,14 @@ If `functions.php` already contains code, add only the lines between `<?php` and
 
 
 ## Changelog ##
+
+### 4.3.6 ###
+
+* `[alphalisting exclude-terms]` now accepts explicit term listings and consistently filters by numeric term IDs for reliable exclusions.
+* Fixed `alphalisting_cache()` so template tags instantiate the namespaced query class without fatal errors.
+* Improved pagination to keep multi-page queries from skipping items and restored the unknown "#" bucket in edge cases.
+* Added an ASCII fallback when `mbstring` is unavailable so basic listings still render correctly.
+* Code improvements covering additional internal cleanups.
 
 ### 4.3.5 ###
 

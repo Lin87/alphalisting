@@ -16,7 +16,7 @@ import {
 import { __ } from '@wordpress/i18n';
 import { ComboboxControl } from '@wordpress/components';
 import { useState, useMemo } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { buildTermsTree } from './utils/terms';
 
 function getTitle( post ) {
