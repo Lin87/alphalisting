@@ -106,6 +106,10 @@ To group the alphabet letters into a range:
   * May only contain one value.
   * Must be set to either `posts` or `terms`.
   * Any value other than `posts` or `terms` will default to displaying posts.
+* `columns`: controls the target number of columns for the rendered list.
+  * Default value: `3`.
+  * Accepts numeric values.
+  * The rendered layout uses the CSS `min()` function to clamp the actual column count based on the user-specified value.
 * `numbers`: appends or prepends numerals to the alphabet.
   * Default value: `unset`.
   * May only contain one value.
@@ -129,6 +133,14 @@ To group the alphabet letters into a range:
   * Default value: `false`.
   * May only contain one value.
   * Must be set to `true`, `yes`, `on`, or `1` to put the symbols group before the alphabet. All other values will keep the default behaviour.
+* `column-width`: sets the desired width for each column in the rendered list.
+  * Default value: `15em`.
+  * Accepts any CSS length unit (such as `px`, `em`, `rem`, `%`, etc.).
+  * The value is passed directly into the generated inline styles for the column width.
+* `column-gap`: controls the spacing between columns in the rendered list.
+  * Default value: `0.6em`.
+  * Accepts any CSS length unit (such as `px`, `em`, `rem`, `%`, etc.).
+  * The value is passed directly into the generated inline styles for the column gap.
 * `alphabet`: overrides the alphabet used by the plugin..
   * Default value: `unset`.
   * If this attribute is not defined, the plugin uses either the untranslated default or a translation from [glotpress](https://translate.wordpress.org/projects/wp-plugins/alphalisting) if available for the site's language, as set in `Admin -> Settings -> Site` Language.
