@@ -325,6 +325,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 												pageId={ attributes['parent-post'] ?? defaults['parent-post'].default }
 												postTypeSlug={ attributes['post-type'] ?? defaults['post-type'].default }
 												onChange={ ( parentId ) => setAttributes( { 'parent-post': parentId } ) }
+												__next40pxDefaultSize
+												__nextHasNoMarginBottom
 											/>
 										) }
 
