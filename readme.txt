@@ -5,7 +5,7 @@ Tags: a to z, a-z, index, listing, widget
 Requires at least: 5.0
 Requires PHP: 8.0
 Tested up to: 6.8
-Stable tag: 4.3.6
+Stable tag: 4.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -462,6 +462,10 @@ If `functions.php` already contains code, add only the lines between `<?php` and
 2. The Widget is shown here
 
 == Changelog ==
+
+= 4.3.7 =
+
+* Harden column layout attribute sanitization
 
 = 4.3.6 =
 

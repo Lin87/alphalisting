@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace eslin87\AlphaListing\Shortcode\QueryParts;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined("ABSPATH")) {
+    exit();
 }
 
-use \eslin87\AlphaListing\Shortcode\Extension;
+use eslin87\AlphaListing\Shortcode\Extension;
 
 /**
  * Column Width Query Part extension

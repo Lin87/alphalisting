@@ -87,23 +87,23 @@ const LENGTH_UNITS = [
  * @return {number} Sanitized column count.
  */
 const sanitizeColumnCount = ( value ) => {
-        if ( typeof value === 'number' && Number.isFinite( value ) ) {
-                value = Math.trunc( value );
-        } else if ( typeof value === 'string' && value.trim() !== '' && ! Number.isNaN( Number( value ) ) ) {
-                value = Math.trunc( Number( value ) );
-        } else {
-                value = defaults.columns.default;
-        }
+	if ( typeof value === 'number' && Number.isFinite( value ) ) {
+		value = Math.trunc( value );
+	} else if ( typeof value === 'string' && value.trim() !== '' && ! Number.isNaN( Number( value ) ) ) {
+		value = Math.trunc( Number( value ) );
+	} else {
+		value = defaults.columns.default;
+	}
 
-        if ( value < 1 ) {
-                return 1;
-        }
+	if ( value < 1 ) {
+		return 1;
+	}
 
-        if ( value > MAX_POSTS_COLUMNS ) {
-                return MAX_POSTS_COLUMNS;
-        }
+	if ( value > MAX_POSTS_COLUMNS ) {
+		return MAX_POSTS_COLUMNS;
+	}
 
-        return value;
+	return value;
 };
 
 /**
@@ -170,6 +170,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 		const taxonomies = getTaxonomies() ?? [];
 		return { postTypes: filteredPostTypes, allTaxonomies: taxonomies };
 	} );
+
 	const postTypesMap = useMemo( () => {
 		if ( ! postTypes?.length ) return;
 		return postTypes.reduce( ( accumulator, type ) => {
@@ -177,6 +178,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 			return accumulator;
 		}, {} );
 	}, [ postTypes ] );
+
 	const postTypesSelectOptions = useMemo( () => {
 		if ( ! postTypes?.length ) return;
 		return ( postTypes ).map( ( { labels, slug } ) => ( {
@@ -192,6 +194,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 			return accumulator;
 		}, {} );
 	}, [ postTypes ] );
+
 	const postTypesTaxonomiesSelectOptions = useMemo( () => {
 		let postTaxonomies = [];
 		if ( attributes['display'] === 'posts' && attributes['post-type'] && postTypesTaxonomiesMap ) {
@@ -266,6 +269,43 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
                 }
         }, [ attributes['column-gap'], sanitizedColumnGap, setAttributes ] );
 
+	const sanitizedColumns = useMemo(
+		() => sanitizeColumnCount( attributes.columns ),
+		[ attributes.columns ]
+	);
+
+	const sanitizedColumnWidth = useMemo(
+		() => sanitizeLengthValue(
+			attributes['column-width'] ?? defaults['column-width'].default,
+			defaults['column-width'].default
+		),
+		[ attributes['column-width'] ]
+	);
+	const sanitizedColumnGap = useMemo(
+		() => sanitizeLengthValue(
+			attributes['column-gap'] ?? defaults['column-gap'].default,
+			defaults['column-gap'].default
+		),
+		[ attributes['column-gap'] ]
+	);
+
+	useEffect( () => {
+		if ( typeof attributes.columns !== 'undefined' && attributes.columns !== sanitizedColumns ) {
+			setAttributes( { columns: sanitizedColumns } );
+		}
+	}, [ attributes.columns, sanitizedColumns, setAttributes ] );
+
+	useEffect( () => {
+		if ( typeof attributes['column-width'] !== 'undefined' && attributes['column-width'] !== sanitizedColumnWidth ) {
+			setAttributes( { 'column-width': sanitizedColumnWidth } );
+		}
+	}, [ attributes['column-width'], sanitizedColumnWidth, setAttributes ] );
+
+	useEffect( () => {
+		if ( typeof attributes['column-gap'] !== 'undefined' && attributes['column-gap'] !== sanitizedColumnGap ) {
+			setAttributes( { 'column-gap': sanitizedColumnGap } );
+		}
+	}, [ attributes['column-gap'], sanitizedColumnGap, setAttributes ] );
 
 	const inspectorControls = (
 		<InspectorControls>
@@ -495,50 +535,50 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__nextHasNoMarginBottom
 										/>
 
-                                                                                <RangeControl
-                                                                                        label={ __( 'Columns', 'alphalisting' ) }
-                                                                                        value={ sanitizedColumns }
-                                                                                        onChange={ ( value ) =>
-                                                                                                setAttributes( { columns: sanitizeColumnCount( value ) } )
-                                                                                        }
-                                                                                        min={ 1 }
-                                                                                        max={ MAX_POSTS_COLUMNS }
-                                                                                        withInputField
-                                                                                        required
-                                                                                        __next40pxDefaultSize
-                                                                                        __nextHasNoMarginBottom
-                                                                                />
-                                                                                <UnitControl
-                                                                                        label={ __( 'Column width', 'alphalisting' ) }
-                                                                                        value={ sanitizedColumnWidth }
-                                                                                        units={ LENGTH_UNITS }
-                                                                                        onChange={ ( nextValue ) =>
-                                                                                                setAttributes( {
-                                                                                                        'column-width': sanitizeLengthValue(
-                                                                                                                nextValue,
-                                                                                                                defaults['column-width'].default
-                                                                                                        ),
-                                                                                                } )
-                                                                                        }
-                                                                                        __next40pxDefaultSize
-                                                                                        __nextHasNoMarginBottom
-                                                                                />
-                                                                                <UnitControl
-                                                                                        label={ __( 'Column gap', 'alphalisting' ) }
-                                                                                        value={ sanitizedColumnGap }
-                                                                                        units={ LENGTH_UNITS }
-                                                                                        onChange={ ( nextValue ) =>
-                                                                                                setAttributes( {
-                                                                                                        'column-gap': sanitizeLengthValue(
-                                                                                                                nextValue,
-                                                                                                                defaults['column-gap'].default
-                                                                                                        ),
-                                                                                                } )
-                                                                                        }
-                                                                                        __next40pxDefaultSize
-                                                                                        __nextHasNoMarginBottom
-                                                                                />
-
+										<RangeControl
+											label={ __( 'Columns', 'alphalisting' ) }
+											value={ sanitizedColumns }
+											onChange={ ( value ) =>
+												setAttributes( { columns: sanitizeColumnCount( value ) } )
+											}
+											min={ 1 }
+											max={ MAX_POSTS_COLUMNS }
+											withInputField
+											required
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
+										/>
+										
+										<UnitControl
+											label={ __( 'Column width', 'alphalisting' ) }
+											value={ sanitizedColumnWidth }
+											units={ LENGTH_UNITS }
+											onChange={ ( nextValue ) =>
+												setAttributes( {
+													'column-width': sanitizeLengthValue(
+														nextValue,
+														defaults['column-width'].default
+													),
+												} )
+											}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
+										/>
+										<UnitControl
+											label={ __( 'Column gap', 'alphalisting' ) }
+											value={ sanitizedColumnGap }
+											units={ LENGTH_UNITS }
+											onChange={ ( nextValue ) =>
+												setAttributes( {
+													'column-gap': sanitizeLengthValue(
+														nextValue,
+														defaults['column-gap'].default
+													),
+												} )
+											}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
+										/>
 										{ subFills }
 									</>
 								) }
