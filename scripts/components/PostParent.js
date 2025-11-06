@@ -29,36 +29,34 @@ export function PostParent( { pageId, postTypeSlug, onChange } ) {
 	const [ fieldValue, setFieldValue ] = useState( '' );
 	const isSearching = fieldValue;
         const { parentPost, parentPostId, items, postType } = useSelect(
-                ( select ) => {
-			const { getPostType, getEntityRecords, getEntityRecord } = select(
-				'core'
-			);
-			const pType = getPostType( postTypeSlug );
-			const isHierarchical = get( pType, [ 'hierarchical' ], false );
-			const query = {
-				per_page: 100,
-				orderby: 'menu_order',
-				order: 'asc',
-				_fields: 'id,title,parent',
-			};
+            ( select ) => {
+				const { getPostType, getEntityRecords, getEntityRecord } = select( 'core' );
+				const pType = getPostType( postTypeSlug );
+				const isHierarchical = get( pType, [ 'hierarchical' ], false );
+				const query = {
+					per_page: 100,
+					orderby: 'menu_order',
+					order: 'asc',
+					_fields: 'id,title,parent',
+				};
 
-			// Perform a search when the field is changed.
-			if ( isSearching ) {
-				query.search = fieldValue;
-			}
+				// Perform a search when the field is changed.
+				if ( isSearching ) {
+					query.search = fieldValue;
+				}
 
-			return {
-				parentPostId: pageId,
-				parentPost: pageId
-					? getEntityRecord( 'postType', postTypeSlug, pageId )
-					: null,
-				items: isHierarchical
-					? getEntityRecords( 'postType', postTypeSlug, query )
-					: [],
-				postType: pType,
-			};
-                },
-                [ fieldValue, pageId, postTypeSlug ]
+				return {
+					parentPostId: pageId,
+					parentPost: pageId
+						? getEntityRecord( 'postType', postTypeSlug, pageId )
+						: null,
+					items: isHierarchical
+						? getEntityRecords( 'postType', postTypeSlug, query )
+						: [],
+					postType: pType,
+				};
+            },
+            [ fieldValue, pageId, postTypeSlug ]
         );
 
 	const isHierarchical = get( postType, [ 'hierarchical' ], false );
