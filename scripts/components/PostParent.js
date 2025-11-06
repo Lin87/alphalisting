@@ -28,8 +28,8 @@ function getTitle( post ) {
 export function PostParent( { pageId, postTypeSlug, onChange } ) {
 	const [ fieldValue, setFieldValue ] = useState( '' );
 	const isSearching = fieldValue;
-	const { parentPost, parentPostId, items, postType } = useSelect(
-		( select ) => {
+        const { parentPost, parentPostId, items, postType } = useSelect(
+                ( select ) => {
 			const { getPostType, getEntityRecords, getEntityRecord } = select(
 				'core'
 			);
@@ -57,9 +57,9 @@ export function PostParent( { pageId, postTypeSlug, onChange } ) {
 					: [],
 				postType: pType,
 			};
-		},
-		[ fieldValue ]
-	);
+                },
+                [ fieldValue, pageId, postTypeSlug ]
+        );
 
 	const isHierarchical = get( postType, [ 'hierarchical' ], false );
 	const pageItems = items || [];
@@ -99,7 +99,7 @@ export function PostParent( { pageId, postTypeSlug, onChange } ) {
 			} );
 		}
 		return opts;
-	}, [ pageItems ] );
+        }, [ pageItems, parentPost, parentPostId, isSearching ] );
 
 	if ( ! isHierarchical ) {
 		return null;
