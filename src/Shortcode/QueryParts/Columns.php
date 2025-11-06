@@ -19,38 +19,53 @@ use \eslin87\AlphaListing\Shortcode\Extension;
  * Columns Query Part extension
  */
 class Columns extends Extension {
-	/**
-	 * The attribute for this Query Part.
-	 *
-	 * @since 4.0.0
-	 * @var string
-	 */
-	public $attribute_name = 'columns';
+        public const DEFAULT_COLUMN_COUNT = 3;
+        public const MIN_COLUMN_COUNT = 1;
+        public const MAX_COLUMN_COUNT = 15;
 
-	/**
-	 * The number of columns.
-	 *
-	 * @var int
-	 */
-	public $columns = 3;
+        /**
+         * The attribute for this Query Part.
+         *
+         * @since 4.0.0
+         * @var string
+         */
+        public $attribute_name = 'columns';
 
-	/**
-	 * Update the query with this extension's additional configuration.
-	 *
-	 * @param \AlphaListing\Query $query      The query.
+        /**
+         * The number of columns.
+         *
+         * @var int
+         */
+        public $columns = self::DEFAULT_COLUMN_COUNT;
+
+        /**
+         * Sanitize the shortcode attribute.
+         *
+         * @param mixed $value      The value of the shortcode attribute.
+         * @param array $attributes The complete set of shortcode attributes.
+         * @return int
+         */
+        public function sanitize_attribute( $value, array $attributes ) {
+                return $this->sanitize_column_count( $value );
+        }
+
+        /**
+         * Update the query with this extension's additional configuration.
+         *
+         * @param \AlphaListing\Query $query      The query.
 	 * @param string             $display    The display/query type.
 	 * @param string             $key        The name of the attribute.
 	 * @param mixed              $value      The shortcode attribute value.
 	 * @param array              $attributes The complete set of shortcode attributes.
 	 * @return mixed The updated query.
 	 */
-	public function shortcode_query( $query, string $display, string $key, $value, array $attributes ) {
-		$this->columns = $value;
-		$this->add_hook( 'filter', 'alphalisting_styles', array( $this, 'return_styles' ), 10, 3 );
-		return $query;
-	}
+        public function shortcode_query( $query, string $display, string $key, $value, array $attributes ) {
+                $this->columns = $this->sanitize_column_count( $value );
+                $this->add_hook( 'filter', 'alphalisting_styles', array( $this, 'return_styles' ), 10, 3 );
+                return $query;
+        }
 
-	/**
+        /**
 	 * Return the stylesheet for this instance.
 	 *
 	 * @param string             $styles      The stylesheet.
@@ -58,7 +73,43 @@ class Columns extends Extension {
 	 * @param string             $instance_id The instance ID.
 	 * @return string
 	 */
-	public function return_styles( $styles, $alphalisting, $instance_id ): string {
-		return "$styles --alphalisting-column-count: $this->columns; ";
-	}
+        public function return_styles( $styles, $alphalisting, $instance_id ): string {
+                return sprintf(
+                        '%s --alphalisting-column-count: %d; ',
+                        $styles,
+                        $this->columns
+                );
+        }
+
+        /**
+         * Ensure the provided column count is a safe integer.
+         *
+         * @param mixed $value Potential column count.
+         * @return int
+         */
+        protected function sanitize_column_count( $value ): int {
+                if ( is_string( $value ) ) {
+                        $value = trim( $value );
+                }
+
+                if ( '' === $value || null === $value ) {
+                        return self::DEFAULT_COLUMN_COUNT;
+                }
+
+                if ( is_numeric( $value ) ) {
+                        $value = (int) floor( (float) $value );
+                } else {
+                        return self::DEFAULT_COLUMN_COUNT;
+                }
+
+                if ( $value < self::MIN_COLUMN_COUNT ) {
+                        return self::MIN_COLUMN_COUNT;
+                }
+
+                if ( $value > self::MAX_COLUMN_COUNT ) {
+                        return self::MAX_COLUMN_COUNT;
+                }
+
+                return $value;
+        }
 }
