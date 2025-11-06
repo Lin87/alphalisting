@@ -120,6 +120,8 @@ export function PostParent( { pageId, postTypeSlug, onChange } ) {
 			options={ parentOptions }
 			onFilterValueChange={ debounce( handleKeydown, 300 ) }
 			onChange={ onChange }
+			__next40pxDefaultSize
+			__nextHasNoMarginBottom
 		/>
 	);
 }
