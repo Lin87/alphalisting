@@ -63,20 +63,21 @@ addFilter(
 
 const ServerSideRender = ServerSideRenderModule.ServerSideRender || ServerSideRenderModule.default;
 const displayTypes = applyFilters(
-	'alphalisting_display_types',
-	[
-		{ value: 'posts', label: __( 'Posts', 'alphalisting' ) },
-		{ value: 'terms', label: __( 'Taxonomy Terms', 'alphalisting' ) },
-	]
+        'alphalisting_display_types',
+        [
+                { value: 'posts', label: __( 'Posts', 'alphalisting' ) },
+                { value: 'terms', label: __( 'Taxonomy Terms', 'alphalisting' ) },
+        ]
 );
 
 const LENGTH_VALUE_PATTERN = /^([0-9]+(?:\.[0-9]+)?)\s*(px|em|rem|%|ch)$/i;
+const UNIT_LESS_ZERO_PATTERN = /^0+(?:\.0+)?$/;
 const LENGTH_UNITS = [
-	{ value: 'px', label: 'px', step: 1, min: 0, max: MAX_COLUMN_WIDTH },
-	{ value: 'em', label: 'em', step: 0.1, min: 0 },
-	{ value: 'rem', label: 'rem', step: 0.1, min: 0 },
-	{ value: '%', label: '%', step: 1, min: 0, max: 100 },
-	{ value: 'ch', label: 'ch', step: 1, min: 0, max: 100 },
+        { value: 'px', label: 'px', step: 1, min: 0, max: MAX_COLUMN_WIDTH },
+        { value: 'em', label: 'em', step: 0.1, min: 0 },
+        { value: 'rem', label: 'rem', step: 0.1, min: 0 },
+        { value: '%', label: '%', step: 1, min: 0, max: 100 },
+        { value: 'ch', label: 'ch', step: 1, min: 0, max: 100 },
 ];
 
 /**
@@ -113,48 +114,49 @@ const sanitizeColumnCount = ( value ) => {
  * @return {string} Sanitized CSS length string.
  */
 const sanitizeLengthValue = ( value, fallback ) => {
-	if ( typeof value !== 'string' ) {
-		if ( typeof value === 'number' && Number.isFinite( value ) ) {
-			value = String( value );
-		} else {
-			return fallback;
-		}
-	}
+        if ( typeof value !== 'string' ) {
+                if ( typeof value === 'number' && Number.isFinite( value ) ) {
+                        value = String( value );
+                } else {
+                        return fallback;
+                }
+        }
 
-	const trimmed = value.trim();
+        const trimmed = value.trim();
+        if ( trimmed === '' ) {
+                return fallback;
+        }
 
-	if ( trimmed === '' ) {
-		return fallback;
-	}
+        if ( UNIT_LESS_ZERO_PATTERN.test( trimmed ) ) {
+                return '0';
+        }
 
-	const match = trimmed.match( LENGTH_VALUE_PATTERN );
+        const match = trimmed.match( LENGTH_VALUE_PATTERN );
+        if ( ! match ) {
+                return fallback;
+        }
 
-	if ( ! match ) {
-		return fallback;
-	}
+        const numeric = Number.parseFloat( match[ 1 ] );
+        const unit = match[ 2 ].toLowerCase();
 
-	const numeric = Number.parseFloat( match[ 1 ] );
-	const unit = match[ 2 ].toLowerCase();
+        if ( ! Number.isFinite( numeric ) || numeric < 0 ) {
+                return fallback;
+        }
 
-	if ( ! Number.isFinite( numeric ) || numeric < 0 ) {
-		return fallback;
-	}
+        let bounded = numeric;
+        if ( unit === 'px' ) {
+                bounded = Math.min( bounded, MAX_COLUMN_WIDTH );
+        }
 
-	let bounded = numeric;
+        if ( unit === '%' || unit === 'ch' ) {
+                bounded = Math.min( bounded, 100 );
+        }
 
-	if ( unit === 'px' ) {
-		bounded = Math.min( bounded, MAX_COLUMN_WIDTH );
-	}
+        if ( Number.isInteger( bounded ) ) {
+                return `${ bounded }${ unit }`;
+        }
 
-	if ( unit === '%' || unit === 'ch' ) {
-		bounded = Math.min( bounded, 100 );
-	}
-
-	if ( Number.isInteger( bounded ) ) {
-		return `${ bounded }${ unit }`;
-	}
-
-	return `${ parseFloat( bounded.toFixed( 4 ) ) }${ unit }`;
+        return `${ parseFloat( bounded.toFixed( 4 ) ) }${ unit }`;
 };
 
 const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
@@ -217,18 +219,55 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 		);
 	}, [ allTaxonomies ] );
 
-	const validationErrors = useMemo( () => {
-		const errors = [];
-		if ( 'terms' === attributes.display && ! attributes.taxonomy ) {
-			errors.push(
-				__(
+        const validationErrors = useMemo( () => {
+                const errors = [];
+                if ( 'terms' === attributes.display && ! attributes.taxonomy ) {
+                        errors.push(
+                                __(
 					`You must set a taxonomy when display mode is set to 'terms'.`,
 					'alphalisting'
 				)
 			);
-		}
-		return errors;
-	}, [ attributes.display, attributes.taxonomy ] );
+                }
+                return errors;
+        }, [ attributes.display, attributes.taxonomy ] );
+
+        const sanitizedColumns = useMemo(
+                () => sanitizeColumnCount( attributes.columns ),
+                [ attributes.columns ]
+        );
+        const sanitizedColumnWidth = useMemo(
+                () => sanitizeLengthValue(
+                        attributes['column-width'] ?? defaults['column-width'].default,
+                        defaults['column-width'].default
+                ),
+                [ attributes['column-width'] ]
+        );
+        const sanitizedColumnGap = useMemo(
+                () => sanitizeLengthValue(
+                        attributes['column-gap'] ?? defaults['column-gap'].default,
+                        defaults['column-gap'].default
+                ),
+                [ attributes['column-gap'] ]
+        );
+
+        useEffect( () => {
+                if ( typeof attributes.columns !== 'undefined' && attributes.columns !== sanitizedColumns ) {
+                        setAttributes( { columns: sanitizedColumns } );
+                }
+        }, [ attributes.columns, sanitizedColumns, setAttributes ] );
+
+        useEffect( () => {
+                if ( typeof attributes['column-width'] !== 'undefined' && attributes['column-width'] !== sanitizedColumnWidth ) {
+                        setAttributes( { 'column-width': sanitizedColumnWidth } );
+                }
+        }, [ attributes['column-width'], sanitizedColumnWidth, setAttributes ] );
+
+        useEffect( () => {
+                if ( typeof attributes['column-gap'] !== 'undefined' && attributes['column-gap'] !== sanitizedColumnGap ) {
+                        setAttributes( { 'column-gap': sanitizedColumnGap } );
+                }
+        }, [ attributes['column-gap'], sanitizedColumnGap, setAttributes ] );
 
 	const sanitizedColumns = useMemo(
 		() => sanitizeColumnCount( attributes.columns ),

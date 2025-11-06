@@ -73,18 +73,30 @@ assert_contains( '--alphalisting-column-count: ' . Columns::DEFAULT_COLUMN_COUNT
 $column_width = new ColumnWidth();
 assert_same( '1200px', $column_width->sanitize_attribute( '1500px', array() ), 'Column width should clamp pixel values.' );
 assert_same( ColumnWidth::DEFAULT_COLUMN_WIDTH, $column_width->sanitize_attribute( 'calc(10px)', array() ), 'Column width should reject unsafe tokens.' );
+assert_same( '0', $column_width->sanitize_attribute( '0', array() ), 'Column width should allow unitless zero.' );
 
 $column_width->shortcode_query( array(), 'posts', 'column-width', '1500px', array() );
 $column_width_styles = $column_width->return_styles( ' ', null, 'test' );
 assert_contains( '--alphalisting-column-width: 1200px;', $column_width_styles, 'Styles should reflect clamped column width.' );
 
+$column_width_zero = new ColumnWidth();
+$column_width_zero->shortcode_query( array(), 'posts', 'column-width', '0', array() );
+$column_width_zero_styles = $column_width_zero->return_styles( ' ', null, 'test' );
+assert_contains( '--alphalisting-column-width: 0;', $column_width_zero_styles, 'Unitless zero column width should be preserved.' );
+
 $column_gap = new ColumnGap();
 assert_same( '100%', $column_gap->sanitize_attribute( '500%', array() ), 'Column gap should clamp percentage values.' );
 assert_same( ColumnGap::DEFAULT_COLUMN_GAP, $column_gap->sanitize_attribute( 'url(javascript:alert(1))', array() ), 'Column gap should reject unsafe tokens.' );
+assert_same( '0', $column_gap->sanitize_attribute( '0', array() ), 'Column gap should allow unitless zero.' );
 
 $column_gap->shortcode_query( array(), 'posts', 'column-gap', '12%', array() );
 $column_gap_styles = $column_gap->return_styles( ' ', null, 'test' );
 assert_contains( '--alphalisting-column-gap: 12%;', $column_gap_styles, 'Styles should use sanitized column gap.' );
+
+$column_gap_zero = new ColumnGap();
+$column_gap_zero->shortcode_query( array(), 'posts', 'column-gap', '0', array() );
+$column_gap_zero_styles = $column_gap_zero->return_styles( ' ', null, 'test' );
+assert_contains( '--alphalisting-column-gap: 0;', $column_gap_zero_styles, 'Unitless zero column gap should be preserved.' );
 
 $column_gap_invalid = new ColumnGap();
 $column_gap_invalid->shortcode_query( array(), 'posts', 'column-gap', 'calc(1+1)', array() );
