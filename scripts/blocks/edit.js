@@ -352,11 +352,11 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 
 										{ (
 											'posts' === attributes.display &&
-											postTypesMap && postTypesMap[ attributes.postType ]?.hierarchical
+											postTypesMap && postTypesMap[ attributes['post-type'] ]?.hierarchical
 										) && (
 											<PostParent
-												pageId={ attributes.parentId ?? -1 }
-												postTypeSlug={ attributes.postType ?? 'page' }
+												pageId={ attributes['parent-post'] ?? defaults['parent-post'].default }
+												postTypeSlug={ attributes['post-type'] ?? defaults['post-type'].default }
 												onChange={ ( parentId ) => setAttributes( { 'parent-post': parentId } ) }
 											/>
 										) }
