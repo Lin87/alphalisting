@@ -91,18 +91,5 @@
     "hide-empty-terms": {
         "type": "boolean",
         "default": false
-    },
-    "parent-term-id": {
-        "type": "string",
-        "default": ""
-    },
-    "target": {
-        "type": "string",
-        "default": ""
-    },
-    "return": {
-        "type": "string",
-        "enum": ["listing", "letters"],
-        "default": "listing"
     }
 }
