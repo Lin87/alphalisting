@@ -31,34 +31,49 @@ import PostParent from '../components/PostParent';
  * Filters to kill any stale state when selections are changed in the editor
  */
 addFilter(
-	'alphalisting_selection_changed_for__display',
-	'alphalisting',
-	( attributes ) => ( {
-		...attributes,
-		'post-type': defaults['post-type'].default,
-		taxonomy: defaults.taxonomy.default,
-		terms: defaults.terms.default,
-	} ),
-	5
+        'alphalisting_selection_changed_for__display',
+        'alphalisting',
+        ( attributes ) => ( {
+                ...attributes,
+                'post-type': defaults['post-type'].default,
+                taxonomy: defaults.taxonomy.default,
+                terms: [ ...defaults.terms.default ],
+                'exclude-posts': [ ...defaults['exclude-posts'].default ],
+                'exclude-terms': [ ...defaults['exclude-terms'].default ],
+                'parent-post': defaults['parent-post'].default,
+                'parent-term': defaults['parent-term'].default,
+                'parent-term-id': defaults['parent-term-id'].default,
+                'hide-empty-terms': defaults['hide-empty-terms'].default,
+                'get-all-children': defaults['get-all-children'].default,
+        } ),
+        5
 );
 addFilter(
-	'alphalisting_selection_changed_for__post-type',
-	'alphalisting',
-	( attributes ) => ( {
-		...attributes,
-		taxonomy: defaults.taxonomy.default,
-		terms: defaults.terms.default,
-	} ),
-	5
+        'alphalisting_selection_changed_for__post-type',
+        'alphalisting',
+        ( attributes ) => ( {
+                ...attributes,
+                taxonomy: defaults.taxonomy.default,
+                terms: [ ...defaults.terms.default ],
+                'exclude-posts': [ ...defaults['exclude-posts'].default ],
+                'exclude-terms': [ ...defaults['exclude-terms'].default ],
+                'parent-post': defaults['parent-post'].default,
+                'get-all-children': defaults['get-all-children'].default,
+        } ),
+        5
 );
 addFilter(
-	'alphalisting_selection_changed_for__taxonomy',
-	'alphalisting',
-	( attributes ) => ( {
-		...attributes,
-		terms: defaults.terms.default,
-	} ),
-	5
+        'alphalisting_selection_changed_for__taxonomy',
+        'alphalisting',
+        ( attributes ) => ( {
+                ...attributes,
+                terms: [ ...defaults.terms.default ],
+                'exclude-terms': [ ...defaults['exclude-terms'].default ],
+                'parent-term': defaults['parent-term'].default,
+                'parent-term-id': defaults['parent-term-id'].default,
+                'get-all-children': defaults['get-all-children'].default,
+        } ),
+        5
 );
 
 const ServerSideRender = ServerSideRenderModule.ServerSideRender || ServerSideRenderModule.default;
@@ -159,7 +174,114 @@ const sanitizeLengthValue = ( value, fallback ) => {
 		return `${ bounded }${ unit }`;
 	}
 
-	return `${ parseFloat( bounded.toFixed( 4 ) ) }${ unit }`;
+        return `${ parseFloat( bounded.toFixed( 4 ) ) }${ unit }`;
+};
+
+/**
+ * Convert a value into a positive integer or null when invalid.
+ *
+ * @param {unknown} value Raw attribute value.
+ * @return {?number} Sanitized integer or null when invalid.
+ */
+const sanitizePositiveInteger = ( value ) => {
+        if ( typeof value === 'number' && Number.isFinite( value ) ) {
+                value = Math.trunc( value );
+        } else if ( typeof value === 'string' ) {
+                const trimmed = value.trim();
+
+                if ( trimmed === '' ) {
+                        return null;
+                }
+
+                const numeric = Number( trimmed );
+
+                if ( Number.isNaN( numeric ) ) {
+                        return null;
+                }
+
+                value = Math.trunc( numeric );
+        } else if ( Array.isArray( value ) ) {
+                // When the attribute is serialized as a list of tokens already.
+                return null;
+        } else {
+                return null;
+        }
+
+        if ( value <= 0 ) {
+                return null;
+        }
+
+        return value;
+};
+
+/**
+ * Ensure a list of identifiers only contains unique positive integers.
+ *
+ * @param {unknown} values Raw attribute value.
+ * @return {number[]} Sanitized list of identifiers.
+ */
+const sanitizeNumericTokenList = ( values ) => {
+        if ( typeof values === 'string' ) {
+                values = values.split( ',' );
+        }
+
+        if ( ! Array.isArray( values ) ) {
+                return [];
+        }
+
+        const sanitized = values
+                .map( sanitizePositiveInteger )
+                .filter( ( value ) => value !== null );
+
+        return Array.from( new Set( sanitized ) );
+};
+
+/**
+ * Ensure a list of tokens is stored as unique, trimmed strings.
+ *
+ * @param {unknown} values Raw attribute value.
+ * @return {string[]} Sanitized list of string tokens.
+ */
+const sanitizeStringTokenList = ( values ) => {
+        if ( typeof values === 'string' ) {
+                values = values.split( ',' );
+        }
+
+        if ( ! Array.isArray( values ) ) {
+                return [];
+        }
+
+        const sanitized = values
+                .map( ( value ) => {
+                        if ( typeof value === 'string' ) {
+                                return value.trim();
+                        }
+
+                        if ( typeof value === 'number' && Number.isFinite( value ) ) {
+                                return String( value );
+                        }
+
+                        return '';
+                } )
+                .filter( ( value ) => value !== '' );
+
+        return Array.from( new Set( sanitized ) );
+};
+
+/**
+ * Ensure a parent term identifier is stored as a stringified positive integer.
+ *
+ * @param {unknown} value Raw attribute value.
+ * @return {string} Sanitized parent term ID or default empty string.
+ */
+const sanitizeParentTermId = ( value ) => {
+        const sanitized = sanitizePositiveInteger( value );
+
+        if ( sanitized === null ) {
+                return defaults['parent-term-id'].default;
+        }
+
+        return String( sanitized );
 };
 
 const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
@@ -268,14 +390,101 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 		}
 	}, [ attributes['column-width'], sanitizedColumnWidth, setAttributes ] );
 
-	useEffect( () => {
-		if ( typeof attributes['column-gap'] !== 'undefined' && attributes['column-gap'] !== sanitizedColumnGap ) {
-			setAttributes( { 'column-gap': sanitizedColumnGap } );
-		}
-	}, [ attributes['column-gap'], sanitizedColumnGap, setAttributes ] );
+        useEffect( () => {
+                if ( typeof attributes['column-gap'] !== 'undefined' && attributes['column-gap'] !== sanitizedColumnGap ) {
+                        setAttributes( { 'column-gap': sanitizedColumnGap } );
+                }
+        }, [ attributes['column-gap'], sanitizedColumnGap, setAttributes ] );
 
-	const inspectorControls = (
-		<InspectorControls>
+        useEffect( () => {
+                if ( typeof attributes['parent-term'] === 'number' ) {
+                        setAttributes( { 'parent-term': String( attributes['parent-term'] ) } );
+                }
+        }, [ attributes['parent-term'], setAttributes ] );
+
+        useEffect( () => {
+                if ( typeof attributes['parent-term-id'] === 'undefined' ) {
+                        return;
+                }
+
+                const sanitized = sanitizeParentTermId( attributes['parent-term-id'] );
+
+                if ( sanitized !== attributes['parent-term-id'] ) {
+                        setAttributes( { 'parent-term-id': sanitized } );
+                }
+        }, [ attributes['parent-term-id'], setAttributes ] );
+
+        useEffect( () => {
+                if ( typeof attributes['exclude-posts'] === 'undefined' ) {
+                        return;
+                }
+
+                const sanitized = sanitizeNumericTokenList( attributes['exclude-posts'] );
+
+                if ( JSON.stringify( sanitized ) !== JSON.stringify( attributes['exclude-posts'] ) ) {
+                        setAttributes( { 'exclude-posts': sanitized } );
+                }
+        }, [ attributes['exclude-posts'], setAttributes ] );
+
+        useEffect( () => {
+                if ( typeof attributes['exclude-terms'] === 'undefined' ) {
+                        return;
+                }
+
+                const sanitized = sanitizeNumericTokenList( attributes['exclude-terms'] )
+                        .map( ( token ) => token.toString() );
+
+                if ( JSON.stringify( sanitized ) !== JSON.stringify( attributes['exclude-terms'] ) ) {
+                        setAttributes( { 'exclude-terms': sanitized } );
+                }
+        }, [ attributes['exclude-terms'], setAttributes ] );
+
+        useEffect( () => {
+                if ( typeof attributes.terms === 'undefined' ) {
+                        return;
+                }
+
+                let sanitized;
+
+                if ( attributes.display === 'terms' ) {
+                        sanitized = sanitizeNumericTokenList( attributes.terms )
+                                .map( ( token ) => token.toString() );
+                } else {
+                        sanitized = sanitizeStringTokenList( attributes.terms );
+                }
+
+                if ( JSON.stringify( sanitized ) !== JSON.stringify( attributes.terms ) ) {
+                        setAttributes( { terms: sanitized } );
+                }
+        }, [ attributes.terms, attributes.display, setAttributes ] );
+
+        const excludePostsTokens = useMemo(
+                () => sanitizeNumericTokenList( attributes['exclude-posts'] ).map( ( token ) => token.toString() ),
+                [ attributes['exclude-posts'] ]
+        );
+
+        const excludeTermsTokens = useMemo(
+                () => sanitizeNumericTokenList( attributes['exclude-terms'] ).map( ( token ) => token.toString() ),
+                [ attributes['exclude-terms'] ]
+        );
+
+        const parentTermValue = typeof attributes['parent-term'] === 'undefined'
+                ? defaults['parent-term'].default
+                : String( attributes['parent-term'] ?? '' );
+
+        const parentTermIdValue = typeof attributes['parent-term-id'] === 'undefined'
+                ? defaults['parent-term-id'].default
+                : sanitizeParentTermId( attributes['parent-term-id'] );
+
+        const hasPostParentSelection = attributes.display === 'posts'
+                && sanitizePositiveInteger( attributes['parent-post'] ) !== null;
+        const hasTermParentSelection = attributes.display === 'terms'
+                && ( parentTermValue.trim() !== ''
+                        || parentTermIdValue !== defaults['parent-term-id'].default );
+        const showDescendantsToggle = hasPostParentSelection || hasTermParentSelection;
+
+        const inspectorControls = (
+                <InspectorControls>
 			<AZInspectorControls.Slot>
 				{ ( fills ) => (
 					<>
@@ -353,20 +562,123 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											/>
 										) }
 
-										{ 'posts' === attributes.display &&
-											!! attributes.taxonomy && (
-												<FormTokenField
-													label={ __( 'Taxonomy terms', 'alphalisting' ) }
-													value={ attributes.terms ?? [] }
-													onChange={ ( value ) =>
-														setAttributes( { terms: value } )
-													}
-													__next40pxDefaultSize
-													__nextHasNoMarginBottom
-												/>
-											) }
+                                                                                { 'posts' === attributes.display &&
+                                                                                        !! attributes.taxonomy && (
+                                                                                                <FormTokenField
+                                                                                                        label={ __( 'Taxonomy terms', 'alphalisting' ) }
+                                                                                                        value={ attributes.terms ?? [] }
+                                                                                                        onChange={ ( value ) =>
+                                                                                                                setAttributes( {
+                                                                                                                        terms: sanitizeStringTokenList( value ),
+                                                                                                                } )
+                                                                                                        }
+                                                                                                        __next40pxDefaultSize
+                                                                                                        __nextHasNoMarginBottom
+                                                                                                />
+                                                                                        ) }
 
-										{ subFills }
+                                                                                { 'posts' === attributes.display && (
+                                                                                        <FormTokenField
+                                                                                                label={ __( 'Exclude post IDs', 'alphalisting' ) }
+                                                                                                value={ excludePostsTokens }
+                                                                                                onChange={ ( value ) =>
+                                                                                                        setAttributes( {
+                                                                                                                'exclude-posts': sanitizeNumericTokenList( value ),
+                                                                                                        } )
+                                                                                                }
+                                                                                                help={ __( 'Provide numeric post IDs to omit from the listing.', 'alphalisting' ) }
+                                                                                                __next40pxDefaultSize
+                                                                                                __nextHasNoMarginBottom
+                                                                                        />
+                                                                                ) }
+
+                                                                                { ( ( 'posts' === attributes.display && !! attributes.taxonomy ) || 'terms' === attributes.display ) && (
+                                                                                        <FormTokenField
+                                                                                                label={ __( 'Exclude term IDs', 'alphalisting' ) }
+                                                                                                value={ excludeTermsTokens }
+                                                                                                onChange={ ( value ) =>
+                                                                                                        setAttributes( {
+                                                                                                                'exclude-terms': sanitizeNumericTokenList( value )
+                                                                                                                        .map( ( token ) => token.toString() ),
+                                                                                                        } )
+                                                                                                }
+                                                                                                help={ __( 'Provide numeric term IDs to omit from the listing.', 'alphalisting' ) }
+                                                                                                __next40pxDefaultSize
+                                                                                                __nextHasNoMarginBottom
+                                                                                        />
+                                                                                ) }
+
+                                                                                { 'terms' === attributes.display && (
+                                                                                        <FormTokenField
+                                                                                                label={ __( 'Include term IDs', 'alphalisting' ) }
+                                                                                                value={ attributes.terms ?? [] }
+                                                                                                onChange={ ( value ) =>
+                                                                                                        setAttributes( {
+                                                                                                                terms: sanitizeNumericTokenList( value ).map( ( token ) => token.toString() ),
+                                                                                                        } )
+                                                                                                }
+                                                                                                help={ __( 'Provide numeric term IDs to include in the listing.', 'alphalisting' ) }
+                                                                                                __next40pxDefaultSize
+                                                                                                __nextHasNoMarginBottom
+                                                                                        />
+                                                                                ) }
+
+                                                                                { 'terms' === attributes.display && (
+                                                                                        <TextControl
+                                                                                                label={ __( 'Parent term (slug or ID)', 'alphalisting' ) }
+                                                                                                value={ parentTermValue }
+                                                                                                onChange={ ( value ) =>
+                                                                                                        setAttributes( {
+                                                                                                                'parent-term': value.trim(),
+                                                                                                        } )
+                                                                                                }
+                                                                                                __next40pxDefaultSize
+                                                                                                __nextHasNoMarginBottom
+                                                                                        />
+                                                                                ) }
+
+                                                                                { 'terms' === attributes.display && (
+                                                                                        <TextControl
+                                                                                                label={ __( 'Parent term ID override', 'alphalisting' ) }
+                                                                                                type="number"
+                                                                                                value={ parentTermIdValue }
+                                                                                                onChange={ ( value ) =>
+                                                                                                        setAttributes( {
+                                                                                                                'parent-term-id': sanitizeParentTermId( value ),
+                                                                                                        } )
+                                                                                                }
+                                                                                                help={ __( 'When set, this takes precedence over the parent term slug.', 'alphalisting' ) }
+                                                                                                __next40pxDefaultSize
+                                                                                                __nextHasNoMarginBottom
+                                                                                        />
+                                                                                ) }
+
+                                                                                { showDescendantsToggle && (
+                                                                                        <ToggleControl
+                                                                                                label={ __( 'Include all descendants', 'alphalisting' ) }
+                                                                                                help={ __( 'Include items from all levels below the selected parent.', 'alphalisting' ) }
+                                                                                                checked={ !! attributes['get-all-children'] }
+                                                                                                onChange={ ( value ) =>
+                                                                                                        setAttributes( { 'get-all-children': value } )
+                                                                                                }
+                                                                                                __next40pxDefaultSize
+                                                                                                __nextHasNoMarginBottom
+                                                                                        />
+                                                                                ) }
+
+                                                                                { 'terms' === attributes.display && (
+                                                                                        <ToggleControl
+                                                                                                label={ __( 'Hide empty terms', 'alphalisting' ) }
+                                                                                                checked={ !! attributes['hide-empty-terms'] }
+                                                                                                onChange={ ( value ) =>
+                                                                                                        setAttributes( { 'hide-empty-terms': value } )
+                                                                                                }
+                                                                                                __next40pxDefaultSize
+                                                                                                __nextHasNoMarginBottom
+                                                                                        />
+                                                                                ) }
+
+                                                                                { subFills }
 									</>
 								) }
 							</ItemSelection.Slot>
@@ -385,20 +697,20 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
-										<TextControl
-											label={ __( 'CSS class names', 'alphalisting' ) }
-											value={ attributes.className ?? '' }
-											onChange={ ( value ) =>
-												setAttributes( { className: value } )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
-										<TextControl
-											label={ __( 'Alphabet', 'alphalisting' ) }
-											value={ attributes.alphabet ?? defaults['alphabet'].default }
-											onChange={ ( value ) =>
-												setAttributes( { alphabet: value } )
+                                                                                <TextControl
+                                                                                        label={ __( 'CSS class names', 'alphalisting' ) }
+                                                                                        value={ attributes.className ?? '' }
+                                                                                        onChange={ ( value ) =>
+                                                                                                setAttributes( { className: value } )
+                                                                                        }
+                                                                                        __next40pxDefaultSize
+                                                                                        __nextHasNoMarginBottom
+                                                                                />
+                                                                                <TextControl
+                                                                                        label={ __( 'Alphabet', 'alphalisting' ) }
+                                                                                        value={ attributes.alphabet ?? defaults['alphabet'].default }
+                                                                                        onChange={ ( value ) =>
+                                                                                                setAttributes( { alphabet: value } )
 											}
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
