@@ -465,8 +465,9 @@ If `functions.php` already contains code, add only the lines between `<?php` and
 
 = 4.3.7 =
 
-* Harden column layout attribute sanitization
+* Harden column layout attribute sanitization.
 * Fix parent selector attribute wiring in block editor
+* Add exclude post and term IDs fields to the block settings.
 
 = 4.3.6 =
 
