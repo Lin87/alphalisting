@@ -63,21 +63,20 @@ addFilter(
 
 const ServerSideRender = ServerSideRenderModule.ServerSideRender || ServerSideRenderModule.default;
 const displayTypes = applyFilters(
-        'alphalisting_display_types',
-        [
-                { value: 'posts', label: __( 'Posts', 'alphalisting' ) },
-                { value: 'terms', label: __( 'Taxonomy Terms', 'alphalisting' ) },
-        ]
+	'alphalisting_display_types',
+	[
+		{ value: 'posts', label: __( 'Posts', 'alphalisting' ) },
+		{ value: 'terms', label: __( 'Taxonomy Terms', 'alphalisting' ) },
+	]
 );
-
 const LENGTH_VALUE_PATTERN = /^([0-9]+(?:\.[0-9]+)?)\s*(px|em|rem|%|ch)$/i;
 const UNIT_LESS_ZERO_PATTERN = /^0+(?:\.0+)?$/;
 const LENGTH_UNITS = [
-        { value: 'px', label: 'px', step: 1, min: 0, max: MAX_COLUMN_WIDTH },
-        { value: 'em', label: 'em', step: 0.1, min: 0 },
-        { value: 'rem', label: 'rem', step: 0.1, min: 0 },
-        { value: '%', label: '%', step: 1, min: 0, max: 100 },
-        { value: 'ch', label: 'ch', step: 1, min: 0, max: 100 },
+	{ value: 'px', label: 'px', step: 1, min: 0, max: MAX_COLUMN_WIDTH },
+	{ value: 'em', label: 'em', step: 0.1, min: 0 },
+	{ value: 'rem', label: 'rem', step: 0.1, min: 0 },
+	{ value: '%', label: '%', step: 1, min: 0, max: 100 },
+	{ value: 'ch', label: 'ch', step: 1, min: 0, max: 100 },
 ];
 
 /**
