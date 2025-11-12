@@ -313,31 +313,36 @@ class AlphaListing_Widget extends \WP_Widget {
 	 * @param  array<string,mixed> $old_instance the previous configuration values.
 	 * @return array<string,mixed> sanitised version of the new configuration values to be saved
 	 */
-	public function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
+    public function update( $new_instance, $old_instance ) {
+            $instance = $old_instance;
 
-		$instance['title']             = wp_strip_all_tags( $new_instance['title'] );
-		$instance['type']              = wp_strip_all_tags( $new_instance['type'] );
-		$instance['post']              = (int) $new_instance['post']; // target.
-		$instance['target_post_title'] = wp_strip_all_tags( $new_instance['target_post_title'] );
-		$instance['post_type']         = wp_strip_all_tags( $new_instance['post_type'] );
-		$instance['taxonomy']          = wp_strip_all_tags( $new_instance['taxonomy'] );
-		$instance['parent_post']       = (int) $new_instance['parent_post'];
-		$instance['all_children']      = 'on' === $new_instance['all_children'] ? 'true' : 'false';
-		$instance['parent_term']       = wp_strip_all_tags( $new_instance['parent_term'] );
-		$instance['terms']             = wp_strip_all_tags( $new_instance['terms'] );
-		$instance['exclude_terms']     = wp_strip_all_tags( $new_instance['exclude_terms'] );
-		$instance['hide_empty_terms']  = 'on' === $new_instance['hide_empty_terms'] ? 'true' : 'false';
+            $target_post_title  = wp_strip_all_tags( $new_instance['target_post_title'] ?? '' );
+            $parent_post_title  = wp_strip_all_tags( $new_instance['parent_post_title'] ?? '' );
+            $all_children_input = $new_instance['all_children'] ?? '';
+            $hide_empty_input   = $new_instance['hide_empty_terms'] ?? '';
 
-		if ( empty( $new_instance['target_post_title'] ) ) {
-			$instance['post'] = 0;
-		}
-		if ( empty( $new_instance['parent_post_title'] ) ) {
-			$instance['parent_post'] = 0;
-		}
+            $instance['title']             = wp_strip_all_tags( $new_instance['title'] ?? '' );
+            $instance['type']              = wp_strip_all_tags( $new_instance['type'] ?? '' );
+            $instance['post']              = (int) ( $new_instance['post'] ?? 0 ); // target.
+            $instance['target_post_title'] = $target_post_title;
+            $instance['post_type']         = wp_strip_all_tags( $new_instance['post_type'] ?? '' );
+            $instance['taxonomy']          = wp_strip_all_tags( $new_instance['taxonomy'] ?? '' );
+            $instance['parent_post']       = (int) ( $new_instance['parent_post'] ?? 0 );
+            $instance['all_children']      = 'on' === $all_children_input ? 'true' : 'false';
+            $instance['parent_term']       = wp_strip_all_tags( $new_instance['parent_term'] ?? '' );
+            $instance['terms']             = wp_strip_all_tags( $new_instance['terms'] ?? '' );
+            $instance['exclude_terms']     = wp_strip_all_tags( $new_instance['exclude_terms'] ?? '' );
+            $instance['hide_empty_terms']  = 'on' === $hide_empty_input ? 'true' : 'false';
 
-		return $instance;
-	}
+            if ( '' === $target_post_title ) {
+                    $instance['post'] = 0;
+            }
+            if ( '' === $parent_post_title ) {
+                    $instance['parent_post'] = 0;
+            }
+
+            return $instance;
+    }
 
 	/**
 	 * Print the user-visible widget to the page
