@@ -7,8 +7,11 @@ $defaultColumnGap: 0.6em;
 .az-letters,
 .alphalisting-widget .az-letters,
 .alphalisting-widget.widget .az-letters {
+
 	white-space: initial;
+
 	> ul.az-links {
+		
 		padding: 0;
 		margin: 0;
 		width: 100%;
@@ -17,41 +20,61 @@ $defaultColumnGap: 0.6em;
 		flex-wrap: wrap;
 		justify-content: center;
 		font-size: 1.2em;
+
 		> li {
 			list-style: none;
-			width: 2.6em;
-			height: 2.4em;
+			width: 2.08em;
+			height: 1.92em;
 			box-sizing: border-box;
 			margin: 0 0.1em 0.6em;
-			border: 2px solid #e5e5e5;
+			border: 1px solid transparent;
 			background: #f5f5f5;
 			color: #adadad;
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			border-radius: 0.4em;
+
 			&:before,
 			&:after {
 				content: initial;
 			}
+
+			&:has(> a):hover {
+				border-color:#e5e5e5;
+				box-shadow: 0 0 3px #e5e5e5;
+			}
+			
 			a {
+				display: flex;
+				width: 100%;
+				height: 100%;
+				align-items: center;
+				justify-content: center;
 				color: #1f7d9a;
 				text-decoration: none;
 				border: 0;
 				box-shadow: none;
 			}
+			
 		}
+
 	}
+
 }
 
 div.letter-section {
-	margin-bottom: 2em;
+
+	margin-bottom: 1em;
 	white-space: initial;
+
 	h2.letter-title {
-		border-bottom: 1px solid black;
-		margin-bottom: 0.2em;
+		border-bottom: 1px solid #000;
+		margin-bottom: 0.4em;
 		padding-bottom: 0.2em;
 		width: 100%;
 	}
+
 	> ul.az-columns {
 		padding: 0;
 		margin: 0;
@@ -85,20 +108,39 @@ div.letter-section {
 				max-width: string.unquote('calc((min(var(--alphalisting-column-count, #{$defaultColumnCount}), #{$column}) * var(--alphalisting-column-width, #{$defaultColumnWidth})) + ((min(var(--alphalisting-column-count, #{$defaultColumnCount}), #{$column}) - 1) * var(--alphalisting-column-gap, #{$defaultColumnGap})))');
 			}
 		}
+
 	}
+
 	div.back-to-top {
-		display: var(--alphalisting-back-to-top-display, block);
-		width: 100%;
-		text-align: right;
+
+		display: flex;
+		align-items: center;
+		justify-content: end;
+
 		a {
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			text-transform: uppercase;
+			text-decoration: none;
 			font-size: 0.7em;
-			&:before,
-			&:after {
-				font-family: dashicons;
-				content: "\f343";
-				padding: 0.2em;
+			color: #1f7d9a;
+			line-height: normal;
+			background-color: #f5f5f5;
+			padding: 3px 6px;
+			gap: 3px;
+			box-sizing: border-box;
+			border: 1px solid transparent;
+			border-radius: 0.4em;
+
+			&:hover {
+				border-color:#e5e5e5;
+				box-shadow: 0 0 3px #e5e5e5;
 			}
+
 		}
+
 	}
+
 }

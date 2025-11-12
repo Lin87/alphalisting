@@ -19,16 +19,17 @@
 .alphalisting-widget .az-letters > ul.az-links > li,
 .alphalisting-widget.widget .az-letters > ul.az-links > li {
   list-style: none;
-  width: 2.6em;
-  height: 2.4em;
+  width: 2.08em;
+  height: 1.92em;
   box-sizing: border-box;
   margin: 0 0.1em 0.6em;
-  border: 2px solid #e5e5e5;
+  border: 1px solid transparent;
   background: #f5f5f5;
   color: #adadad;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 0.4em;
 }
 .az-letters > ul.az-links > li:before, .az-letters > ul.az-links > li:after,
 .alphalisting-widget .az-letters > ul.az-links > li:before,
@@ -37,9 +38,20 @@
 .alphalisting-widget.widget .az-letters > ul.az-links > li:after {
   content: initial;
 }
+.az-letters > ul.az-links > li:has(> a):hover,
+.alphalisting-widget .az-letters > ul.az-links > li:has(> a):hover,
+.alphalisting-widget.widget .az-letters > ul.az-links > li:has(> a):hover {
+  border-color: #e5e5e5;
+  box-shadow: 0 0 3px #e5e5e5;
+}
 .az-letters > ul.az-links > li a,
 .alphalisting-widget .az-letters > ul.az-links > li a,
 .alphalisting-widget.widget .az-letters > ul.az-links > li a {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
   color: #1f7d9a;
   text-decoration: none;
   border: 0;
@@ -47,12 +59,12 @@
 }
 
 div.letter-section {
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   white-space: initial;
 }
 div.letter-section h2.letter-title {
-  border-bottom: 1px solid black;
-  margin-bottom: 0.2em;
+  border-bottom: 1px solid #000;
+  margin-bottom: 0.4em;
   padding-bottom: 0.2em;
   width: 100%;
 }
@@ -173,16 +185,27 @@ div.letter-section > ul.az-columns.max-16-columns {
   max-width: calc((min(var(--alphalisting-column-count, 3), 16) * var(--alphalisting-column-width, 15em)) + ((min(var(--alphalisting-column-count, 3), 16) - 1) * var(--alphalisting-column-gap, 0.6em)));
 }
 div.letter-section div.back-to-top {
-  display: var(--alphalisting-back-to-top-display, block);
-  width: 100%;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: end;
 }
 div.letter-section div.back-to-top a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-transform: uppercase;
+  text-decoration: none;
   font-size: 0.7em;
+  color: #1f7d9a;
+  line-height: normal;
+  background-color: #f5f5f5;
+  padding: 3px 6px;
+  gap: 3px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: 0.4em;
 }
-div.letter-section div.back-to-top a:before, div.letter-section div.back-to-top a:after {
-  font-family: dashicons;
-  content: "\f343";
-  padding: 0.2em;
+div.letter-section div.back-to-top a:hover {
+  border-color: #e5e5e5;
+  box-shadow: 0 0 3px #e5e5e5;
 }
