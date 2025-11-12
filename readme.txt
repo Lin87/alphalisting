@@ -58,9 +58,11 @@ Comprehensive documentation is now available:
 
 = 4.3.7 =
 
-* Harden column layout attribute sanitization.
-* Fix parent selector attribute wiring in block editor
-* Add exclude post and term IDs fields to the block settings.
+* Bugfix: harden column layout attribute sanitization.
+* Bugfix: fix parent selector attribute wiring in block editor.
+* Bugfix: harden widget update sanitization.
+* Bugfix: fix get_item_meta to handle plural item prefixes.
+* New: add exclude post and term IDs fields to the block settings.
 
 = 4.3.6 =
 
