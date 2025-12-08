@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: AlphaListing 4.3.6\n"
+"Project-Id-Version: AlphaListing 4.3.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alphalisting\n"
-"POT-Creation-Date: 2025-09-30 13:14:05+00:00\n"
+"POT-Creation-Date: 2025-12-08 16:09:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -85,11 +85,11 @@ msgstr ""
 msgid "#"
 msgstr ""
 
-#: templates/a-z-listing.example.php:51 templates/a-z-listing.php:72
+#: templates/a-z-listing.example.php:51 templates/a-z-listing.php:75
 msgid "Back to top"
 msgstr ""
 
-#: templates/a-z-listing.example.php:61 templates/a-z-listing.php:83
+#: templates/a-z-listing.example.php:61 templates/a-z-listing.php:86
 msgid "There are no posts included in this index."
 msgstr ""
 
@@ -98,7 +98,7 @@ msgid "Alphabetised links to the A-Z site map"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:43
-#: widgets/class-alphalisting-widget.php:441
+#: widgets/class-alphalisting-widget.php:447
 msgid "A-Z Site Map"
 msgstr ""
 
@@ -181,7 +181,7 @@ msgstr ""
 msgid "Hide empty terms"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:551
+#: widgets/class-alphalisting-widget.php:557
 msgid "Security check failed"
 msgstr ""
 

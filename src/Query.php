@@ -920,10 +920,15 @@ class Query {
 		if ( is_string( $this->current_item['item'] ) ) {
 			$item = explode( ':', $this->current_item['item'], 2 );
 
-			if ( 'term' === $item[0] ) {
-				return get_term_meta( intval( $item[1] ), $key, $single );
-			} elseif ( 'post' === $item[0] ) {
-				return get_post_meta( intval( $item[1] ), $key, $single );
+			if ( isset( $item[1] ) ) {
+				$prefix = $item[0];
+				$item_id = intval( $item[1] );
+
+				if ( in_array( $prefix, array( 'term', 'terms' ), true ) ) {
+					return get_term_meta( $item_id, $key, $single );
+				} elseif ( in_array( $prefix, array( 'post', 'posts' ), true ) ) {
+					return get_post_meta( $item_id, $key, $single );
+				}
 			}
 		} elseif ( $this->current_item['item'] instanceof \WP_Term ) {
 			return get_term_meta( $this->current_item['item']->term_id, $key, $single );

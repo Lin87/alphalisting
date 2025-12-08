@@ -7,12 +7,16 @@
         "default": 3
     },
     "column-width": {
-      "type": "string",
-      "default": "15em"
+        "type": "string",
+        "default": "15em"
     },
     "column-gap": {
         "type": "string",
         "default": "0.6em"
+    },
+    "get-all-children": {
+        "type": "boolean",
+        "default": false
     },
     "display": {
         "type": "string",
@@ -77,49 +81,15 @@
         "default": []
     },
     "parent-term": {
-        "type": "number",
-        "default": 0
+        "type": "string",
+        "default": ""
     },
     "hide-empty": {
         "type": "boolean",
         "default": false
     },
-
-
-    "displayPostContent": {
+    "hide-empty-terms": {
         "type": "boolean",
         "default": false
-    },
-    "displayPostContentRadio": {
-        "type": "string",
-        "default": "excerpt"
-    },
-    "excerptLength": {
-        "type": "number",
-        "default": 55
-    },
-    "displayPostDate": {
-        "type": "boolean",
-        "default": false
-    },
-    "displayFeaturedImage": {
-        "type": "boolean",
-        "default": false
-    },
-    "featuredImageAlign": {
-        "type": "string",
-        "enum": ["left", "center", "right"]
-    },
-    "featuredImageSizeSlug": {
-        "type": "string",
-        "default":"thumbnail"
-    },
-    "featuredImageSizeWidth": {
-        "type": "number",
-        "default":150
-    },
-    "featuredImageSizeHeight": {
-        "type": "number",
-        "default":150
     }
 }
