@@ -747,6 +747,15 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
+										<ToggleControl
+											label={ __( 'Show back to top link', 'alphalisting' ) }
+											checked={ !! attributes['back-to-top'] }
+											onChange={ ( value ) =>
+												setAttributes( { 'back-to-top': value } )
+											}
+											__next40pxDefaultSize
+											__nextHasNoMarginBottom
+										/>
 
 										<RangeControl
 											label={ __( 'Columns', 'alphalisting' ) }

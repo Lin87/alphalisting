@@ -58,6 +58,7 @@ function alphalisting_init() {
 
 	// Shortcode attribute handlers.
 	\eslin87\AlphaListing\Shortcode\QueryParts\Alphabet::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\BackToTop::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\Columns::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ColumnGap::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ColumnWidth::instance()->activate( __FILE__ )->initialize();

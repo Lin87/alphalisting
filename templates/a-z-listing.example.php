@@ -46,11 +46,13 @@
 							<?php endwhile; ?>
 						</ul>
 
-						<div class="back-to-top">
-							<a href="#<?php $a_z_query->the_instance_id(); ?>">
-								<?php esc_html_e( 'Back to top', 'alphalisting' ); ?>
-							</a>
-						</div>
+						<?php if ( apply_filters( 'alphalisting_show_back_to_top', true, $a_z_query ) ) : ?>
+							<div class="back-to-top">
+								<a href="#<?php $a_z_query->the_instance_id(); ?>">
+									<?php esc_html_e( 'Back to top', 'alphalisting' ); ?>
+								</a>
+							</div>
+						<?php endif; ?>
 					</div>
 				<?php endif; ?>
 			<?php endwhile; ?>

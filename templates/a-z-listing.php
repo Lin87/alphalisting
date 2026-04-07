@@ -67,14 +67,16 @@ $a_z_listing_minpercol = 10;
 							<?php endwhile; ?>
 						</ul>
 
-						<div class="back-to-top">
-							<a href="#<?php $a_z_query->the_instance_id(); ?>">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
-									<path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>
-								</svg>
-								<?php esc_html_e( 'Back to top', 'alphalisting' ); ?>
-							</a>
-						</div>
+						<?php if ( apply_filters( 'alphalisting_show_back_to_top', true, $a_z_query ) ) : ?>
+							<div class="back-to-top">
+								<a href="#<?php $a_z_query->the_instance_id(); ?>">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
+										<path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>
+									</svg>
+									<?php esc_html_e( 'Back to top', 'alphalisting' ); ?>
+								</a>
+							</div>
+						<?php endif; ?>
 					</div>
 					<?php
 				endif;
