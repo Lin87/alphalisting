@@ -56,6 +56,11 @@ Comprehensive documentation is now available:
 
 == Changelog ==
 
+= 4.3.8 =
+
+* New: add an block setting option and `back-to-top` shortcode attribute to show/hide the "Back to top" link.
+* Prevent PHP 8 TypeError in callbacks.
+
 = 4.3.7 =
 
 * Bugfix: harden column layout attribute sanitization.
