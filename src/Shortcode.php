@@ -48,6 +48,7 @@ class Shortcode extends Singleton implements Extension {
 		$defaults   = apply_filters(
 			'alphalisting_get_shortcode_attributes',
 			array(
+				'back-to-top'      => 'true',
 				'display'          => 'posts',
 				'get-all-children' => 'false',
 				'group-numbers'    => '',
