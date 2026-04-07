@@ -1,6 +1,6 @@
 {
   "name": "alphalisting",
-  "version": "4.3.7",
+  "version": "4.3.8",
   "main": "build/index.js",
   "author": "Ethan Lin",
   "scripts": {
@@ -12,21 +12,20 @@
     "lint:js": "wp-scripts lint-js ./scripts",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "packages-update": "wp-scripts packages-update",
-    "postpackages-update": "npm run build",
     "start": "wp-scripts start ./scripts/blocks/index.js"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^30.27.0",
+    "@wordpress/scripts": "^31.8.0",
     "grunt": "^1.6.1",
     "grunt-cli": "^1.5.0",
-    "grunt-sass": "^4.0.0",
-    "grunt-wp-i18n": "^1.0.3",
+    "grunt-sass": "^4.1.0",
+    "grunt-wp-i18n": "^1.0.4",
     "grunt-wp-readme-to-markdown": "^2.1.0",
-    "sass": "^1.89.2"
+    "sass": "^1.99.0"
   },
   "dependencies": {
-    "@wordpress/icons": "^11.1.0",
-    "lodash": "^4.17.20",
+    "@wordpress/icons": "^12.1.0",
+    "lodash": "^4.18.1",
     "uuid": "^13.0.0"
   }
 }

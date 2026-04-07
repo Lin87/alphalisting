@@ -2,10 +2,10 @@
 
 Contributors: eslin87
 Tags: a to z, a-z, index, listing, widget
-Requires at least: 5.0
+Requires at least: 5.3
 Requires PHP: 8.0
-Tested up to: 6.9
-Stable tag: 4.3.7
+Tested up to: 7.0
+Stable tag: 4.3.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
