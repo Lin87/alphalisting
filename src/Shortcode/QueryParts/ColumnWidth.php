@@ -70,9 +70,11 @@ class ColumnWidth extends Extension {
      * Return the stylesheet for this instance.
      *
      * @param string             $styles      The stylesheet.
+     * @param mixed              $query       The listing query instance passed by the filter.
+     * @param mixed              $instance_id The listing instance id passed by the filter.
      * @return string
      */
-    public function return_styles($styles): string {
+    public function return_styles($styles, $query = null, $instance_id = null): string {
         return sprintf('%s --alphalisting-column-width: %s; ', $styles, $this->column_width);
     }
 
