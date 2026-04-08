@@ -13,6 +13,9 @@ const NUMBER_ATTRIBUTES = new Set( [ 'columns', 'grouping', 'parent-post' ] );
 
 const ARRAY_NUMBER_ATTRIBUTES = new Set( [ 'exclude-posts' ] );
 const ARRAY_STRING_ATTRIBUTES = new Set( [ 'terms', 'exclude-terms' ] );
+const SHORTCODE_DEFAULTS = {
+    'post-type': 'page',
+};
 
 const isTruthy = ( value ) => {
     if ( typeof value === 'boolean' ) {
@@ -48,13 +51,19 @@ const toArray = ( value ) => {
 };
 
 const normalizeAttributeValue = ( key, value ) => {
+    if ( key === 'post-type' ) {
+        const firstPostType = toArray( value )[ 0 ] ?? '';
+
+        return firstPostType || SHORTCODE_DEFAULTS['post-type'];
+    }
+
     if ( BOOLEAN_ATTRIBUTES.has( key ) ) {
         return isTruthy( value );
     }
 
     if ( NUMBER_ATTRIBUTES.has( key ) ) {
         if ( key === 'grouping' && typeof value === 'string' && value.trim().toLowerCase() === 'numbers' ) {
-            return 0;
+            return undefined;
         }
 
         const parsed = parseInt( value, 10 );

@@ -302,7 +302,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 	const postTypesTaxonomiesSelectOptions = useMemo( () => {
 		let postTaxonomies = [];
 		if ( attributes['display'] === 'posts' && attributes['post-type'] && postTypesTaxonomiesMap ) {
-			postTaxonomies = postTypesTaxonomiesMap[ attributes['post-type'] ];
+			postTaxonomies = postTypesTaxonomiesMap[ attributes['post-type'] ] || [];
 		}
 		return [ { label: '', slug: '' } ].concat(
 			allTaxonomies
