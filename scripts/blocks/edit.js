@@ -511,6 +511,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 										{ 'posts' === attributes.display && (
 											<SelectControl
 												label={ __( 'Post Type', 'alphalisting' ) }
+												help={ __( 'Select the post types to display. Hold Ctrl to select multiple.', 'alphalisting' ) }
 												value={ selectedPostTypes }
 												options={ postTypesSelectOptions }
 												onChange={ ( value ) =>
