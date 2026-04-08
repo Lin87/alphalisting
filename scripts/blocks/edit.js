@@ -8,7 +8,7 @@ import { useEffect, useMemo } from '@wordpress/element';
 import { FormTokenField, PanelBody, Placeholder, RangeControl, SelectControl, Spinner, ToggleControl, TextControl, __experimentalUnitControl as UnitControl, __experimentalSpacer as Spacer } from '@wordpress/components';
 import * as ServerSideRenderModule from '@wordpress/server-side-render';
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/block-editor';
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 import { pin } from '@wordpress/icons';
@@ -278,6 +278,7 @@ const sanitizePostTypeList = ( values ) => {
 };
 
 const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
+	const blockProps = useBlockProps();
 	const { postTypes, allTaxonomies } = useSelect( ( select ) => {
 		const { getPostTypes, getTaxonomies } = select( coreStore );
 		const excludedPostTypes = [ 'attachment' ];
@@ -868,7 +869,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 	);
 
 	return (
-		<>
+		<div { ...blockProps }>
 			{ inspectorControls }
 
 			{ errors.length > 0 ? (
@@ -906,7 +907,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 					) }
 				/>
 			) }
-		</>
+		</div>
 	);
 }
 
