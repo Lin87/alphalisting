@@ -53,6 +53,10 @@ const normalizeAttributeValue = ( key, value ) => {
     }
 
     if ( NUMBER_ATTRIBUTES.has( key ) ) {
+        if ( key === 'grouping' && typeof value === 'string' && value.trim().toLowerCase() === 'numbers' ) {
+            return 0;
+        }
+
         const parsed = parseInt( value, 10 );
 
         return Number.isNaN( parsed ) ? undefined : parsed;
@@ -75,13 +79,19 @@ export const parseShortcodeAttributes = ( shortcodeText ) => {
     const parsedAttributes = attrs( shortcodeText );
     const namedAttributes = parsedAttributes?.named || parsedAttributes || {};
 
-    return Object.entries( namedAttributes ).reduce( ( attributes, [ key, value ] ) => {
+    const attributes = Object.entries( namedAttributes ).reduce( ( parsed, [ key, value ] ) => {
         const normalizedValue = normalizeAttributeValue( key, value );
 
         if ( typeof normalizedValue !== 'undefined' ) {
-            attributes[ key ] = normalizedValue;
+            parsed[ key ] = normalizedValue;
         }
 
-        return attributes;
+        return parsed;
     }, {} );
+
+    if ( typeof namedAttributes.grouping === 'string' && namedAttributes.grouping.trim().toLowerCase() === 'numbers' ) {
+        attributes[ 'group-numbers' ] = true;
+    }
+
+    return attributes;
 };
