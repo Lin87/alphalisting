@@ -1,0 +1,87 @@
+import { attrs } from '@wordpress/shortcode';
+
+const BOOLEAN_ATTRIBUTES = new Set( [
+    'get-all-children',
+    'group-numbers',
+    'symbols-first',
+    'back-to-top',
+    'hide-empty',
+    'hide-empty-terms',
+] );
+
+const NUMBER_ATTRIBUTES = new Set( [ 'columns', 'grouping', 'parent-post' ] );
+
+const ARRAY_NUMBER_ATTRIBUTES = new Set( [ 'exclude-posts' ] );
+const ARRAY_STRING_ATTRIBUTES = new Set( [ 'terms', 'exclude-terms' ] );
+
+const isTruthy = ( value ) => {
+    if ( typeof value === 'boolean' ) {
+        return value;
+    }
+
+    if ( typeof value === 'number' ) {
+        return value !== 0;
+    }
+
+    if ( typeof value !== 'string' ) {
+        return false;
+    }
+
+    const normalized = value.trim().toLowerCase();
+
+    return [ '1', 'true', 'yes', 'y', 'on' ].includes( normalized );
+};
+
+const toArray = ( value ) => {
+    if ( Array.isArray( value ) ) {
+        return value;
+    }
+
+    if ( typeof value !== 'string' ) {
+        return [];
+    }
+
+    return value
+        .split( ',' )
+        .map( ( item ) => item.trim() )
+        .filter( Boolean );
+};
+
+const normalizeAttributeValue = ( key, value ) => {
+    if ( BOOLEAN_ATTRIBUTES.has( key ) ) {
+        return isTruthy( value );
+    }
+
+    if ( NUMBER_ATTRIBUTES.has( key ) ) {
+        const parsed = parseInt( value, 10 );
+
+        return Number.isNaN( parsed ) ? undefined : parsed;
+    }
+
+    if ( ARRAY_NUMBER_ATTRIBUTES.has( key ) ) {
+        return toArray( value )
+            .map( ( item ) => parseInt( item, 10 ) )
+            .filter( ( item ) => ! Number.isNaN( item ) );
+    }
+
+    if ( ARRAY_STRING_ATTRIBUTES.has( key ) ) {
+        return toArray( value );
+    }
+
+    return value;
+};
+
+export const parseShortcodeAttributes = ( shortcodeText ) => {
+    const parsedAttributes = attrs( shortcodeText );
+    const namedAttributes = parsedAttributes?.named || parsedAttributes || {};
+
+    return Object.entries( namedAttributes ).reduce( ( attributes, [ key, value ] ) => {
+        const normalizedValue = normalizeAttributeValue( key, value );
+
+        if ( typeof normalizedValue !== 'undefined' ) {
+            attributes[ key ] = normalizedValue;
+        }
+
+        return attributes;
+    }, {} );
+};
