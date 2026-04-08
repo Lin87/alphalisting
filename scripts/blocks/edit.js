@@ -35,7 +35,7 @@ addFilter(
 	'alphalisting',
 	( attributes ) => ( {
 		...attributes,
-		'post-type': [ ...defaults['post-type'].default ],
+		'post-type': defaults['post-type'].default,
 		taxonomy: defaults.taxonomy.default,
 		terms: [ ...defaults.terms.default ],
 		'exclude-posts': [ ...defaults['exclude-posts'].default ],
@@ -449,9 +449,13 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 		}
 
 		const sanitized = sanitizePostTypeList( attributes['post-type'] );
+		const normalized = sanitized.join( ',' );
+		const current = Array.isArray( attributes['post-type'] )
+			? attributes['post-type'].join( ',' )
+			: String( attributes['post-type'] ?? '' ).trim();
 
-		if ( JSON.stringify( sanitized ) !== JSON.stringify( attributes['post-type'] ) ) {
-			setAttributes( { 'post-type': sanitized } );
+		if ( normalized !== current ) {
+			setAttributes( { 'post-type': normalized } );
 		}
 	}, [ attributes['post-type'], setAttributes ] );
 
@@ -513,7 +517,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 													setAttributes(
 														applyFilters(
 															'alphalisting_selection_changed_for__post-type',
-															{ 'post-type': sanitizePostTypeList( value ) }
+															{ 'post-type': sanitizePostTypeList( value ).join( ',' ) }
 														)
 													)
 												}

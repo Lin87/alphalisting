@@ -49,7 +49,9 @@ const toArray = ( value ) => {
 
 const normalizeAttributeValue = ( key, value ) => {
     if ( key === 'post-type' ) {
-        return toArray( value );
+        const postTypes = toArray( value );
+
+        return postTypes.length > 0 ? postTypes.join( ',' ) : undefined;
     }
 
     if ( BOOLEAN_ATTRIBUTES.has( key ) ) {

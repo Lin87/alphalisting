@@ -52,11 +52,7 @@
         "default": true
     },
     "post-type": {
-        "type": "array",
-        "items": {
-            "type": "string"
-        },
-        "default": ["page"]
+        "default": "page"
     },
     "exclude-posts": {
         "type": "array",
