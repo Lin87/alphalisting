@@ -5,7 +5,7 @@
 **Requires at least:** 5.3  
 **Requires PHP:** 8.0  
 **Tested up to:** 7.0  
-**Stable tag:** 4.3.8  
+**Stable tag:** 4.4.0  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -60,10 +60,12 @@ Comprehensive documentation is now available:
 
 ## Changelog ##
 
-### 4.3.8 ###
+### 4.4.0 ###
 
-* New: add an block setting option and `back-to-top` shortcode attribute to show/hide the "Back to top" link.
-* Prevent PHP 8 TypeError in callbacks.
+* New: add a block setting option and `back-to-top` shortcode attribute to show/hide the "Back to top" link.
+* Change: the post type select control now allows multiple selections, enabling listings across multiple post types simultaneously.
+* Bugfix: fix shortcode attribute not properly carried over to the block setting during shortcode to block conversion.
+* Bugfix: prevent PHP 8 TypeError in callbacks.
 
 ### 4.3.7 ###
 
