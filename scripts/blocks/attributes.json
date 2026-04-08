@@ -52,7 +52,6 @@
         "default": true
     },
     "post-type": {
-        "type": "string",
         "default": "page"
     },
     "exclude-posts": {
