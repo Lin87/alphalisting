@@ -13,9 +13,6 @@ const NUMBER_ATTRIBUTES = new Set( [ 'columns', 'grouping', 'parent-post' ] );
 
 const ARRAY_NUMBER_ATTRIBUTES = new Set( [ 'exclude-posts' ] );
 const ARRAY_STRING_ATTRIBUTES = new Set( [ 'terms', 'exclude-terms' ] );
-const SHORTCODE_DEFAULTS = {
-    'post-type': 'page',
-};
 
 const isTruthy = ( value ) => {
     if ( typeof value === 'boolean' ) {
@@ -52,9 +49,7 @@ const toArray = ( value ) => {
 
 const normalizeAttributeValue = ( key, value ) => {
     if ( key === 'post-type' ) {
-        const firstPostType = toArray( value )[ 0 ] ?? '';
-
-        return firstPostType || SHORTCODE_DEFAULTS['post-type'];
+        return typeof value === 'string' ? value.trim() : value;
     }
 
     if ( BOOLEAN_ATTRIBUTES.has( key ) ) {
@@ -84,9 +79,24 @@ const normalizeAttributeValue = ( key, value ) => {
     return value;
 };
 
-export const parseShortcodeAttributes = ( shortcodeText ) => {
+const getNamedShortcodeAttributes = ( shortcodeText ) => {
     const parsedAttributes = attrs( shortcodeText );
-    const namedAttributes = parsedAttributes?.named || parsedAttributes || {};
+    return parsedAttributes?.named || parsedAttributes || {};
+};
+
+export const canConvertShortcodeToBlock = ( shortcodeText ) => {
+    const namedAttributes = getNamedShortcodeAttributes( shortcodeText );
+    const postType = namedAttributes?.['post-type'];
+
+    if ( typeof postType !== 'string' ) {
+        return true;
+    }
+
+    return toArray( postType ).length <= 1;
+};
+
+export const parseShortcodeAttributes = ( shortcodeText ) => {
+    const namedAttributes = getNamedShortcodeAttributes( shortcodeText );
 
     const attributes = Object.entries( namedAttributes ).reduce( ( parsed, [ key, value ] ) => {
         const normalizedValue = normalizeAttributeValue( key, value );
