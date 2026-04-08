@@ -35,7 +35,7 @@ addFilter(
 	'alphalisting',
 	( attributes ) => ( {
 		...attributes,
-		'post-type': defaults['post-type'].default,
+		'post-type': [ ...defaults['post-type'].default ],
 		taxonomy: defaults.taxonomy.default,
 		terms: [ ...defaults.terms.default ],
 		'exclude-posts': [ ...defaults['exclude-posts'].default ],
@@ -263,6 +263,20 @@ const sanitizeStringTokenList = ( values ) => {
 	return Array.from( new Set( sanitized ) );
 };
 
+/**
+ * Normalize selected post types into unique string slugs.
+ *
+ * @param {unknown} values Raw attribute value.
+ * @return {string[]} Sanitized post type slugs.
+ */
+const sanitizePostTypeList = ( values ) => {
+	if ( typeof values === 'string' ) {
+		values = values.split( ',' );
+	}
+
+	return sanitizeStringTokenList( values );
+};
+
 const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 	const { postTypes, allTaxonomies } = useSelect( ( select ) => {
 		const { getPostTypes, getTaxonomies } = select( coreStore );
@@ -301,8 +315,12 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 
 	const postTypesTaxonomiesSelectOptions = useMemo( () => {
 		let postTaxonomies = [];
-		if ( attributes['display'] === 'posts' && attributes['post-type'] && postTypesTaxonomiesMap ) {
-			postTaxonomies = postTypesTaxonomiesMap[ attributes['post-type'] ] || [];
+		const selectedPostTypes = sanitizePostTypeList( attributes['post-type'] ?? defaults['post-type'].default );
+		if ( attributes['display'] === 'posts' && selectedPostTypes.length > 0 && postTypesTaxonomiesMap ) {
+			postTaxonomies = selectedPostTypes.flatMap(
+				( postType ) => postTypesTaxonomiesMap[ postType ] || []
+			);
+			postTaxonomies = Array.from( new Set( postTaxonomies ) );
 		}
 		return [ { label: '', slug: '' } ].concat(
 			allTaxonomies
@@ -312,7 +330,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 					value: tax.slug,
 				} ) )
 		);
-	}, [ attributes['post-type'], postTypesTaxonomiesMap, allTaxonomies ]);
+	}, [ attributes.display, attributes['post-type'], postTypesTaxonomiesMap, allTaxonomies ]);
 
 	const taxonomiesSelectOptions = useMemo( () => {
 		return [ { label: '', slug: '' } ].concat(
@@ -425,6 +443,18 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 		}
 	}, [ attributes.terms, attributes.display, setAttributes ] );
 
+	useEffect( () => {
+		if ( typeof attributes['post-type'] === 'undefined' ) {
+			return;
+		}
+
+		const sanitized = sanitizePostTypeList( attributes['post-type'] );
+
+		if ( JSON.stringify( sanitized ) !== JSON.stringify( attributes['post-type'] ) ) {
+			setAttributes( { 'post-type': sanitized } );
+		}
+	}, [ attributes['post-type'], setAttributes ] );
+
 	const excludePostsTokens = useMemo(
 		() => sanitizeNumericTokenList( attributes['exclude-posts'] ).map( ( token ) => token.toString() ),
 		[ attributes['exclude-posts'] ]
@@ -434,6 +464,13 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 		() => sanitizeNumericTokenList( attributes['exclude-terms'] ).map( ( token ) => token.toString() ),
 		[ attributes['exclude-terms'] ]
 	);
+	const selectedPostTypes = useMemo(
+		() => sanitizePostTypeList( attributes['post-type'] ?? defaults['post-type'].default ),
+		[ attributes['post-type'] ]
+	);
+	const selectedPostTypeForParent = selectedPostTypes.length === 1
+		? selectedPostTypes[ 0 ]
+		: '';
 
 	const parentTermValue = typeof attributes['parent-term'] === 'undefined'
 		? defaults['parent-term'].default
@@ -470,16 +507,17 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 										{ 'posts' === attributes.display && (
 											<SelectControl
 												label={ __( 'Post Type', 'alphalisting' ) }
-												value={ attributes['post-type'] ?? defaults['post-type'].default }
+												value={ selectedPostTypes }
 												options={ postTypesSelectOptions }
 												onChange={ ( value ) =>
 													setAttributes(
 														applyFilters(
 															'alphalisting_selection_changed_for__post-type',
-															{ 'post-type': value }
+															{ 'post-type': sanitizePostTypeList( value ) }
 														)
 													)
 												}
+												multiple
 												__next40pxDefaultSize
 												__nextHasNoMarginBottom
 											/>
@@ -487,11 +525,12 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 
 										{ (
 											'posts' === attributes.display &&
-											postTypesMap && postTypesMap[ attributes['post-type'] ]?.hierarchical
+											selectedPostTypeForParent &&
+											postTypesMap && postTypesMap[ selectedPostTypeForParent ]?.hierarchical
 										) && (
 											<PostParent
 												pageId={ attributes['parent-post'] ?? defaults['parent-post'].default }
-												postTypeSlug={ attributes['post-type'] ?? defaults['post-type'].default }
+												postTypeSlug={ selectedPostTypeForParent }
 												onChange={ ( parentId ) => setAttributes( { 'parent-post': parentId } ) }
 											/>
 										) }

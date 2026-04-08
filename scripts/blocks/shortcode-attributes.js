@@ -49,7 +49,7 @@ const toArray = ( value ) => {
 
 const normalizeAttributeValue = ( key, value ) => {
     if ( key === 'post-type' ) {
-        return typeof value === 'string' ? value.trim() : value;
+        return toArray( value );
     }
 
     if ( BOOLEAN_ATTRIBUTES.has( key ) ) {
@@ -82,17 +82,6 @@ const normalizeAttributeValue = ( key, value ) => {
 const getNamedShortcodeAttributes = ( shortcodeText ) => {
     const parsedAttributes = attrs( shortcodeText );
     return parsedAttributes?.named || parsedAttributes || {};
-};
-
-export const canConvertShortcodeToBlock = ( shortcodeText ) => {
-    const namedAttributes = getNamedShortcodeAttributes( shortcodeText );
-    const postType = namedAttributes?.['post-type'];
-
-    if ( typeof postType !== 'string' ) {
-        return true;
-    }
-
-    return toArray( postType ).length <= 1;
 };
 
 export const parseShortcodeAttributes = ( shortcodeText ) => {

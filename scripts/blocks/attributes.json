@@ -52,8 +52,11 @@
         "default": true
     },
     "post-type": {
-        "type": "string",
-        "default": "page"
+        "type": "array",
+        "items": {
+            "type": "string"
+        },
+        "default": ["page"]
     },
     "exclude-posts": {
         "type": "array",

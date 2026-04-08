@@ -19,7 +19,7 @@ import Extensions from '../components/Extensions';
 import AZInspectorControls from '../components/AZInspectorControls';
 
 import shortcodeUpgrader from './shortcode-upgrader';
-import { canConvertShortcodeToBlock, parseShortcodeAttributes } from './shortcode-attributes';
+import { parseShortcodeAttributes } from './shortcode-attributes';
 
 const store = createReduxStore( 'alphalisting/slotfills', {
     reducer( state = {} ) {
@@ -112,8 +112,7 @@ domReady( () => {
                     type: 'raw',
                     isMatch: ( node ) =>
                         node.nodeName === 'P' &&
-                        /^\s*\[alphalisting.*\]\s*$/.test( node.textContent ) &&
-                        canConvertShortcodeToBlock( node.textContent.trim() ),
+                        /^\s*\[alphalisting.*\]\s*$/.test( node.textContent ),
                     transform( node ) {
                         const attributes = parseShortcodeAttributes( node.textContent.trim() );
                         return createBlock( 'alphalisting/block', attributes );

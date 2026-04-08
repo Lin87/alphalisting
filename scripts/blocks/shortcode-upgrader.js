@@ -1,7 +1,7 @@
 import { createBlock } from '@wordpress/blocks';
 import { subscribe, select, dispatch } from '@wordpress/data';
 
-import { canConvertShortcodeToBlock, parseShortcodeAttributes } from './shortcode-attributes';
+import { parseShortcodeAttributes } from './shortcode-attributes';
 
 const validBlocks = ( blocks ) => Array.isArray( blocks ) && blocks.length > 0;
 
@@ -14,8 +14,7 @@ const transform = ( block ) => {
     if (
         block.name === 'core/shortcode' &&
         typeof block.attributes.text === 'string' &&
-        block.attributes.text.startsWith( '[alphalisting' ) &&
-        canConvertShortcodeToBlock( block.attributes.text )
+        block.attributes.text.startsWith( '[alphalisting' )
     ) {
         dispatch( 'core/block-editor' ).replaceBlocks( [ block.clientId ], [ blockHandler( block ) ] );
         return;

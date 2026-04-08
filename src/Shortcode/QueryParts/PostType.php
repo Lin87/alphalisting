@@ -47,12 +47,21 @@ class PostType extends Extension {
 	/**
 	 * Sanitize the shortcode attribute.
 	 *
-	 * @param string $value      The value of the shortcode attribute.
+	 * @param mixed $value      The value of the shortcode attribute.
 	 * @param array  $attributes The complete set of shortcode attributes.
 	 * @return string The sanitized value.
 	 */
 	public function sanitize_attribute( $value, array $attributes ) {
-		$value = trim( $value );
+		if ( is_array( $value ) ) {
+			$value = array_map( 'strval', $value );
+			$value = array_map( 'trim', $value );
+			$value = array_filter( $value );
+			$value = array_unique( $value );
+			$value = implode( ',', $value );
+		} else {
+			$value = trim( strval( $value ) );
+		}
+
 		return $value ? $value : 'page';
 	}
 
