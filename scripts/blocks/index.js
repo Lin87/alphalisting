@@ -21,6 +21,26 @@ import AZInspectorControls from '../components/AZInspectorControls';
 import shortcodeUpgrader from './shortcode-upgrader';
 import { parseShortcodeAttributes } from './shortcode-attributes';
 
+const createBlockFromShortcodeText = ( shortcodeText ) => {
+    if ( typeof shortcodeText !== 'string' ) {
+        return createBlock( 'alphalisting/block' );
+    }
+
+    let normalizedShortcode = shortcodeText.trim();
+
+    if ( ! normalizedShortcode.startsWith( '[alphalisting' ) ) {
+        normalizedShortcode = `[alphalisting${normalizedShortcode}`;
+    }
+
+    if ( ! normalizedShortcode.endsWith( ']' ) ) {
+        normalizedShortcode = `${normalizedShortcode}]`;
+    }
+
+    const attributes = parseShortcodeAttributes( normalizedShortcode );
+
+    return createBlock( 'alphalisting/block', attributes );
+};
+
 const store = createReduxStore( 'alphalisting/slotfills', {
     reducer( state = {} ) {
         return state;
@@ -99,15 +119,15 @@ domReady( () => {
                 {
                     type: 'prefix',
                     prefix: '[alphalisting',
-                    transform() {
-                        return createBlock( 'alphalisting/block' );
+                    transform( content ) {
+                        return createBlockFromShortcodeText( content );
                     },
                 },
                 {
                     type: 'prefix',
                     prefix: '[alphalisting]',
-                    transform() {
-                        return createBlock( 'alphalisting/block' );
+                    transform( content ) {
+                        return createBlockFromShortcodeText( content );
                     },
                 },
                 {
@@ -116,8 +136,7 @@ domReady( () => {
                         node.nodeName === 'P' &&
                         /^\s*\[alphalisting.*\]\s*$/.test( node.textContent ),
                     transform( node ) {
-                        const attributes = parseShortcodeAttributes( node.textContent.trim() );
-                        return createBlock( 'alphalisting/block', attributes );
+                        return createBlockFromShortcodeText( node.textContent );
                     },
                 },
             ],
