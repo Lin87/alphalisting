@@ -41,6 +41,17 @@ const createBlockFromShortcodeText = ( shortcodeText ) => {
     return createBlock( 'alphalisting/block', attributes );
 };
 
+const createBlockFromPrefixContent = ( prefixContent ) => {
+    if ( typeof prefixContent !== 'string' ) {
+        return createBlock( 'alphalisting/block' );
+    }
+
+    const shouldInsertSpace = prefixContent !== '' && ! /^[\s\]]/.test( prefixContent );
+    const normalizedShortcode = `[alphalisting${shouldInsertSpace ? ' ' : ''}${prefixContent}`;
+
+    return createBlockFromShortcodeText( normalizedShortcode );
+};
+
 const store = createReduxStore( 'alphalisting/slotfills', {
     reducer( state = {} ) {
         return state;
@@ -120,14 +131,14 @@ domReady( () => {
                     type: 'prefix',
                     prefix: '[alphalisting',
                     transform( content ) {
-                        return createBlockFromShortcodeText( content );
+                        return createBlockFromPrefixContent( content );
                     },
                 },
                 {
                     type: 'prefix',
                     prefix: '[alphalisting]',
                     transform( content ) {
-                        return createBlockFromShortcodeText( content );
+                        return createBlockFromPrefixContent( content );
                     },
                 },
                 {
