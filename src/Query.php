@@ -491,21 +491,21 @@ class Query {
 
 							$atitle_array = array_map(
 								function( $letter ) use ( $alphabet ) {
-									$normalised_letter = $alphabet->get_letter_for_key( $letter );
-									if ( $normalised_letter === $alphabet->unknown_letter ) {
-										$normalised_letter = $letter;
+									$normalized_letter = $alphabet->get_letter_for_key( $letter );
+									if ( $normalized_letter === $alphabet->unknown_letter ) {
+										$normalized_letter = $letter;
 									}
-									return $normalised_letter;
+									return $normalized_letter;
 								},
 								$atitle_array
 							);
 							$btitle_array = array_map(
 								function( $letter ) use ( $alphabet ) {
-									$normalised_letter = $alphabet->get_letter_for_key( $letter );
-									if ( $normalised_letter === $alphabet->unknown_letter ) {
-										$normalised_letter = $letter;
+									$normalized_letter = $alphabet->get_letter_for_key( $letter );
+									if ( $normalized_letter === $alphabet->unknown_letter ) {
+										$normalized_letter = $letter;
 									}
-									return $normalised_letter;
+									return $normalized_letter;
 								},
 								$btitle_array
 							);
@@ -566,7 +566,7 @@ class Query {
 							);
 
 							if ( is_int( $sort ) ) {
-								// normalise the returned value to -1, 0, or 1.
+								// normalize the returned value to -1, 0, or 1.
 								return $sort <=> 0;
 							}
 
@@ -734,7 +734,7 @@ class Query {
 	 * Retrieve column number, gap, and column width
 	 *
 	 * @since 4.3.2
-	 * @return string The inline style properities for column.
+	 * @return string The inline style properties for column.
 	 */
 	public function get_customized_column_styles() {
 		$styles = apply_filters( 'alphalisting_styles', '', $this, $this->instance_id );
@@ -1087,7 +1087,7 @@ class Query {
 	}
 
 	/**
-	 * Retreive the ID of the current item. This is not escaped!
+	 * Retrieve the ID of the current item. This is not escaped!
 	 *
 	 * @since 2.4.0
 	 * @return int The item ID.
@@ -1108,7 +1108,7 @@ class Query {
 	}
 
 	/**
-	 * Retreive the type of the current item.
+	 * Retrieve the type of the current item.
 	 *
 	 * @since 2.4.0
 	 * @return string|\WP_Error The type of the current item. Either `post` or `term`. Will return a \WP_Error object if the type of the current item cannot be determined.

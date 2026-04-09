@@ -1,6 +1,6 @@
 <?php
 /**
- * Javascripts enqueueing functions.
+ * JavaScript enqueueing functions.
  *
  * @package alphalisting
  */

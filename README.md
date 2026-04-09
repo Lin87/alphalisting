@@ -62,7 +62,7 @@ Comprehensive documentation is now available:
 
 ### 4.4.0 ###
 
-* New: add a block setting option and `back-to-top` shortcode attribute to show/hide the "Back to top" link.
+* New: add a block setting option and `back-to-top` shortcode attribute to show/hide the "Back to Top" link.
 * Change: the post type select control now allows multiple selections, enabling listings across multiple post types simultaneously.
 * Bugfix: fix shortcode attribute not properly carried over to the block setting during shortcode to block conversion.
 * Bugfix: prevent PHP 8 TypeError in callbacks.

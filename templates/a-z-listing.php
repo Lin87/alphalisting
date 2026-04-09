@@ -1,6 +1,6 @@
 <?php
 /**
- * Default multi-column template for the AlpahListing plugin
+ * Default multi-column template for the AlphaListing plugin
  *
  * This template will be given the variable `$a_z_query` which is an instance
  * of `AlphaListing`.

@@ -101,7 +101,7 @@ class Indices extends Singleton implements Extension {
 		$index = Strings::maybe_mb_substr( trim( $title ), 0, 1 );
 
 		/**
-		 * Modify the indice(s) to group this item under
+		 * Modify the index/indices to group this item under
 		 *
 		 * @since 2.1.0
 		 * @since 4.0.0 Set parameter type for `$item` to `mixed`.
@@ -112,7 +112,7 @@ class Indices extends Singleton implements Extension {
 		$index_letters = apply_filters( 'alphalisting-item-index-letter', array( $index ), $item, $type ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		/**
-		 * Modify the indice(s) to group this item under
+		 * Modify the index/indices to group this item under
 		 *
 		 * @since 2.1.0
 		 * @since 4.0.0 Set parameter type for `$item` to `mixed`.
@@ -134,7 +134,7 @@ class Indices extends Singleton implements Extension {
 		$filter_params = array( $indices, $item );
 		if ( $item instanceof \WP_Term ) {
 			/**
-			 * Modify the indice(s) to group this term under
+			 * Modify the index/indices to group this term under
 			 *
 			 * @deprecated Use alphalisting_item_index_letter and/or alphalisting_item_title
 			 * @see alphalisting_item_index_letter, alphalisting_item_title
@@ -142,7 +142,7 @@ class Indices extends Singleton implements Extension {
 			$indices = apply_filters_deprecated( 'alphalisting_term_indices', $filter_params, '1.0.0', 'alphalisting_item_index_letter' );
 		} elseif ( $item instanceof \WP_Post ) {
 			/**
-			 * Modify the indice(s) to group this post under
+			 * Modify the index/indices to group this post under
 			 *
 			 * @deprecated Use alphalisting_item_index_letter and/or alphalisting_item_title
 			 * @see alphalisting_item_index_letter, alphalisting_item_title
@@ -153,7 +153,7 @@ class Indices extends Singleton implements Extension {
 		$filter_params = array( $indices, $item, $type );
 
 		/**
-		 * Modify the indice(s) to group this item under
+		 * Modify the index/indices to group this item under
 		 *
 		 * @since 1.7.0
 		 * @since 2.1.0 Deprecated
@@ -167,7 +167,7 @@ class Indices extends Singleton implements Extension {
 		$indices = apply_filters_deprecated( 'alphalisting_item_indices', $filter_params, '2.1.0', 'alphalisting_item_index_letter' );
 
 		/**
-		 * Modify the indice(s) to group this item under
+		 * Modify the index/indices to group this item under
 		 *
 		 * @since 1.7.1
 		 * @since 2.1.0 Deprecated
