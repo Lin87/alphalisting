@@ -99,4 +99,30 @@ if (($query_with_relation["tax_query"][1]["operator"] ?? null) !== "NOT IN") {
     throw new RuntimeException("Expected appended clause operator to be NOT IN for relation tax_query.");
 }
 
-echo "ExcludeTerms merges tax_query clauses correctly for absent, numeric, and relation scenarios.\n";
+$query_with_named_clause = alphalisting_build_posts_query_with_exclude_terms(
+    [
+        "tax_query" => [
+            "relation" => "AND",
+            "featured_terms" => [
+                "taxonomy" => "category",
+                "field" => "slug",
+                "terms" => ["featured"],
+                "operator" => "IN",
+            ],
+        ],
+    ],
+);
+
+if (($query_with_named_clause["tax_query"]["relation"] ?? null) !== "AND") {
+    throw new RuntimeException("Expected relation to be preserved for named tax_query clauses.");
+}
+
+if (!isset($query_with_named_clause["tax_query"]["featured_terms"])) {
+    throw new RuntimeException("Expected named tax_query clause to be preserved.");
+}
+
+if (($query_with_named_clause["tax_query"][0]["operator"] ?? null) !== "NOT IN") {
+    throw new RuntimeException("Expected NOT IN clause to append without removing named clauses.");
+}
+
+echo "ExcludeTerms merges tax_query clauses correctly for absent, numeric, relation, and named-clause scenarios.\n";

@@ -81,29 +81,20 @@ class ExcludeTerms extends Extension {
             "operator" => "NOT IN",
         ];
 
-        $existing_tax_query = isset($query["tax_query"]) && is_array($query["tax_query"])
+        $tax_query = isset($query["tax_query"]) && is_array($query["tax_query"])
             ? $query["tax_query"]
             : [];
 
-        $relation = null;
-        if (isset($existing_tax_query["relation"])) {
-            $existing_relation = strtoupper((string) $existing_tax_query["relation"]);
+        if (isset($tax_query["relation"])) {
+            $existing_relation = strtoupper((string) $tax_query["relation"]);
             if (in_array($existing_relation, ["AND", "OR"], true)) {
-                $relation = $existing_relation;
-            }
-        }
-
-        $tax_query = [];
-        foreach ($existing_tax_query as $index => $clause) {
-            if (is_int($index) && is_array($clause)) {
-                $tax_query[] = $clause;
+                $tax_query["relation"] = $existing_relation;
+            } else {
+                unset($tax_query["relation"]);
             }
         }
 
         $tax_query[] = $exclude_clause;
-        if (null !== $relation) {
-            $tax_query["relation"] = $relation;
-        }
 
         $query["tax_query"] = $tax_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
         return $query;
