@@ -56,20 +56,14 @@ function alphalisting_do_enqueue() {
 	);
 
 	$add_styles = get_option( 'alphalisting-add-styling', true );
+
 	/**
 	 * Determine whether to add default listing styling
 	 *
 	 * @param bool True to add default styling, False to disable.
 	 * @since 1.7.1
 	 */
-	$add_styles = apply_filters( 'alphalisting_add_styling', $add_styles );
-	/**
-	 * Determine whether to add default listing styling
-	 *
-	 * @param bool True to add default styling, False to disable.
-	 * @since 1.7.1
-	 */
-	$add_styles = apply_filters( 'alphalisting-add-styling', $add_styles ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+	$add_styles = apply_filters( 'alphalisting_add_styling', $add_styles ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 	if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG ) {
 		do_action( 'alphalisting_log', 'AlphaListing: Add Styles', $add_styles );
@@ -81,20 +75,14 @@ function alphalisting_do_enqueue() {
 	add_action( 'customize_controls_enqueue_scripts', 'alphalisting_customize_enqueue_styles' );
 
 	$tabify = get_option( 'alphalisting-add-tabs', false );
+	
 	/**
 	 * Determine whether to add jQuery-UI Tabs
 	 *
 	 * @param bool True to add jQuery-UI Tabs, False to disable.
 	 * @since 2.0.0
 	 */
-	$tabify = apply_filters( 'alphalisting_tabify', $tabify );
-	/**
-	 * Determine whether to add jQuery-UI Tabs
-	 *
-	 * @param bool True to add jQuery-UI Tabs, False to disable.
-	 * @since 2.0.0
-	 */
-	$tabify = apply_filters( 'alphalisting-tabify', $tabify ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+	$tabify = apply_filters( 'alphalisting_tabify', $tabify ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 	if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG ) {
 		do_action( 'alphalisting_log', 'AlphaListing: Tabify', $tabify );
