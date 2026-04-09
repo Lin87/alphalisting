@@ -54,8 +54,8 @@ Comprehensive documentation is now available:
 ### 1. An example of the index listing page ###
 ![An example of the index listing page](.wordpress-org/screenshot-1.png)
 
-### 2. The Widget is shown here ###
-![The Widget is shown here](.wordpress-org/screenshot-2.png)
+### 2. An example of Widget display ###
+![An example of Widget display](.wordpress-org/screenshot-2.png)
 
 
 ## Changelog ##

@@ -58,6 +58,10 @@
   box-shadow: none;
 }
 
+.alphalisting-widget.widget .az-letters > ul.az-links {
+  justify-content: flex-start;
+}
+
 div.letter-section {
   margin-bottom: 1em;
   white-space: initial;
