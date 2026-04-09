@@ -5,16 +5,19 @@ import { parseShortcodeAttributes } from './shortcode-attributes';
 
 const validBlocks = ( blocks ) => Array.isArray( blocks ) && blocks.length > 0;
 
+const isAlphaListingShortcode = ( shortcodeText ) => {
+    return typeof shortcodeText === 'string' && /^\s*\[alphalisting(?:\s|\]|$)/.test( shortcodeText );
+};
+
 const blockHandler = ( block ) => {
-    const attributes = parseShortcodeAttributes( block.attributes.text );
+    const attributes = parseShortcodeAttributes( block.attributes.text.trim() );
     return createBlock( 'alphalisting/block', attributes );
 };
 
 const transform = ( block ) => {
     if (
         block.name === 'core/shortcode' &&
-        typeof block.attributes.text === 'string' &&
-        block.attributes.text.startsWith( '[alphalisting' )
+        isAlphaListingShortcode( block.attributes.text )
     ) {
         dispatch( 'core/block-editor' ).replaceBlocks( [ block.clientId ], [ blockHandler( block ) ] );
         return;
