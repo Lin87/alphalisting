@@ -74,23 +74,29 @@ class ExcludeTerms extends Extension {
             ? $attributes["taxonomy"]
             : "category";
 
-        $tax_query = [
-            [
-                "taxonomy" => $taxonomy,
-                "field" => "term_id",
-                "terms" => $exclude_terms,
-                "operator" => "NOT IN",
-            ],
+        $exclude_clause = [
+            "taxonomy" => $taxonomy,
+            "field" => "term_id",
+            "terms" => $exclude_terms,
+            "operator" => "NOT IN",
         ];
 
-        if (isset($query["tax_query"])) {
-            $query["tax_query"] = wp_parse_args(
-                $query["tax_query"],
-                $tax_query,
-            ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
-        } else {
-            $query["tax_query"] = $tax_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+        $tax_query = isset($query["tax_query"]) && is_array($query["tax_query"])
+            ? $query["tax_query"]
+            : [];
+
+        if (isset($tax_query["relation"])) {
+            $existing_relation = strtoupper((string) $tax_query["relation"]);
+            if (in_array($existing_relation, ["AND", "OR"], true)) {
+                $tax_query["relation"] = $existing_relation;
+            } else {
+                unset($tax_query["relation"]);
+            }
         }
+
+        $tax_query[] = $exclude_clause;
+
+        $query["tax_query"] = $tax_query; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
         return $query;
     }
 
