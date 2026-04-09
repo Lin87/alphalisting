@@ -66,6 +66,7 @@ Comprehensive documentation is now available:
 * Change: the post type select control now allows multiple selections, enabling listings across multiple post types simultaneously.
 * Bugfix: fix shortcode attribute not properly carried over to the block setting during shortcode to block conversion.
 * Bugfix: prevent PHP 8 TypeError in callbacks.
+* Change: remove jQuery-UI Tabs script. It was never used or fully implemented and appeared to be abandoned by the previous developer.
 
 ### 4.3.7 ###
 
