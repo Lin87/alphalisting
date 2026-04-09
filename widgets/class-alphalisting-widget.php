@@ -547,20 +547,39 @@ function alphalisting_get_posts_by_title( string $post_title, string $post_type 
  * @return void
  */
 function alphalisting_get_autocomplete_post_titles() {
-	check_ajax_referer( 'posts-by-title', '_posts_by_title_wpnonce' );
-
 	$nonce = '';
 	if ( isset( $_REQUEST['_posts_by_title_wpnonce'] ) ) {
 		$nonce = sanitize_text_field( wp_unslash( $_REQUEST['_posts_by_title_wpnonce'] ) );
 	}
-	if ( ! wp_verify_nonce( $nonce, 'posts-by-title' ) ) {
-		die( esc_html( __( 'Security check failed', 'alphalisting' ) ) );
+	if ( ! check_ajax_referer( 'posts-by-title', '_posts_by_title_wpnonce', false ) || ! wp_verify_nonce( $nonce, 'posts-by-title' ) ) {
+		wp_send_json_error(
+			array(
+				'message' => __( 'Security check failed.', 'alphalisting' ),
+			),
+			403
+		);
+	}
+
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
+		wp_send_json_error(
+			array(
+				'message' => __( 'You are not allowed to perform this action.', 'alphalisting' ),
+			),
+			403
+		);
 	}
 
 	$post_title = '';
 	$post_type  = '';
 	if ( isset( $_POST['post_title']['term'] ) ) {
 		$post_title = sanitize_text_field( wp_unslash( $_POST['post_title']['term'] ) );
+	} else {
+		wp_send_json_error(
+			array(
+				'message' => __( 'Invalid request payload.', 'alphalisting' ),
+			),
+			400
+		);
 	}
 	if ( isset( $_POST['post_type'] ) ) {
 		$post_type = sanitize_text_field( wp_unslash( $_POST['post_type'] ) );
@@ -576,13 +595,10 @@ function alphalisting_get_autocomplete_post_titles() {
 		);
 	}
 
-	echo wp_json_encode( $titles );
-
-	exit();
+	wp_send_json( $titles );
 }
 
 add_action( 'wp_ajax_alphalisting_get_autocomplete_post_titles', __NAMESPACE__ . '\\alphalisting_get_autocomplete_post_titles' );
-add_action( 'wp_ajax_nopriv_alphalisting_get_autocomplete_post_titles', __NAMESPACE__ . '\\alphalisting_get_autocomplete_post_titles' );
 
 /**
  * Register the A_Z_Widget widget
