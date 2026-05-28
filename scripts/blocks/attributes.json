@@ -47,6 +47,10 @@
         "type": "boolean",
         "default": false
     },
+    "back-to-top": {
+        "type": "boolean",
+        "default": true
+    },
     "post-type": {
         "type": "string",
         "default": "page"

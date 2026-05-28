@@ -374,7 +374,7 @@ function alphalisting_cache( $query = null, string $type = '', bool $use_cache =
  * Check value for truthiness
  *
  * @since 2.1.0
- * @param string|int|bool $value The value to check for thruthiness.
+ * @param string|int|bool $value The value to check for truthiness.
  * @return bool The truthiness of the value.
  */
 function alphalisting_is_truthy( $value ): bool {

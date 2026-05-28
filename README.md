@@ -2,10 +2,10 @@
 
 **Contributors:** [eslin87](https://profiles.wordpress.org/eslin87/)  
 **Tags:** a to z, a-z, index, listing, widget  
-**Requires at least:** 5.0  
+**Requires at least:** 5.3  
 **Requires PHP:** 8.0  
-**Tested up to:** 6.9  
-**Stable tag:** 4.3.7  
+**Tested up to:** 7.0  
+**Stable tag:** 4.4.0  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -54,11 +54,19 @@ Comprehensive documentation is now available:
 ### 1. An example of the index listing page ###
 ![An example of the index listing page](.wordpress-org/screenshot-1.png)
 
-### 2. The Widget is shown here ###
-![The Widget is shown here](.wordpress-org/screenshot-2.png)
+### 2. An example of Widget display ###
+![An example of Widget display](.wordpress-org/screenshot-2.png)
 
 
 ## Changelog ##
+
+### 4.4.0 ###
+
+* New: add a block setting option and `back-to-top` shortcode attribute to show/hide the "Back to Top" link.
+* Change: the post type select control now allows multiple selections, enabling listings across multiple post types simultaneously.
+* Bugfix: fix shortcode attribute not properly carried over to the block setting during shortcode to block conversion.
+* Bugfix: prevent PHP 8 TypeError in callbacks.
+* Change: remove jQuery-UI Tabs script. It was never used or fully implemented and appeared to be abandoned by the previous developer.
 
 ### 4.3.7 ###
 

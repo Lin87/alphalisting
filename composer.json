@@ -29,7 +29,7 @@
     },
     "autoload": {
         "psr-4": {
-            "eslin87\\AlphaListing\\": ["src/", "widgets/", "wp-includes/"]
+            "eslin87\\AlphaListing\\": ["src/", "widgets/"]
         }
     },
     "scripts": {

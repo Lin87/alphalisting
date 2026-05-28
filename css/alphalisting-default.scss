@@ -63,6 +63,14 @@ $defaultColumnGap: 0.6em;
 
 }
 
+.alphalisting-widget.widget .az-letters {
+
+	> ul.az-links {
+		justify-content: flex-start;
+	}
+	
+}
+
 div.letter-section {
 
 	margin-bottom: 1em;

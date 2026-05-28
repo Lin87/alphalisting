@@ -32,27 +32,3 @@ function alphalisting_enqueue_styles( bool $unused = false ) {
 function alphalisting_customize_enqueue_styles() {
 	wp_enqueue_style( 'alphalisting-admin' );
 }
-
-/**
- * Forcibly enqueue styling. This is a helper function which can be hooked in-place of the default hook added in `alphalisting_add_styling`
- *
- * @since 1.3.0
- * @since 4.0.0 deprecated
- * @deprecated
- * @return void
- */
-function alphalisting_force_enqueue_styles() {
-	// no-op.
-}
-
-/**
- * Replace the default styling enqueue function with `alphalisting_force_enqueue_styles` to always add the styling to pages
- *
- * @since 1.3.0
- * @since 4.0.0 deprecated
- * @deprecated
- * @return void
- */
-function alphalisting_force_enable_styles() {
-	// no-op.
-}
