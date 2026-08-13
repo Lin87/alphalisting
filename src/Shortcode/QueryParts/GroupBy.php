@@ -79,20 +79,19 @@ class GroupBy extends Extension {
      * @param array  $letters Existing index letters.
      * @param mixed  $item    The post object or ID.
      * @param string $type    The listing type.
+     * @param string $title   The filtered title used to index the item.
      * @return array
      */
-    public function index_by_last_word( array $letters, $item, string $type ): array {
+    public function index_by_last_word( array $letters, $item, string $type, string $title = '' ): array {
         if ( 'posts' !== $type ) {
             return $letters;
         }
 
-        $post = $item instanceof \WP_Post ? $item : get_post( $item );
-        if ( ! $post instanceof \WP_Post ) {
+        if ( '' === $title ) {
             return $letters;
         }
 
-        $title = get_the_title( $post );
-        $word  = self::get_last_word( (string) $title );
+        $word = self::get_last_word( $title );
 
         if ( '' === $word ) {
             return $letters;
