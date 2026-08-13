@@ -1,0 +1,26 @@
+# Do not delete this file, and do not add `vendor` or `build` to it.
+#
+# `npm run package:zip` (wp-scripts plugin-zip) builds its file list with
+# npm-packlist, which applies ignore sources in this order:
+#
+#   builtins -> package.json "files" -> .npmignore -> .gitignore
+#
+# Later sources win, so .gitignore outranks the "files" allowlist. Because
+# .gitignore contains /vendor/ and /build/ -- both required at runtime -- the
+# "files" list alone would silently ship a plugin that fatals on activation.
+# npm-packlist disables .gitignore entirely whenever .npmignore has rules, so
+# the mere existence of this file (with real rules) is what makes packaging
+# correct. See AGENTS.md > Packaging & release.
+#
+# Entries below also outrank "files", so only list things that must never ship.
+
+AGENTS.md
+Gruntfile.js
+alphalisting.zip
+changelog.md
+composer.lock
+css/*.scss
+node_modules
+scripts
+.vscode
+.wordpress-org

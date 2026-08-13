@@ -1,8 +1,21 @@
 {
   "name": "alphalisting",
   "version": "4.5.0",
-  "main": "build/index.js",
   "author": "Ethan Lin",
+  "files": [
+    "alphalisting.php",
+    "composer.json",
+    "readme.txt",
+    "build/",
+    "css/*.css",
+    "functions/",
+    "languages/",
+    "src/",
+    "templates/",
+    "vendor/",
+    "widgets/"
+  ],
+  "main": "build/index.js",
   "scripts": {
     "build": "wp-scripts build ./scripts/blocks/index.js && grunt",
     "build:release": "npm run build && composer makepot",
@@ -13,6 +26,10 @@
     "lint:js": "wp-scripts lint-js ./scripts",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "makepot": "composer makepot",
+    "package": "npm run build:release && npm run package:vendor:prod && npm run package:zip && npm run package:vendor:dev",
+    "package:vendor:dev": "composer install",
+    "package:vendor:prod": "composer install --no-dev --optimize-autoloader",
+    "package:zip": "wp-scripts plugin-zip",
     "packages-update": "wp-scripts packages-update",
     "start": "wp-scripts start ./scripts/blocks/index.js"
   },

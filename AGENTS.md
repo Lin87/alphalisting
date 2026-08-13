@@ -106,6 +106,7 @@ npm run start          # dev watch — JS only; does NOT run grunt/sass
 npx grunt              # one-shot: addtextdomain + readme + sass. NOT a watch task.
 npx grunt sass         # recompile css/*.scss only
 npx grunt readme       # regenerate README.md from readme.txt
+npm run package        # release zip — see Packaging & release. Do NOT use for everyday builds.
 ```
 
 **Notes for agents**
@@ -114,6 +115,7 @@ npx grunt readme       # regenerate README.md from readme.txt
 - `npm run build:release` is the release-time superset. `npm run makepot` regenerates the POT alone (an alias for `composer makepot`).
 - Do **not** commit built assets (`build/`, `vendor/`, compiled `css/*.css` beyond what's already tracked).
 - `grunt readme` overwrites `README.md`. Edit `readme.txt` and regenerate.
+- `npm run package` is release-only. It swaps `vendor/` to a no-dev install mid-run and swaps it back — don't reach for it to check that a build works.
 
 ---
 
@@ -216,13 +218,34 @@ Grep before you assume — the list above is representative, not exhaustive.
 ---
 
 ## Packaging & release
-Manual — there is no release script.
 
-1. `npm run build:release` (build + POT; requires `composer install` to have run)
+```bash
+npm run package   # build + POT + no-dev vendor + zip + restore dev vendor
+```
+
+Produces `alphalisting.zip` at the repo root, with an `alphalisting/` root folder inside — the shape
+WordPress.org expects. Requires PHP, Composer, and a prior `composer install`.
+
+1. Do the **version bump flow** above first.
 2. Confirm `readme.txt` **Tested up to**, **Requires PHP**, **Requires at least** are accurate.
 3. Confirm `Stable tag` == `alphalisting.php` version == `package.json` version.
-4. Zip excluding dev files, e.g. `git archive -o alphalisting.zip HEAD` (note: this excludes `build/` and `vendor/`, which the distributed plugin needs — add them manually).
-5. Upload manually to the WordPress.org SVN repo.
+4. `npm run package`.
+5. Sanity-check the archive before trusting it:
+   - `unzip -l alphalisting.zip | grep -E "alphalisting/(vendor/autoload\.php|build/index\.js)"` — **both must appear**; the plugin fatals on activation without them.
+   - `unzip -l alphalisting.zip | grep -E "wp-cli|gettext|peast|bladeone|vendor/bin"` — must be empty.
+   - Total size should be a few hundred KB. Near 5 MB means the dev `vendor/` leaked in.
+6. Upload manually to the WordPress.org SVN repo.
+
+**How it works, and what not to break**
+
+- `npm run package` chains four steps: `build:release` → `package:vendor:prod` → `package:zip` → `package:vendor:dev`. The order is load-bearing: `composer makepot` inside `build:release` needs the **dev** `vendor/`, so the no-dev swap has to come after it and the restore last.
+- If the run fails partway, `vendor/` may be left in its no-dev state. Recover with `npm run package:vendor:dev`.
+- **Never run `npm run package:zip` on its own to produce a release.** It zips whatever is on disk, so with a normal dev `vendor/` present it silently produces a ~5 MB archive containing all of WP-CLI. The sub-scripts exist for recovery, not for shortcuts — always go through `npm run package`.
+- Only **one** Composer package ships: `symfony/polyfill-mbstring`. Everything else in `vendor/` is dev tooling pulled in by `wp-cli/i18n-command`. Never prune `vendor/` by hand — `vendor/composer/autoload_files.php` force-requires dev bootstrap files, so deleting directories leaves dangling requires and a fatal. `composer install --no-dev --optimize-autoloader` regenerates the maps correctly.
+- `vendor/` must still **ship**: `alphalisting.php` requires `vendor/autoload.php` unguarded, and that autoloader is what provides the plugin's own `eslin87\AlphaListing\` PSR-4 map.
+- The zip contents are the `files` allowlist in `package.json`. Add new shipped directories there.
+- **Do not delete `.npmignore`, and do not add `vendor` or `build` to it.** `wp-scripts plugin-zip` uses npm-packlist, where `.gitignore` outranks the `files` allowlist — and `.gitignore` lists `/vendor/` and `/build/`. npm-packlist disables `.gitignore` whenever `.npmignore` has rules, so that file's existence is the only thing keeping releases correct. The file itself explains this too.
+- `git archive` is **not** a valid packaging method here; it omits `build/` and `vendor/`.
 
 ---
 
