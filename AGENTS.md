@@ -244,6 +244,10 @@ WordPress.org expects. Requires PHP, Composer, and a prior `composer install`.
 - Only **one** Composer package ships: `symfony/polyfill-mbstring`. Everything else in `vendor/` is dev tooling pulled in by `wp-cli/i18n-command`. Never prune `vendor/` by hand — `vendor/composer/autoload_files.php` force-requires dev bootstrap files, so deleting directories leaves dangling requires and a fatal. `composer install --no-dev --optimize-autoloader` regenerates the maps correctly.
 - `vendor/` must still **ship**: `alphalisting.php` requires `vendor/autoload.php` unguarded, and that autoloader is what provides the plugin's own `eslin87\AlphaListing\` PSR-4 map.
 - The zip contents are the `files` allowlist in `package.json`. Add new shipped directories there.
+- **`scripts/` is build source, but two files in it are read at runtime and MUST ship.** Removing either fatals the site on activation:
+  - `scripts/blocks/attributes.json` — `file_get_contents()`d by `src/GutenBlock.php`; if absent, `json_decode(false)` throws a `TypeError` on every page load.
+  - `scripts/alphalisting-widget-admin.js` — enqueued by `functions/enqueues.php`.
+- More generally: **any file PHP reads or enqueues at runtime must be in the allowlist**, even if it lives in a directory that is otherwise build-time only. Before changing `files` or `.npmignore`, grep the plugin for `file_get_contents`, `plugins_url`, `require`, and `ALPHALISTING_PLUGIN_FILE` and confirm every referenced path still ships. A missing runtime asset is invisible in the build output and only shows up as a fatal on a real site.
 - **Do not delete `.npmignore`, and do not add `vendor` or `build` to it.** `wp-scripts plugin-zip` uses npm-packlist, where `.gitignore` outranks the `files` allowlist — and `.gitignore` lists `/vendor/` and `/build/`. npm-packlist disables `.gitignore` whenever `.npmignore` has rules, so that file's existence is the only thing keeping releases correct. The file itself explains this too.
 - `git archive` is **not** a valid packaging method here; it omits `build/` and `vendor/`.
 

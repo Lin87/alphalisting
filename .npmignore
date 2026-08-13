@@ -21,6 +21,13 @@ changelog.md
 composer.lock
 css/*.scss
 node_modules
-scripts
 .vscode
 .wordpress-org
+
+# scripts/ is webpack SOURCE, bundled into build/index.js -- except two files
+# that PHP reads at runtime, so it cannot be excluded wholesale here (these
+# rules outrank the "files" allowlist):
+#   scripts/blocks/attributes.json      <- src/GutenBlock.php reads this
+#   scripts/alphalisting-widget-admin.js <- functions/enqueues.php enqueues this
+scripts/blocks/*.js
+scripts/components
