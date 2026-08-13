@@ -27,6 +27,14 @@ class WP_Post {
     }
 }
 
+function __( string $value ): string {
+    return $value;
+}
+
+function apply_filters( string $hook, $value ) {
+    return $value;
+}
+
 function wp_strip_all_tags( string $value ): string {
     return strip_tags( $value );
 }
@@ -41,6 +49,7 @@ function get_post( $post ) {
 
 require_once dirname( __DIR__ ) . '/vendor/autoload.php';
 
+use eslin87\AlphaListing\Alphabet;
 use eslin87\AlphaListing\Shortcode\QueryParts\GroupBy;
 
 $examples = array(
@@ -94,17 +103,29 @@ if ( array( 'Y' ) !== $term_letters ) {
     throw new RuntimeException( 'Expected non-post listings to remain unchanged.' );
 }
 
-$titles = array( 'David Adjaye', 'Marina Abramovic', 'Cristina Acidini' );
+$alphabet = new Alphabet();
+$titles   = array( 'David Adjaye', 'Marina Abramovic', 'Cristina Acidini' );
 usort(
     $titles,
-    function( string $first, string $second ) use ( $group_by ): int {
-        return $group_by->sort_by_last_word( 0, $first, $second );
+    function( string $first, string $second ) use ( $group_by, $alphabet ): int {
+        return $group_by->sort_by_last_word( $alphabet->compare_strings( $first, $second ), $first, $second, $alphabet );
     }
 );
 
 $expected_titles = array( 'Marina Abramovic', 'Cristina Acidini', 'David Adjaye' );
 if ( $expected_titles !== $titles ) {
     throw new RuntimeException( 'Expected titles to be sorted by last word.' );
+}
+
+$accented_titles = array( 'Anna Ézard', 'Bea éclair' );
+usort(
+    $accented_titles,
+    function( string $first, string $second ) use ( $group_by, $alphabet ): int {
+        return $group_by->sort_by_last_word( $alphabet->compare_strings( $first, $second ), $first, $second, $alphabet );
+    }
+);
+if ( array( 'Bea éclair', 'Anna Ézard' ) !== $accented_titles ) {
+    throw new RuntimeException( 'Expected equivalent accented letters to be sorted by their remaining characters.' );
 }
 
 echo "Group-by-last-word behavior is correct.\n";

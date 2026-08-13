@@ -13,6 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+use \eslin87\AlphaListing\Alphabet;
 use \eslin87\AlphaListing\Shortcode\Extension;
 use \eslin87\AlphaListing\Strings;
 
@@ -61,8 +62,8 @@ class GroupBy extends Extension {
             return $query;
         }
 
-        $this->add_hook( 'filter', 'alphalisting_item_index_letter', array( $this, 'index_by_last_word' ), 10, 4 );
-        $this->add_hook( 'filter', 'alphalisting_item_sorting_comparator', array( $this, 'sort_by_last_word' ), 10, 3 );
+        $this->add_hook( 'filter', 'alphalisting_item_index_letter', array( $this, 'index_by_last_word' ), 10, 3 );
+        $this->add_hook( 'filter', 'alphalisting_item_sorting_comparator', array( $this, 'sort_by_last_word' ), 10, 4 );
 
         if ( is_array( $query ) ) {
             // Distinguish this result from the default grouping in external cache implementations.
@@ -105,9 +106,10 @@ class GroupBy extends Extension {
      * @param int    $default_sort The existing comparison result.
      * @param string $first_title  The first title.
      * @param string $second_title The second title.
+     * @param Alphabet $alphabet    The configured listing alphabet.
      * @return int
      */
-    public function sort_by_last_word( int $default_sort, string $first_title, string $second_title ): int {
+    public function sort_by_last_word( int $default_sort, string $first_title, string $second_title, Alphabet $alphabet ): int {
         $first_word  = self::get_last_word( $first_title );
         $second_word = self::get_last_word( $second_title );
 
@@ -115,12 +117,12 @@ class GroupBy extends Extension {
             return $default_sort;
         }
 
-        $comparison = strcasecmp( $first_word, $second_word );
+        $comparison = $alphabet->compare_strings( $first_word, $second_word );
         if ( 0 !== $comparison ) {
             return $comparison <=> 0;
         }
 
-        return strcasecmp( $first_title, $second_title ) <=> 0;
+        return $default_sort;
     }
 
     /**
