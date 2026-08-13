@@ -62,7 +62,7 @@ class GroupBy extends Extension {
             return $query;
         }
 
-        $this->add_hook( 'filter', 'alphalisting_item_index_letter', array( $this, 'index_by_last_word' ), 10, 3 );
+        $this->add_hook( 'filter', 'alphalisting_item_index_letter', array( $this, 'index_by_last_word' ), 10, 4 );
         $this->add_hook( 'filter', 'alphalisting_item_sorting_comparator', array( $this, 'sort_by_last_word' ), 10, 4 );
 
         if ( is_array( $query ) ) {
