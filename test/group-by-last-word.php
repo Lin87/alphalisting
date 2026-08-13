@@ -79,12 +79,17 @@ if ( ! str_contains( $block_editor, "label={ __( 'Group by last word', 'alphalis
     throw new RuntimeException( 'Expected the block to expose last-word grouping as a toggle.' );
 }
 
-$letters  = $group_by->index_by_last_word( array( 'Y' ), new WP_Post( 'Yassmin Abdel-Magied' ), 'posts' );
-if ( array( 'A' ) !== $letters ) {
-    throw new RuntimeException( 'Expected the post to be indexed under A.' );
+$letters = $group_by->index_by_last_word(
+    array( 'S' ),
+    new WP_Post( 'John Smith' ),
+    'posts',
+    'Smith, John'
+);
+if ( array( 'J' ) !== $letters ) {
+    throw new RuntimeException( 'Expected the post to be indexed by the filtered title.' );
 }
 
-$term_letters = $group_by->index_by_last_word( array( 'Y' ), new WP_Post( 'Yassmin Abdel-Magied' ), 'terms' );
+$term_letters = $group_by->index_by_last_word( array( 'Y' ), new WP_Post( 'Yassmin Abdel-Magied' ), 'terms', 'Yassmin Abdel-Magied' );
 if ( array( 'Y' ) !== $term_letters ) {
     throw new RuntimeException( 'Expected non-post listings to remain unchanged.' );
 }
