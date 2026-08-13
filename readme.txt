@@ -2,10 +2,10 @@
 
 Contributors: eslin87
 Tags: a to z, a-z, index, listing, widget
-Requires at least: 5.3
+Requires at least: 6.0
 Requires PHP: 8.0
-Tested up to: 7.0
-Stable tag: 4.4.0
+Tested up to: 7.1
+Stable tag: 4.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,8 +18,6 @@ Display posts, pages, and terms alphabetically in a Rolodex-, catalog-, or direc
 This plugin includes a block and shortcode for the list, along with a widget for linking to the list from any location on a site. If a letter has no associated pages, the widget will display the letter unlinked, while the list page will omit the letter entirely.  
 
 Show posts from any single or multiple post types, including built-in posts and pages. Post types from plugins like WooCommerce products are also supported. Alternatively, display terms such as categories or tags.
-
-Post listings can be grouped and sorted by the last word of each post title. Enable "Group by last word" in the block settings, or add `group-by="last-word"` to the shortcode. The complete post title remains visible in the listing.
 
 _This plugin is based on the original **A-Z Listing** by Lucy (formerly Dani) Llewellyn, which is no longer maintained. Custom templates built for the original plugin may not work reliably with this version. For the most up-to-date example template, see the [example template](https://raw.githubusercontent.com/Lin87/alphalisting/refs/heads/main/templates/a-z-listing.example.php)._
 
@@ -57,6 +55,10 @@ Comprehensive documentation is now available:
 2. An example of Widget display
 
 == Changelog ==
+
+= 4.5.0 =
+
+* New: Post listings can be grouped and sorted by the last word of each post title. Enable "Group by last word" in the block settings, or add `group-by="last-word"` to the shortcode.
 
 = 4.4.0 =
 
