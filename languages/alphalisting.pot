@@ -2,27 +2,46 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: AlphaListing 4.4.0\n"
+"Project-Id-Version: AlphaListing 4.5.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alphalisting\n"
-"POT-Creation-Date: 2026-08-13 14:03:09+00:00\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: en\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Country: United States\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: "
-"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
-"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
-"X-Poedit-Basepath: ../\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-Bookmarks: \n"
-"X-Textdomain-Support: yes\n"
-"X-Generator: grunt-wp-i18n 1.0.4\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-13T15:51:57+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: alphalisting\n"
+
+#. Plugin Name of the plugin
+#: alphalisting.php:5
+#: scripts/blocks/edit.js:890
+#: scripts/blocks/edit.js:906
+#: scripts/blocks/edit.js:914
+#: scripts/blocks/index.js:91
+msgid "AlphaListing"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: alphalisting.php:7
+msgid "https://github.com/Lin87/alphalisting"
+msgstr ""
+
+#. Description of the plugin
+#: alphalisting.php:9
+msgid "Display posts, pages, and terms alphabetically in a Rolodex-, catalog-, or directory-style list."
+msgstr ""
+
+#. Author of the plugin
+#: alphalisting.php:11
+msgid "Ethan Lin"
+msgstr ""
+
+#. Author URI of the plugin
+#: alphalisting.php:13
+msgid "https://profiles.wordpress.org/eslin87/"
+msgstr ""
 
 #: functions/health-check.php:25
 msgid "A to Z Listing plugin"
@@ -37,9 +56,7 @@ msgid "Compatibility"
 msgstr ""
 
 #: functions/health-check.php:49
-msgid ""
-"The mbstring PHP module improves support for non-latin languages in the "
-"AlphaListing plugin."
+msgid "The mbstring PHP module improves support for non-latin languages in the AlphaListing plugin."
 msgstr ""
 
 #: functions/health-check.php:57
@@ -47,57 +64,30 @@ msgid "AlphaListing: PHP mbstring module is not enabled"
 msgstr ""
 
 #: functions/health-check.php:61
-msgid ""
-"The mbstring PHP module is not enabled on your server. This module improves "
-"support for non-latin languages in the AlphaListing plugin."
+msgid "The mbstring PHP module is not enabled on your server. This module improves support for non-latin languages in the AlphaListing plugin."
 msgstr ""
 
 #: functions/health-check.php:63
-msgid ""
-"Contact your web host to request that the mbstring PHP module is enabled "
-"for your site."
+msgid "Contact your web host to request that the mbstring PHP module is enabled for your site."
 msgstr ""
 
+#. translators: List the alphabet of your language in the order that your language prefers. list as groups of identical meanings but different characters together, e.g. in English we group A with a because they are both the same letter but different character-code. Each character group should be followed by a comma separating it from the next group. Any amount of characters per group are acceptable, and there is no requirement for all the groups to contain the same amount of characters as all the others. Be careful with the character you place first in each group as that will be used as the identifier for the group which gets displayed on the page, e.g. in English a group definition of "Aa" will indicate that we display all the posts in the group, i.e. whose titles begin with either "A" or "a", listed under a heading of "A" (the first character in the definition).
 #: src/Alphabet.php:71
-#. translators: List the alphabet of your language in the order that your
-#. language prefers. list as groups of identical meanings but different
-#. characters together, e.g. in English we group A with a because they are both
-#. the same letter but different character-code. Each character group should be
-#. followed by a comma separating it from the next group. Any amount of
-#. characters per group are acceptable, and there is no requirement for all the
-#. groups to contain the same amount of characters as all the others. Be
-#. careful with the character you place first in each group as that will be
-#. used as the identifier for the group which gets displayed on the page, e.g.
-#. in English a group definition of "Aa" will indicate that we display all the
-#. posts in the group, i.e. whose titles begin with either "A" or "a", listed
-#. under a heading of "A" (the first character in the definition).
-msgid ""
-"AÁÀÄÂaáàäâ,Bb,CÇcç,Dd,EÉÈËÊeéèëê,Ff,Gg,Hh,IÍÌÏÎiíìïî,Jj,Kk,Ll,Mm,Nn,"
-"OÓÒÖÔoóòöô,Pp,Qq,Rr,Ssß,Tt,UÚÙÜÛuúùüû,Vv,Ww,Xx,Yy,Zz"
+msgid "AÁÀÄÂaáàäâ,Bb,CÇcç,Dd,EÉÈËÊeéèëê,Ff,Gg,Hh,IÍÌÏÎiíìïî,Jj,Kk,Ll,Mm,Nn,OÓÒÖÔoóòöô,Pp,Qq,Rr,Ssß,Tt,UÚÙÜÛuúùüû,Vv,Ww,Xx,Yy,Zz"
 msgstr ""
 
+#. translators: This should be a single character to denote "all entries that didn't fit under one of the alphabet character groups defined". This is used in English to categorize posts whose title begins with a numeric (0 through to 9), or some other character that is not a standard English alphabet letter.
 #: src/Alphabet.php:73
-#. translators: This should be a single character to denote "all entries that
-#. didn't fit under one of the alphabet character groups defined". This is used
-#. in English to categorize posts whose title begins with a numeric (0 through
-#. to 9), or some other character that is not a standard English alphabet
-#. letter.
 msgid "#"
 msgstr ""
 
-#: scripts/blocks/edit.js:699
-msgid "Group by last word"
-msgstr ""
-
-#: scripts/blocks/edit.js:706
-msgid "Group and sort posts by the last word of their title."
-msgstr ""
-
-#: templates/a-z-listing.example.php:52 templates/a-z-listing.php:76
+#: templates/a-z-listing.example.php:52
+#: templates/a-z-listing.php:76
 msgid "Back to top"
 msgstr ""
 
-#: templates/a-z-listing.example.php:63 templates/a-z-listing.php:88
+#: templates/a-z-listing.example.php:63
+#: templates/a-z-listing.php:88
 msgid "There are no posts included in this index."
 msgstr ""
 
@@ -116,9 +106,7 @@ msgid "Widget Title"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:144
-msgid ""
-"Leave the title field blank, above, to use the title from the page set in "
-"the next field"
+msgid "Leave the title field blank, above, to use the title from the page set in the next field"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:151
@@ -126,16 +114,12 @@ msgid "Sitemap A-Z page"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:163
-msgid ""
-"Type some or all of the title of the page you want links to point at. "
-"Ensure this input field is not selected when you save the settings."
+msgid "Type some or all of the title of the page you want links to point at. Ensure this input field is not selected when you save the settings."
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:164
 #: widgets/class-alphalisting-widget.php:224
-msgid ""
-"Matching posts will be shown as you type. Click on the correct post from "
-"the matches to update the setting."
+msgid "Matching posts will be shown as you type. Click on the correct post from the matches to update the setting."
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:171
@@ -143,10 +127,12 @@ msgid "Display posts or terms?"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:178
+#: scripts/blocks/edit.js:79
 msgid "Posts"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:182
+#: scripts/blocks/edit.js:571
 msgid "Taxonomy terms"
 msgstr ""
 
@@ -159,10 +145,7 @@ msgid "Show only children of this post (ID)"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:223
-msgid ""
-"Type some or all of the title of the post to limit the listing to only the "
-"children of that post. Ensure this input field is not selected when you "
-"save the settings."
+msgid "Type some or all of the title of the post to limit the listing to only the children of that post. Ensure this input field is not selected when you save the settings."
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:228
@@ -186,6 +169,7 @@ msgid "Terms to exclude (IDs)"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:295
+#: scripts/blocks/edit.js:650
 msgid "Hide empty terms"
 msgstr ""
 
@@ -201,24 +185,154 @@ msgstr ""
 msgid "Invalid request payload."
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-msgid "AlphaListing"
+#: scripts/blocks/edit.js:80
+msgid "Taxonomy Terms"
 msgstr ""
 
-#. Plugin URI of the plugin/theme
-msgid "https://github.com/Lin87/alphalisting"
+#: scripts/blocks/edit.js:349
+msgid "You must set a taxonomy when display mode is set to 'terms'."
 msgstr ""
 
-#. Description of the plugin/theme
-msgid ""
-"Display posts, pages, and terms alphabetically in a Rolodex-, catalog-, or "
-"directory-style list."
+#: scripts/blocks/edit.js:492
+msgid "Listing selection"
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "Ethan Lin"
+#: scripts/blocks/edit.js:497
+msgid "Display mode"
 msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "https://profiles.wordpress.org/eslin87/"
+#: scripts/blocks/edit.js:514
+msgid "Post Type"
+msgstr ""
+
+#: scripts/blocks/edit.js:515
+msgid "Select the post types to display. Hold Ctrl to select multiple."
+msgstr ""
+
+#: scripts/blocks/edit.js:549
+msgid "Taxonomy"
+msgstr ""
+
+#: scripts/blocks/edit.js:587
+msgid "Exclude post IDs"
+msgstr ""
+
+#: scripts/blocks/edit.js:594
+msgid "Provide numeric post IDs to omit from the listing."
+msgstr ""
+
+#: scripts/blocks/edit.js:603
+msgid "Parent term (slug or ID)"
+msgstr ""
+
+#: scripts/blocks/edit.js:619
+msgid "Exclude term IDs"
+msgstr ""
+
+#: scripts/blocks/edit.js:627
+msgid "Provide numeric term IDs to omit from the listing."
+msgstr ""
+
+#: scripts/blocks/edit.js:637
+msgid "Include all descendants"
+msgstr ""
+
+#: scripts/blocks/edit.js:638
+msgid "Include items from all levels below the selected parent."
+msgstr ""
+
+#: scripts/blocks/edit.js:666
+msgid "Display options"
+msgstr ""
+
+#: scripts/blocks/edit.js:671
+msgid "Listing ID"
+msgstr ""
+
+#: scripts/blocks/edit.js:680
+msgid "CSS class names"
+msgstr ""
+
+#: scripts/blocks/edit.js:689
+msgid "Alphabet"
+msgstr ""
+
+#: scripts/blocks/edit.js:699
+msgid "Group by last word"
+msgstr ""
+
+#: scripts/blocks/edit.js:706
+msgid "Group and sort posts by the last word of their title."
+msgstr ""
+
+#: scripts/blocks/edit.js:712
+msgid "Numbers"
+msgstr ""
+
+#: scripts/blocks/edit.js:717
+msgid "Hide numbers"
+msgstr ""
+
+#: scripts/blocks/edit.js:724
+msgid "Prepend before alphabet"
+msgstr ""
+
+#: scripts/blocks/edit.js:731
+msgid "Append after alphabet"
+msgstr ""
+
+#: scripts/blocks/edit.js:750
+msgid "Group letters"
+msgstr ""
+
+#: scripts/blocks/edit.js:751
+msgid "The number of letters to include in a single group"
+msgstr ""
+
+#: scripts/blocks/edit.js:776
+msgid "Group numbers"
+msgstr ""
+
+#: scripts/blocks/edit.js:780
+msgid "Group 0-9 as a single letter"
+msgstr ""
+
+#: scripts/blocks/edit.js:801
+msgid "Display symbols entry first"
+msgstr ""
+
+#: scripts/blocks/edit.js:810
+msgid "Show back to top link"
+msgstr ""
+
+#: scripts/blocks/edit.js:820
+msgid "Columns"
+msgstr ""
+
+#: scripts/blocks/edit.js:834
+msgid "Column width"
+msgstr ""
+
+#: scripts/blocks/edit.js:849
+msgid "Column gap"
+msgstr ""
+
+#: scripts/blocks/edit.js:891
+msgid "The AlphaListing configuration is incomplete:"
+msgstr ""
+
+#: scripts/blocks/edit.js:908
+msgid "Error Loading the listing..."
+msgstr ""
+
+#: scripts/blocks/edit.js:916
+msgid "The listing has returned an empty page. This is likely an error."
+msgstr ""
+
+#: scripts/blocks/index.js:97
+msgid "Show your posts in an alphabetically-ordered rolodex-style list"
+msgstr ""
+
+#: scripts/components/PostParent.js:116
+msgid "Parent post"
 msgstr ""
