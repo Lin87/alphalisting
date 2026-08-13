@@ -51,23 +51,6 @@ module.exports = function( grunt ) {
 			},
 		},
 
-		makepot: {
-			target: {
-				options: {
-					domainPath: '/languages',
-					exclude: [ '\.git/*', 'bin/*', 'node_modules/*', 'test/*', 'tests/*', 'vendor/*' ],
-					mainFile: 'alphalisting.php',
-					potFilename: 'alphalisting.pot',
-					potHeaders: {
-						poedit: true,
-						'x-poedit-keywordslist': true
-					},
-					type: 'wp-plugin',
-					updateTimestamp: true
-				}
-			}
-		},
-
 		sass: {
 			options: {
 				sourceMap: false,
@@ -88,7 +71,10 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-sass' );
 	grunt.registerTask( 'default', ['build'] );
 	grunt.registerTask( 'build', [ 'i18n','readme','sass' ] );
-	grunt.registerTask( 'i18n', ['addtextdomain', 'makepot'] );
+	// Note: makepot is deliberately NOT part of this task. grunt-wp-i18n scans PHP
+	// only and would silently drop every string from the block editor JS. Regenerate
+	// the POT with `composer makepot` (WP-CLI, scans PHP + JS) instead.
+	grunt.registerTask( 'i18n', ['addtextdomain'] );
 	grunt.registerTask( 'readme', ['wp_readme_to_markdown'] );
 
 	grunt.util.linefeed = '\n';
