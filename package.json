@@ -28,15 +28,17 @@
     "lint:js": "wp-scripts lint-js ./scripts",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "makepot": "composer makepot",
-    "package": "npm run build:release && npm run package:vendor:prod && npm run package:zip && npm run package:vendor:dev",
+    "package": "npm run build:release && npm run package:vendor:prod && npm run package:zip && npm run package:vendor:dev && npm run package:verify",
     "package:vendor:dev": "composer install",
     "package:vendor:prod": "composer install --no-dev --optimize-autoloader",
+    "package:verify": "node ./bin/verify-package.mjs",
     "package:zip": "wp-scripts plugin-zip",
     "packages-update": "wp-scripts packages-update",
     "start": "wp-scripts start ./scripts/blocks/index.js"
   },
   "devDependencies": {
     "@wordpress/scripts": "^34.1.0",
+    "adm-zip": "^0.5.18",
     "grunt": "^1.6.3",
     "grunt-cli": "^1.5.0",
     "grunt-sass": "^4.1.0",

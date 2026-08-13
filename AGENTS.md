@@ -229,25 +229,32 @@ WordPress.org expects. Requires PHP, Composer, and a prior `composer install`.
 1. Do the **version bump flow** above first.
 2. Confirm `readme.txt` **Tested up to**, **Requires PHP**, **Requires at least** are accurate.
 3. Confirm `Stable tag` == `alphalisting.php` version == `package.json` version.
-4. `npm run package`.
-5. Sanity-check the archive before trusting it:
-   - `unzip -l alphalisting.zip | grep -E "alphalisting/(vendor/autoload\.php|build/index\.js)"` — **both must appear**; the plugin fatals on activation without them.
-   - `unzip -l alphalisting.zip | grep -E "wp-cli|gettext|peast|bladeone|vendor/bin"` — must be empty.
-   - Total size should be a few hundred KB. Near 5 MB means the dev `vendor/` leaked in.
-6. Upload manually to the WordPress.org SVN repo.
+4. `npm run package`. The last step verifies the archive and prints a summary:
+
+   ```text
+   Package verified: 82 files, 434 KB uncompressed.
+     15 runtime asset references resolved
+     11 required files present
+     no dev dependencies or build source leaked
+   ```
+
+   If verification fails it **deletes the zip** and exits non-zero, so a broken archive is never left
+   lying around to be uploaded by mistake.
+5. Upload manually to the WordPress.org SVN repo.
 
 **How it works, and what not to break**
 
-- `npm run package` chains four steps: `build:release` → `package:vendor:prod` → `package:zip` → `package:vendor:dev`. The order is load-bearing: `composer makepot` inside `build:release` needs the **dev** `vendor/`, so the no-dev swap has to come after it and the restore last.
-- If the run fails partway, `vendor/` may be left in its no-dev state. Recover with `npm run package:vendor:dev`.
-- **Never run `npm run package:zip` on its own to produce a release.** It zips whatever is on disk, so with a normal dev `vendor/` present it silently produces a ~5 MB archive containing all of WP-CLI. The sub-scripts exist for recovery, not for shortcuts — always go through `npm run package`.
+- `npm run package` chains five steps: `build:release` → `package:vendor:prod` → `package:zip` → `package:vendor:dev` → `package:verify`. The order is load-bearing: `composer makepot` inside `build:release` needs the **dev** `vendor/`, so the no-dev swap has to come after it and the restore before verification (that way `vendor/` is always restored even when verification fails).
+- If the run fails partway, `vendor/` may be left in its no-dev state — the giveaway is `composer makepot` failing on the next run. Recover with `npm run package:vendor:dev`.
+- **Never run `npm run package:zip` on its own to produce a release.** It zips whatever is on disk, so with a normal dev `vendor/` present it produces a ~5 MB archive containing all of WP-CLI. `package:verify` now catches this, but the sub-scripts exist for recovery, not shortcuts — always go through `npm run package`.
+- `bin/verify-package.mjs` inspects the built zip and fails the build on: a plugin-relative asset path referenced by shipped PHP but absent from the archive, a missing entry from its `MUST_SHIP` list, or anything matching `MUST_NOT_SHIP` (dev Composer packages, `vendor/bin/`, webpack source, `.scss`, repo tooling). **When you add a file the plugin reads at runtime, add it to `files` in `package.json` — and if it is critical, to `MUST_SHIP` as well.**
 - Only **one** Composer package ships: `symfony/polyfill-mbstring`. Everything else in `vendor/` is dev tooling pulled in by `wp-cli/i18n-command`. Never prune `vendor/` by hand — `vendor/composer/autoload_files.php` force-requires dev bootstrap files, so deleting directories leaves dangling requires and a fatal. `composer install --no-dev --optimize-autoloader` regenerates the maps correctly.
 - `vendor/` must still **ship**: `alphalisting.php` requires `vendor/autoload.php` unguarded, and that autoloader is what provides the plugin's own `eslin87\AlphaListing\` PSR-4 map.
 - The zip contents are the `files` allowlist in `package.json`. Add new shipped directories there.
 - **`scripts/` is build source, but two files in it are read at runtime and MUST ship.** Removing either fatals the site on activation:
   - `scripts/blocks/attributes.json` — `file_get_contents()`d by `src/GutenBlock.php`; if absent, `json_decode(false)` throws a `TypeError` on every page load.
   - `scripts/alphalisting-widget-admin.js` — enqueued by `functions/enqueues.php`.
-- More generally: **any file PHP reads or enqueues at runtime must be in the allowlist**, even if it lives in a directory that is otherwise build-time only. Before changing `files` or `.npmignore`, grep the plugin for `file_get_contents`, `plugins_url`, `require`, and `ALPHALISTING_PLUGIN_FILE` and confirm every referenced path still ships. A missing runtime asset is invisible in the build output and only shows up as a fatal on a real site.
+- More generally: **any file PHP reads or enqueues at runtime must be in the allowlist**, even if it lives in a directory that is otherwise build-time only. `package:verify` enforces this automatically by scanning shipped PHP for quoted asset paths, so you no longer have to remember — but it can only see *literal* paths. A path built at runtime from a variable is invisible to it; add those to `MUST_SHIP` by hand.
 - **Do not delete `.npmignore`, and do not add `vendor` or `build` to it.** `wp-scripts plugin-zip` uses npm-packlist, where `.gitignore` outranks the `files` allowlist — and `.gitignore` lists `/vendor/` and `/build/`. npm-packlist disables `.gitignore` whenever `.npmignore` has rules, so that file's existence is the only thing keeping releases correct. The file itself explains this too.
 - `git archive` is **not** a valid packaging method here; it omits `build/` and `vendor/`.
 

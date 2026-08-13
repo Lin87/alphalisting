@@ -75,7 +75,27 @@ class GutenBlock extends Singleton {
 			ALPHALISTING_VERSION
 		);
 
-		$attributes = json_decode( file_get_contents( dirname( ALPHALISTING_PLUGIN_FILE ) . '/scripts/blocks/attributes.json' ), true );  //phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		/*
+		 * `scripts/` is build source, but this one file is read at runtime and
+		 * must be present in the distributed package. Degrade rather than
+		 * fatal if it is missing: an unguarded json_decode( false ) throws a
+		 * TypeError on PHP 8 and takes the whole site down on every request.
+		 */
+		$attributes_path = dirname( ALPHALISTING_PLUGIN_FILE ) . '/scripts/blocks/attributes.json';
+		$attributes      = array();
+		if ( file_exists( $attributes_path ) ) {
+			$attributes_json = file_get_contents( $attributes_path );  //phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			if ( is_string( $attributes_json ) ) {
+				$attributes = json_decode( $attributes_json, true );
+			}
+		}
+		if ( ! is_array( $attributes ) ) {
+			if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG ) {
+				do_action( 'alphalisting_log', 'AlphaListing: could not read block attributes', $attributes_path );
+			}
+			$attributes = array();
+		}
+
 		$attributes = apply_filters( 'alphalisting_get_gutenberg_attributes', $attributes );
 
 		register_block_type(

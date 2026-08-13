@@ -16,6 +16,7 @@
 
 AGENTS.md
 Gruntfile.js
+bin
 alphalisting.zip
 changelog.md
 composer.lock
