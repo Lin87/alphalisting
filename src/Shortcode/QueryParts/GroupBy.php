@@ -142,9 +142,14 @@ class GroupBy extends Extension {
             return '';
         }
 
-        $word = (string) end( $words );
-        $word = preg_replace( '/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/u', '', $word );
+        for ( $index = count( $words ) - 1; $index >= 0; $index-- ) {
+            $word = preg_replace( '/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/u', '', (string) $words[ $index ] );
 
-        return is_string( $word ) ? $word : '';
+            if ( is_string( $word ) && '' !== $word ) {
+                return $word;
+            }
+        }
+
+        return '';
     }
 }

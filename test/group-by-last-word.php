@@ -58,6 +58,10 @@ $examples = array(
     'Raffaele La Capria'         => 'Capria',
     '  Marina Abramovic  '       => 'Abramovic',
     'David Adjaye, '             => 'Adjaye',
+    'John Smith —'               => 'Smith',
+    'John Smith 🎉'              => 'Smith',
+    'John Smith — 🎉'            => 'Smith',
+    '— 🎉'                       => '',
     '<em>André Aciman</em>'      => 'Aciman',
     ''                           => '',
 );
