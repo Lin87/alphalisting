@@ -19,6 +19,8 @@ This plugin includes a block and shortcode for the list, along with a widget for
 
 Show posts from any single or multiple post types, including built-in posts and pages. Post types from plugins like WooCommerce products are also supported. Alternatively, display terms such as categories or tags.
 
+Post listings can be grouped and sorted by the last word of each post title. Enable "Group by last word" in the block settings, or add `group-by="last-word"` to the shortcode. The complete post title remains visible in the listing.
+
 _This plugin is based on the original **A-Z Listing** by Lucy (formerly Dani) Llewellyn, which is no longer maintained. Custom templates built for the original plugin may not work reliably with this version. For the most up-to-date example template, see the [example template](https://raw.githubusercontent.com/Lin87/alphalisting/refs/heads/main/templates/a-z-listing.example.php)._
 
 == Installation ==
