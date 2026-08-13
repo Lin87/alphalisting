@@ -1,31 +1,33 @@
 {
   "name": "alphalisting",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "main": "build/index.js",
   "author": "Ethan Lin",
   "scripts": {
     "build": "wp-scripts build ./scripts/blocks/index.js && grunt",
+    "build:release": "npm run build && composer makepot",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
     "format:js": "wp-scripts format-js ./scripts",
     "lint:css": "wp-scripts lint-style ./css/editor.css ./css/style.css",
     "lint:js": "wp-scripts lint-js ./scripts",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
+    "makepot": "composer makepot",
     "packages-update": "wp-scripts packages-update",
     "start": "wp-scripts start ./scripts/blocks/index.js"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^31.8.0",
-    "grunt": "^1.6.1",
+    "@wordpress/scripts": "^34.1.0",
+    "grunt": "^1.6.3",
     "grunt-cli": "^1.5.0",
     "grunt-sass": "^4.1.0",
     "grunt-wp-i18n": "^1.0.4",
     "grunt-wp-readme-to-markdown": "^2.1.0",
-    "sass": "^1.99.0"
+    "sass": "^1.102.0"
   },
   "dependencies": {
-    "@wordpress/icons": "^12.1.0",
+    "@wordpress/icons": "^15.4.0",
     "lodash": "^4.18.1",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.1"
   }
 }
