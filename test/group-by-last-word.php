@@ -98,6 +98,16 @@ if ( array( 'J' ) !== $letters ) {
     throw new RuntimeException( 'Expected the post to be indexed by the filtered title.' );
 }
 
+$zero_letters = $group_by->index_by_last_word( array( 'M' ), new WP_Post( 'Model 0' ), 'posts', 'Model 0' );
+if ( array( '0' ) !== $zero_letters ) {
+    throw new RuntimeException( 'Expected a zero-valued last-word index letter to be retained.' );
+}
+
+$indices_source = (string) file_get_contents( dirname( __DIR__ ) . '/src/Indices.php' );
+if ( ! str_contains( $indices_source, "static fn( \$letter ): bool => '' !== (string) \$letter" ) ) {
+    throw new RuntimeException( 'Expected index filtering to remove only empty index letters.' );
+}
+
 $term_letters = $group_by->index_by_last_word( array( 'Y' ), new WP_Post( 'Yassmin Abdel-Magied' ), 'terms', 'Yassmin Abdel-Magied' );
 if ( array( 'Y' ) !== $term_letters ) {
     throw new RuntimeException( 'Expected non-post listings to remain unchanged.' );

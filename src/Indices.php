@@ -123,7 +123,12 @@ class Indices extends Singleton implements Extension {
 		 * @param string $title The filtered title used to index the item.
 		 */
 		$index_letters = apply_filters( 'alphalisting_item_index_letter', $index_letters, $item, $type, $title );
-		$index_letters = array_unique( array_filter( $index_letters ) );
+        $index_letters = array_unique(
+            array_filter(
+                $index_letters,
+                static fn( $letter ): bool => '' !== (string) $letter
+            )
+        );
 
 		foreach ( $index_letters as $letter ) {
 			$indices[ $alphabet->get_letter_for_key( $letter ) ][] = array(
