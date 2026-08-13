@@ -694,6 +694,20 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
+                                        { 'posts' === attributes.display && (
+                                            <ToggleControl
+                                                label={ __( 'Group by last word', 'alphalisting' ) }
+                                                checked={ 'last-word' === attributes['group-by'] }
+                                                onChange={ ( enabled ) =>
+                                                    setAttributes( {
+                                                        'group-by': enabled ? 'last-word' : '',
+                                                    } )
+                                                }
+                                                help={ __( 'Group and sort posts by the last word of their title.', 'alphalisting' ) }
+                                                __next40pxDefaultSize
+                                                __nextHasNoMarginBottom
+                                            />
+                                        ) }
 										<SelectControl
 											label={ __( 'Numbers', 'alphalisting' ) }
 											value={ attributes.numbers ?? defaults['numbers'].default }

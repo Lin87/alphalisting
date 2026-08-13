@@ -486,68 +486,7 @@ class Query {
 							$atitle = strtolower( $a['title'] );
 							$btitle = strtolower( $b['title'] );
 
-							$atitle_array = Strings::mb_string_to_array( $atitle );
-							$btitle_array = Strings::mb_string_to_array( $btitle );
-
-							$atitle_array = array_map(
-								function( $letter ) use ( $alphabet ) {
-									$normalized_letter = $alphabet->get_letter_for_key( $letter );
-									if ( $normalized_letter === $alphabet->unknown_letter ) {
-										$normalized_letter = $letter;
-									}
-									return $normalized_letter;
-								},
-								$atitle_array
-							);
-							$btitle_array = array_map(
-								function( $letter ) use ( $alphabet ) {
-									$normalized_letter = $alphabet->get_letter_for_key( $letter );
-									if ( $normalized_letter === $alphabet->unknown_letter ) {
-										$normalized_letter = $letter;
-									}
-									return $normalized_letter;
-								},
-								$btitle_array
-							);
-
-							$default_sort = 0;
-							if ( implode( '', $atitle_array ) != implode( '', $btitle_array ) ) {
-								$min_length = min( count( $atitle_array ), count( $btitle_array ) );
-								for ( $idx = 0; $idx < $min_length; ++$idx ) {
-									$a_has_symbol = false;
-									$b_has_symbol = false;
-
-									$aletter = array_search( $atitle_array[ $idx ], $alphabet->alphabet_keys );
-									$bletter = array_search( $btitle_array[ $idx ], $alphabet->alphabet_keys );
-
-									if ( ! is_int( $aletter ) ) {
-										$aletter = $atitle_array[ $idx ];
-										$a_has_symbol = true;
-									}
-									if ( ! is_int( $bletter ) ) {
-										$bletter = $btitle_array[ $idx ];
-										$b_has_symbol = true;
-									}
-
-									if ( $a_has_symbol && ! $b_has_symbol ) {
-										$default_sort = $alphabet->unknown_letter_is_first ? -1 : 1;
-									} elseif ( ! $a_has_symbol && $b_has_symbol ) {
-										$default_sort = $alphabet->unknown_letter_is_first ? 1 : -1;
-									} elseif ( $a_has_symbol && $b_has_symbol ) {
-										$default_sort = $aletter <=> $bletter;
-									} else {
-										$default_sort = $aletter <=> $bletter;
-									}
-
-									if ( 0 !== $default_sort ) {
-										break;
-									}
-								}
-
-								if ( 0 === $default_sort ) {
-									$default_sort = count( $atitle_array ) <=> count( $btitle_array );
-								}
-							}
+                            $default_sort = $alphabet->compare_strings( $atitle, $btitle );
 
 							/**
 							 * Compare two titles to determine sorting order.
@@ -556,13 +495,15 @@ class Query {
 							 * @param int The previous order preference: -1 if $a is less than $b. 1 if $a is greater than $b. 0 if they are identical.
 							 * @param string $a The first title. Converted to lower case.
 							 * @param string $b The second title. Converted to lower case.
+							 * @param Alphabet $alphabet The configured listing alphabet.
 							 * @return int The new order preference: -1 if $a is less than $b. 1 if $a is greater than $b. 0 if they are identical.
 							 */
 							$sort = apply_filters(
 								'alphalisting_item_sorting_comparator',
 								$default_sort,
 								$atitle,
-								$btitle
+								$btitle,
+								$alphabet
 							);
 
 							if ( is_int( $sort ) ) {
@@ -837,9 +778,6 @@ class Query {
 		$key                        = $this->alphabet->get_key_for_offset( $this->current_letter_offset );
 		if ( isset( $this->matched_item_indices[ $key ] ) ) {
 			$this->current_letter_items = &$this->matched_item_indices[ $key ];
-			usort($this->current_letter_items, function ($a, $b) {
-				return strcasecmp($a['title'], $b['title']);
-			});
 		}
 		++$this->current_letter_offset;
 	}

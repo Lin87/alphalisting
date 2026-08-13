@@ -108,8 +108,9 @@ class Indices extends Singleton implements Extension {
 		 * @param array  $indices The current indices
 		 * @param mixed  $item The item
 		 * @param string $item_type The type of the listing.
+		 * @param string $title The filtered title used to index the item.
 		 */
-		$index_letters = apply_filters( 'alphalisting-item-index-letter', array( $index ), $item, $type ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$index_letters = apply_filters( 'alphalisting-item-index-letter', array( $index ), $item, $type, $title ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		/**
 		 * Modify the index/indices to group this item under
@@ -119,9 +120,15 @@ class Indices extends Singleton implements Extension {
 		 * @param array  $indices The current indices
 		 * @param mixed  $item The item
 		 * @param string $item_type The type of the listing.
+		 * @param string $title The filtered title used to index the item.
 		 */
-		$index_letters = apply_filters( 'alphalisting_item_index_letter', $index_letters, $item, $type );
-		$index_letters = array_unique( array_filter( $index_letters ) );
+		$index_letters = apply_filters( 'alphalisting_item_index_letter', $index_letters, $item, $type, $title );
+        $index_letters = array_unique(
+            array_filter(
+                $index_letters,
+                static fn( $letter ): bool => '' !== (string) $letter
+            )
+        );
 
 		foreach ( $index_letters as $letter ) {
 			$indices[ $alphabet->get_letter_for_key( $letter ) ][] = array(

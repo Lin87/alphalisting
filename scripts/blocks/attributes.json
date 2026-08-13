@@ -35,6 +35,11 @@
         "type": "number",
         "default": 1
     },
+    "group-by": {
+        "type": "string",
+        "enum": ["", "last-word"],
+        "default": ""
+    },
     "instance-id": {
         "type": "string"
     },

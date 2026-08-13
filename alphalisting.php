@@ -64,6 +64,7 @@ function alphalisting_init() {
 	\eslin87\AlphaListing\Shortcode\QueryParts\ColumnWidth::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ExcludePosts::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ExcludeTerms::instance()->activate( __FILE__ )->initialize();
+    \eslin87\AlphaListing\Shortcode\QueryParts\GroupBy::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\HideEmpty_Deprecated::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\HideEmptyTerms::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\InstanceId::instance()->activate( __FILE__ )->initialize();
