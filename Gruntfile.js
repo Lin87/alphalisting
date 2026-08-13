@@ -35,6 +35,9 @@ module.exports = function( grunt ) {
 							if ( String( lines[0] ).startsWith('<?php') ) {
 								return `${blockStartEnd}php\n${lines.join('\n')}\n${blockStartEnd}`;
 							}
+							// Without this, non-PHP code blocks return undefined and
+							// String.replace() substitutes the literal text "undefined".
+							return codeblock;
 						});
 						return readme;
 					},

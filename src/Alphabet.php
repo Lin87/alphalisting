@@ -165,7 +165,9 @@ class Alphabet {
 	 * @return string The letter.
 	 */
 	public function get_letter_for_key( string $key ): string {
-		if ( $key === $this->unknown_letter || ! in_array( "__$key", array_keys( $this->keyed_alphabet ), true ) ) {
+		// isset() rather than in_array( …, array_keys( … ) ): this runs once per
+		// character per title while sorting, so the O(n) scan was measurable.
+		if ( $key === $this->unknown_letter || ! isset( $this->keyed_alphabet[ "__$key" ] ) ) {
 			return $this->unknown_letter;
 		}
 		return $this->keyed_alphabet[ "__$key" ];
@@ -203,57 +205,59 @@ class Alphabet {
 		return $this->unknown_letter;
 	}
 
-    /**
-     * Compare strings using the configured alphabet order and character groups.
-     *
-     * @param string $first  The first string.
-     * @param string $second The second string.
-     * @return int -1, 0, or 1 according to the configured alphabet.
-     */
-    public function compare_strings( string $first, string $second ): int {
-        $first_characters  = $this->normalize_string_for_sorting( $first );
-        $second_characters = $this->normalize_string_for_sorting( $second );
-        $minimum_length    = min( count( $first_characters ), count( $second_characters ) );
+	/**
+	 * Compare strings using the configured alphabet order and character groups.
+	 *
+	 * @since 4.5.0
+	 * @param string $first  The first string.
+	 * @param string $second The second string.
+	 * @return int -1, 0, or 1 according to the configured alphabet.
+	 */
+	public function compare_strings( string $first, string $second ): int {
+		$first_characters  = $this->normalize_string_for_sorting( $first );
+		$second_characters = $this->normalize_string_for_sorting( $second );
+		$minimum_length    = min( count( $first_characters ), count( $second_characters ) );
 
-        for ( $index = 0; $index < $minimum_length; ++$index ) {
-            $first_position  = array_search( $first_characters[ $index ], $this->alphabet_keys, true );
-            $second_position = array_search( $second_characters[ $index ], $this->alphabet_keys, true );
-            $first_unknown   = ! is_int( $first_position );
-            $second_unknown  = ! is_int( $second_position );
+		for ( $index = 0; $index < $minimum_length; ++$index ) {
+			$first_position  = array_search( $first_characters[ $index ], $this->alphabet_keys, true );
+			$second_position = array_search( $second_characters[ $index ], $this->alphabet_keys, true );
+			$first_unknown   = ! is_int( $first_position );
+			$second_unknown  = ! is_int( $second_position );
 
-            if ( $first_unknown && ! $second_unknown ) {
-                return $this->unknown_letter_is_first ? -1 : 1;
-            }
-            if ( ! $first_unknown && $second_unknown ) {
-                return $this->unknown_letter_is_first ? 1 : -1;
-            }
+			if ( $first_unknown && ! $second_unknown ) {
+				return $this->unknown_letter_is_first ? -1 : 1;
+			}
+			if ( ! $first_unknown && $second_unknown ) {
+				return $this->unknown_letter_is_first ? 1 : -1;
+			}
 
-            $comparison = $first_unknown
-                ? $first_characters[ $index ] <=> $second_characters[ $index ]
-                : $first_position <=> $second_position;
-            if ( 0 !== $comparison ) {
-                return $comparison;
-            }
-        }
+			$comparison = $first_unknown
+				? $first_characters[ $index ] <=> $second_characters[ $index ]
+				: $first_position <=> $second_position;
+			if ( 0 !== $comparison ) {
+				return $comparison;
+			}
+		}
 
-        return count( $first_characters ) <=> count( $second_characters );
-    }
+		return count( $first_characters ) <=> count( $second_characters );
+	}
 
-    /**
-     * Normalize a string to the representative characters in the alphabet.
-     *
-     * @param string $value The string to normalize.
-     * @return array<int,string>
-     */
-    private function normalize_string_for_sorting( string $value ): array {
-        return array_map(
-            function( string $character ): string {
-                $normalized = $this->get_letter_for_key( $character );
-                return $normalized === $this->unknown_letter ? $character : $normalized;
-            },
-            Strings::mb_string_to_array( $value )
-        );
-    }
+	/**
+	 * Normalize a string to the representative characters in the alphabet.
+	 *
+	 * @since 4.5.0
+	 * @param string $value The string to normalize.
+	 * @return array<int,string> The normalized characters.
+	 */
+	private function normalize_string_for_sorting( string $value ): array {
+		return array_map(
+			function( string $character ): string {
+				$normalized = $this->get_letter_for_key( $character );
+				return $normalized === $this->unknown_letter ? $character : $normalized;
+			},
+			Strings::mb_string_to_array( $value )
+		);
+	}
 
 	/**
 	 * Get the alphabet characters.

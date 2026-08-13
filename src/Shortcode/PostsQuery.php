@@ -42,7 +42,7 @@ class PostsQuery extends Query {
 			$items = $query->posts;
 		} else {
 			if ( isset( $query['child_of'] ) ) {
-				if ( is_array( $query['post_type'] ) ) {
+				if ( isset( $query['post_type'] ) && is_array( $query['post_type'] ) ) {
 					// We set post_type as an array of types even with a single value. `get_posts` does
 					// not work with an array of post types, so we fetch each type's posts separately.
 					$items = array();
@@ -50,7 +50,7 @@ class PostsQuery extends Query {
 						$partial_query = $query;
 						$partial_query['post_type'] = $post_type;
 						$partial_items = get_pages( $partial_query );
-						if ( false != $partial_items ) {
+						if ( is_array( $partial_items ) ) {
 							$items = array_merge( $items, $partial_items );
 						}
 					}
@@ -77,7 +77,7 @@ class PostsQuery extends Query {
 	 * Set the fields we require on \WP_Query.
 	 *
 	 * @since 3.0.0 Introduced.
-	 * @since 4.0.0 Converted to static function, and moved to \AlphaListing\Shortcode\PostsQuery.
+	 * @since 4.0.0 Converted to static function, and moved to \eslin87\AlphaListing\Shortcode\PostsQuery.
 	 * @param string    $fields The current fields in SQL format.
 	 * @param \WP_Query $query  The \WP_Query instance.
 	 * @return string The new fields in SQL format.

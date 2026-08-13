@@ -10,6 +10,8 @@
  * Text Domain:     	alphalisting
  * Domain Path:     	/languages
  * Version:         	4.5.0
+ * Requires at least:	6.0
+ * Requires PHP:    	8.0
  * License:				GPLv2 or later
  *
  * @package         alphalisting
@@ -64,7 +66,7 @@ function alphalisting_init() {
 	\eslin87\AlphaListing\Shortcode\QueryParts\ColumnWidth::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ExcludePosts::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ExcludeTerms::instance()->activate( __FILE__ )->initialize();
-    \eslin87\AlphaListing\Shortcode\QueryParts\GroupBy::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\GroupBy::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\HideEmpty_Deprecated::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\HideEmptyTerms::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\InstanceId::instance()->activate( __FILE__ )->initialize();

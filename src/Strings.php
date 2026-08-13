@@ -26,6 +26,12 @@ class Strings {
 	 * @return array<int,string> individual multi-byte characters from the string
 	 */
 	public static function mb_string_to_array( string $string ): array {
+		// Guard the empty string: range( 0, -1 ) counts *downwards* and yields
+		// array( 0, -1 ), so without this the function returns two empty strings.
+		if ( '' === $string ) {
+			return array();
+		}
+
 		if ( extension_loaded( 'mbstring' ) || class_exists( '\\Symfony\\Polyfill\\Mbstring\\Mbstring' ) ) {
 			return array_map(
 				/**
@@ -38,10 +44,10 @@ class Strings {
 				},
 				range( 0, mb_strlen( $string ) - 1 )
 			);
-               } else {
-                       return str_split( $string );
-               }
-       }
+		} else {
+			return str_split( $string );
+		}
+	}
 
 	/**
 	 * Perform a multibyte substring operation if mbstring is loaded, else use substr.
@@ -63,8 +69,8 @@ class Strings {
 	/**
 	 * Perform a multibyte split operation if mbstring is loaded, else use explode.
 	 *
-	 * @param string $separator The character to mark each field.
-	 * @param [type] $value     The multibyte string to explode.
+	 * @param string            $separator The character to mark each field.
+	 * @param string|array|null $value     The multibyte string to explode, or an array to pass through.
 	 * @return array<string> The fields extracted from $value by exploding.
 	 */
 	public static function maybe_mb_split( string $separator, $value = null ): array {

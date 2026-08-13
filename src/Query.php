@@ -165,12 +165,8 @@ class Query {
 
 		// Must be after filter 'alphalisting_shortcode_query_for_display__$display'
 		// to correctly wire-up the query-part filters.
-		if ( ! defined( 'PHPUNIT_TEST_SUITE' ) || ! PHPUNIT_TEST_SUITE ) {
-			$this->instance_id = apply_filters( 'alphalisting_instance_id', ++self::$num_instances );
-		} else {
-			$this->instance_id = 'testid';
-		}
-		$this->alphabet = new Alphabet();
+		$this->instance_id = apply_filters( 'alphalisting_instance_id', ++self::$num_instances );
+		$this->alphabet    = new Alphabet();
 
 		/**
 		 * Modify or replace the query
@@ -255,22 +251,11 @@ class Query {
 	}
 
 	/**
-	 * Tell \WP_Query to split the query.
-	 *
-	 * @since 4.0.0
-	 * @param bool      $split_the_query Whether or not to split the query.
-	 * @param \WP_Query $query           The \WP_Query instance.
-	 */
-	public static function split_the_query( bool $split_the_query, \WP_Query $query ): bool {
-		return true;
-	}
-
-	/**
 	 * Find a post's parent post. Will return the original post if the post-type is not hierarchical or the post does not have a parent.
 	 *
 	 * @since 1.4.0
 	 * @param \WP_Post|int $page The post whose parent we want to find.
-	 * @return \WP_Post|null The parent post or the original post if no parents were found. Will be false if the function is called with incorrect arguments.
+	 * @return \WP_Post|null The parent post, the original post if no parents were found, or null if the post could not be resolved.
 	 */
 	public static function find_post_parent( $page ) {
 		if ( empty( $page ) ) {
@@ -345,7 +330,7 @@ class Query {
 			$section_object = null;
 		}
 
-		if ( defined( 'ALPHALISTING_LOG' ) ) {
+		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG ) {
 			do_action( 'alphalisting_log', 'AlphaListing: Section selection', $section_name, $sections );
 		}
 
@@ -354,7 +339,7 @@ class Query {
 			$section_object = null;
 		}
 
-		if ( defined( 'ALPHALISTING_LOG' ) ) {
+		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG ) {
 			do_action( 'alphalisting_log', 'AlphaListing: Proceeding with section', $section_name );
 		}
 		return $section_object;
@@ -364,9 +349,11 @@ class Query {
 	 * Fetch the query we are currently using
 	 *
 	 * @since 1.0.0
-	 * @return \WP_Query The query object
+	 * @return \WP_Query|array The query object, or the query arguments array.
 	 */
-	public function get_the_query(): \WP_Query {
+	public function get_the_query() {
+		// No declared return type: the constructor stores a plain array on the common
+		// shortcode path, so a `\WP_Query` return type would fatal under strict_types.
 		return $this->query;
 	}
 
@@ -436,39 +423,39 @@ class Query {
 				}
 			}
 		} elseif ( $this->query instanceof \WP_Query ) {
-                        $offset            = 0;
-                        $posts_per_page    = $this->query->posts_per_page;
-                        $found_posts       = $this->query->found_posts;
-                        $base_query_args   = $this->query->query;
-                        $base_query_offset = isset( $base_query_args['offset'] ) ? (int) $base_query_args['offset'] : 0;
-                        while ( $offset < $found_posts ) {
-                                $this->query->the_post();
+			$offset            = 0;
+			$posts_per_page    = $this->query->posts_per_page;
+			$found_posts       = $this->query->found_posts;
+			$base_query_args   = $this->query->query;
+			$base_query_offset = isset( $base_query_args['offset'] ) ? (int) $base_query_args['offset'] : 0;
+			while ( $offset < $found_posts ) {
+				$this->query->the_post();
 
-                                foreach ( $this->get_all_indices_for_item( $post ) as $key => $value ) {
-                                        foreach ( $value as $index_entry ) {
-                                                $indexed_items[ $key ][] = $index_entry;
-                                        }
-                                }
+				foreach ( $this->get_all_indices_for_item( $post ) as $key => $value ) {
+					foreach ( $value as $index_entry ) {
+						$indexed_items[ $key ][] = $index_entry;
+					}
+				}
 
-                                ++$offset;
-                                if ( $posts_per_page > 0 && 0 === $offset % $posts_per_page && $offset < $found_posts ) {
-                                        $next_query = $base_query_args;
-                                        if ( isset( $next_query['paged'] ) ) {
-                                                unset( $next_query['paged'] );
-                                        }
-                                        if ( isset( $next_query['page'] ) ) {
-                                                unset( $next_query['page'] );
-                                        }
-                                        $next_query['offset'] = $base_query_offset + $offset;
-                                        $this->query          = new \WP_Query( $next_query );
-                                }
-                                $unknown_letter = $this->alphabet->get_unknown_letter();
-                                if ( ! array_key_exists( $unknown_letter, $indexed_items ) || ! is_array( $indexed_items[ $unknown_letter ] ) ) {
-                                        $indexed_items[ $unknown_letter ] = array();
-                                }
-                        }
-                        wp_reset_postdata();
-                }
+				++$offset;
+				if ( $posts_per_page > 0 && 0 === $offset % $posts_per_page && $offset < $found_posts ) {
+					$next_query = $base_query_args;
+					if ( isset( $next_query['paged'] ) ) {
+						unset( $next_query['paged'] );
+					}
+					if ( isset( $next_query['page'] ) ) {
+						unset( $next_query['page'] );
+					}
+					$next_query['offset'] = $base_query_offset + $offset;
+					$this->query          = new \WP_Query( $next_query );
+				}
+				$unknown_letter = $this->alphabet->get_unknown_letter();
+				if ( ! array_key_exists( $unknown_letter, $indexed_items ) || ! is_array( $indexed_items[ $unknown_letter ] ) ) {
+					$indexed_items[ $unknown_letter ] = array();
+				}
+			}
+			wp_reset_postdata();
+		}
 
 		$alphabet = $this->alphabet;
 		$alphabet->loop(
@@ -486,7 +473,7 @@ class Query {
 							$atitle = strtolower( $a['title'] );
 							$btitle = strtolower( $b['title'] );
 
-                            $default_sort = $alphabet->compare_strings( $atitle, $btitle );
+							$default_sort = $alphabet->compare_strings( $atitle, $btitle );
 
 							/**
 							 * Compare two titles to determine sorting order.
@@ -511,7 +498,7 @@ class Query {
 								return $sort <=> 0;
 							}
 
-							if ( defined( 'AZLISTINGLOG' ) && AZLISTINGLOG ) {
+							if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG ) {
 								do_action( 'alphalisting_log', 'AlphaListing: value returned from `alphalisting_item_sorting_comparator` filter sorting was not an integer', $sort, $atitle, $btitle );
 							}
 							return $default_sort;
@@ -566,12 +553,14 @@ class Query {
 		if ( is_array( $style ) ) {
 			$classes = array_merge( $classes, $style );
 		} elseif ( is_string( $style ) ) {
-			$c       = preg_split( '[,\s]', $style );
-			$classes = array_merge( $classes, $c );
+			// '[,\s]' reads `[` and `]` as the delimiters, so the pattern was really
+			// ',\s' -- a literal comma followed by whitespace -- and never split on
+			// either separator alone.
+			$c       = preg_split( '/[,\s]+/', $style );
+			$classes = array_merge( $classes, is_array( $c ) ? $c : array() );
 		}
 		$classes = array_unique( array_filter( $classes ) );
 
-		$that     = $this;
 		$alphabet = $this->alphabet;
 		$indices  = &$this->matched_item_indices;
 		$ret      = '<ul class="' . esc_attr( implode( ' ', $classes ) ) . '">';
@@ -585,7 +574,7 @@ class Query {
 			 * @param int        $count
 			 * @return void
 			 */
-			function( string $character, $i, int $count ) use ( $that, $target, $alphabet, $indices, &$ret ) {
+			function( string $character, $i, int $count ) use ( $target, $alphabet, $indices, &$ret ) {
 				$id = $character;
 				if ( $alphabet->get_unknown_letter() === $id ) {
 					$id = '_';
@@ -612,7 +601,7 @@ class Query {
 				if ( ! empty( $indices[ $character ] ) ) {
 					$ret .= '<a href="' . esc_url( "$target#alphalisting-letter-$id-{$this->instance_id}" ) . '">';
 				}
-				$ret .= '<span>' . esc_html( $that->get_the_letter_title( $character ) ) . '</span>';
+				$ret .= '<span>' . esc_html( $this->get_the_letter_title( $character ) ) . '</span>';
 				if ( ! empty( $indices[ $character ] ) ) {
 					$ret .= '</a>';
 				}
@@ -658,24 +647,24 @@ class Query {
 			);
 			array_unshift(
 				$templates,
-				'a-z-listing-' . $post->post_type . '.php'
-			);
-			array_unshift(
-				$templates,
 				'a-z-listing-' . $post->post_name . '.php'
 			);
 		}
-		
+
 		_do_template( $this, locate_template( $templates ) );
-		
+
 		wp_reset_postdata();
 	}
 
 	/**
-	 * Retrieve column number, gap, and column width
+	 * Print the column number, gap, and width as inline custom properties.
+	 *
+	 * Note the `get_` prefix is a historical misnomer -- this echoes rather than
+	 * returns, inverting the `the_*` / `get_the_*` convention used elsewhere in this
+	 * class. Both shipped templates rely on the echo, so the name is kept as-is.
 	 *
 	 * @since 4.3.2
-	 * @return string The inline style properties for column.
+	 * @return void
 	 */
 	public function get_customized_column_styles() {
 		$styles = apply_filters( 'alphalisting_styles', '', $this, $this->instance_id );
@@ -1041,7 +1030,9 @@ class Query {
 		} elseif ( $current_item instanceof \WP_Term ) {
 			return $current_item->term_id;
 		} else {
-			return $current_item;
+			// Whatever this is, it is not necessarily an int -- coerce rather than
+			// violate the declared return type.
+			return intval( $current_item );
 		}
 	}
 
@@ -1182,12 +1173,13 @@ class Query {
  * Load and execute a theme template
  *
  * @since 2.1.0
- * @param Query $a_z_query The Query object.
+ * @param Query  $a_z_query The Query object. Used by the required template.
+ * @param string $template  Absolute path to the theme template, or '' to use the default.
  * @return void
  */
-function _do_template( Query $a_z_query ) {
-	if ( func_get_arg( 1 ) ) {
-		require func_get_arg( 1 );
+function _do_template( Query $a_z_query, string $template = '' ) {
+	if ( '' !== $template ) {
+		require $template;
 	} else {
 		require ALPHALISTING_DEFAULT_TEMPLATE;
 	}

@@ -43,7 +43,7 @@ class Numbers {
 	public function __construct( string $position = 'hide', bool $group = false ) {
 		if ( 'before' === $position || 'after' === $position ) {
 			$this->position = $position;
-			$this->group    = alphalisting_is_truthy( $group );
+			$this->group    = $group;
 			add_filter( 'alphalisting-alphabet', array( $this, 'add_to_alphabet' ) );
 			add_filter( 'the-a-z-letter-title', array( $this, 'title' ) );
 		}
@@ -68,10 +68,6 @@ class Numbers {
 	 * @return string The alphabet with numbers either prepended or appended
 	 */
 	public function add_to_alphabet( string $alphabet ): string {
-		if ( 'hide' === $this->position ) {
-			return $alphabet;
-		}
-
 		if ( true === $this->group ) {
 			$numbers = '0123456789';
 		} else {

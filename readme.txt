@@ -59,6 +59,15 @@ Comprehensive documentation is now available:
 = 4.5.0 =
 
 * New: Post listings can be grouped and sorted by the last word of each post title. Enable "Group by last word" in the block settings, or add `group-by="last-word"` to the shortcode.
+* Bugfix: The widget's "Terms to exclude" setting is now saved. It was previously discarded every time the widget was saved.
+* Bugfix: The widget's "Hide empty terms" checkbox now takes effect. It previously had no effect on the listing.
+* Bugfix: Listings no longer produce a fatal error when given an unregistered taxonomy, a `parent-term` in an unregistered taxonomy, or a `target` pointing at a deleted post.
+* Bugfix: The template-tag functions (`have_a_z_letters()`, `the_a_z_letter()`, `have_a_z_items()`, and friends) now work in theme templates. They previously looped forever because each call rebuilt the listing from scratch.
+* Bugfix: CSS class names passed to the letter list are split on commas and spaces again.
+* Bugfix: The widget's post-title autocomplete no longer shows stray backslashes in titles containing apostrophes.
+* Security: Widget settings are no longer interpolated into a shortcode string, so a value containing a quote or bracket can no longer alter the rendered shortcode.
+* Change: The `instance-id` attribute is sanitized for use in an HTML id and URL fragment.
+* Change: The plugin now declares `Requires PHP: 8.0` and `Requires at least: 6.0`, so WordPress will block activation on unsupported versions instead of fataling.
 
 = 4.4.0 =
 

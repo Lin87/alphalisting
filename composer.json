@@ -13,10 +13,7 @@
         "platform": {
             "php": "8.0"
         },
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "kylekatarnls/update-helper": true
-        }
+        "allow-plugins": {}
     },
     "require": {
         "symfony/polyfill-mbstring": "^1.31.0"

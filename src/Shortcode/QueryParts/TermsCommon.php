@@ -34,7 +34,7 @@ abstract class TermsCommon extends Extension {
 	 * @since 4.0.0
 	 * @param string $value The shortcode attribute value.
 	 * @param array  $taxonomies The configured taxonomies.
-	 * @return array<string> The terms.
+	 * @return array<int> The term IDs. Negative values mark terms to exclude.
 	 */
 	public function get_terms( $value, array $taxonomies ): array {
 		$terms = Strings::maybe_mb_split( ',', $value );
@@ -74,7 +74,7 @@ abstract class TermsCommon extends Extension {
 	 *
 	 * @since 4.0.0
 	 * @param array $terms The terms.
-	 * @return array<string> The terms for exclusion.
+	 * @return array<int> The term IDs to exclude.
 	 */
 	public function get_exclude_terms( array $terms ): array {
 		$terms = array_filter(
@@ -97,7 +97,7 @@ abstract class TermsCommon extends Extension {
 	 *
 	 * @since 4.0.0
 	 * @param array $terms The terms.
-	 * @return array<string> The terms for inclusion.
+	 * @return array<int> The term IDs to include.
 	 */
 	public function get_include_terms( array $terms ): array {
 		$terms = array_filter(

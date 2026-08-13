@@ -460,6 +460,10 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 		}
 	}, [ attributes['post-type'], setAttributes ] );
 
+	// Generated once per mount rather than inline in the control's `value`, where a
+	// fresh UUID was minted on every render and never persisted.
+	const fallbackInstanceId = useMemo( () => uuid(), [] );
+
 	const excludePostsTokens = useMemo(
 		() => sanitizeNumericTokenList( attributes['exclude-posts'] ).map( ( token ) => token.toString() ),
 		[ attributes['exclude-posts'] ]
@@ -669,7 +673,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 									<>
 										<TextControl
 											label={ __( 'Listing ID', 'alphalisting' ) }
-											value={ attributes['instance-id'] ?? uuid() }
+											value={ attributes['instance-id'] ?? fallbackInstanceId }
 											onChange={ (value) =>
 												setAttributes( { 'instance-id': value } )
 											}

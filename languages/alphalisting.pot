@@ -9,16 +9,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-13T18:00:07+00:00\n"
+"POT-Creation-Date: 2026-08-13T19:53:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: alphalisting\n"
 
 #. Plugin Name of the plugin
 #: alphalisting.php:5
-#: scripts/blocks/edit.js:890
-#: scripts/blocks/edit.js:906
-#: scripts/blocks/edit.js:914
+#: scripts/blocks/edit.js:894
+#: scripts/blocks/edit.js:910
+#: scripts/blocks/edit.js:918
 #: scripts/blocks/index.js:91
 msgid "AlphaListing"
 msgstr ""
@@ -81,13 +81,17 @@ msgstr ""
 msgid "#"
 msgstr ""
 
-#: templates/a-z-listing.example.php:52
-#: templates/a-z-listing.php:76
+#: src/GutenBlock.php:32
+msgid "The AlphaListing plugin has been disabled."
+msgstr ""
+
+#: templates/a-z-listing.example.php:54
+#: templates/a-z-listing.php:78
 msgid "Back to top"
 msgstr ""
 
-#: templates/a-z-listing.example.php:63
-#: templates/a-z-listing.php:88
+#: templates/a-z-listing.example.php:65
+#: templates/a-z-listing.php:90
 msgid "There are no posts included in this index."
 msgstr ""
 
@@ -96,7 +100,7 @@ msgid "Alphabetized links to the A-Z site map"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:43
-#: widgets/class-alphalisting-widget.php:447
+#: widgets/class-alphalisting-widget.php:451
 msgid "A-Z Site Map"
 msgstr ""
 
@@ -132,7 +136,7 @@ msgid "Posts"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:182
-#: scripts/blocks/edit.js:571
+#: scripts/blocks/edit.js:575
 msgid "Taxonomy terms"
 msgstr ""
 
@@ -169,19 +173,19 @@ msgid "Terms to exclude (IDs)"
 msgstr ""
 
 #: widgets/class-alphalisting-widget.php:295
-#: scripts/blocks/edit.js:650
+#: scripts/blocks/edit.js:654
 msgid "Hide empty terms"
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:559
+#: widgets/class-alphalisting-widget.php:574
 msgid "Security check failed."
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:568
+#: widgets/class-alphalisting-widget.php:583
 msgid "You are not allowed to perform this action."
 msgstr ""
 
-#: widgets/class-alphalisting-widget.php:581
+#: widgets/class-alphalisting-widget.php:596
 msgid "Invalid request payload."
 msgstr ""
 
@@ -193,139 +197,139 @@ msgstr ""
 msgid "You must set a taxonomy when display mode is set to 'terms'."
 msgstr ""
 
-#: scripts/blocks/edit.js:492
+#: scripts/blocks/edit.js:496
 msgid "Listing selection"
 msgstr ""
 
-#: scripts/blocks/edit.js:497
+#: scripts/blocks/edit.js:501
 msgid "Display mode"
 msgstr ""
 
-#: scripts/blocks/edit.js:514
+#: scripts/blocks/edit.js:518
 msgid "Post Type"
 msgstr ""
 
-#: scripts/blocks/edit.js:515
+#: scripts/blocks/edit.js:519
 msgid "Select the post types to display. Hold Ctrl to select multiple."
 msgstr ""
 
-#: scripts/blocks/edit.js:549
+#: scripts/blocks/edit.js:553
 msgid "Taxonomy"
 msgstr ""
 
-#: scripts/blocks/edit.js:587
+#: scripts/blocks/edit.js:591
 msgid "Exclude post IDs"
 msgstr ""
 
-#: scripts/blocks/edit.js:594
+#: scripts/blocks/edit.js:598
 msgid "Provide numeric post IDs to omit from the listing."
 msgstr ""
 
-#: scripts/blocks/edit.js:603
+#: scripts/blocks/edit.js:607
 msgid "Parent term (slug or ID)"
 msgstr ""
 
-#: scripts/blocks/edit.js:619
+#: scripts/blocks/edit.js:623
 msgid "Exclude term IDs"
 msgstr ""
 
-#: scripts/blocks/edit.js:627
+#: scripts/blocks/edit.js:631
 msgid "Provide numeric term IDs to omit from the listing."
 msgstr ""
 
-#: scripts/blocks/edit.js:637
+#: scripts/blocks/edit.js:641
 msgid "Include all descendants"
 msgstr ""
 
-#: scripts/blocks/edit.js:638
+#: scripts/blocks/edit.js:642
 msgid "Include items from all levels below the selected parent."
 msgstr ""
 
-#: scripts/blocks/edit.js:666
+#: scripts/blocks/edit.js:670
 msgid "Display options"
 msgstr ""
 
-#: scripts/blocks/edit.js:671
+#: scripts/blocks/edit.js:675
 msgid "Listing ID"
 msgstr ""
 
-#: scripts/blocks/edit.js:680
+#: scripts/blocks/edit.js:684
 msgid "CSS class names"
 msgstr ""
 
-#: scripts/blocks/edit.js:689
+#: scripts/blocks/edit.js:693
 msgid "Alphabet"
 msgstr ""
 
-#: scripts/blocks/edit.js:699
+#: scripts/blocks/edit.js:703
 msgid "Group by last word"
 msgstr ""
 
-#: scripts/blocks/edit.js:706
+#: scripts/blocks/edit.js:710
 msgid "Group and sort posts by the last word of their title."
 msgstr ""
 
-#: scripts/blocks/edit.js:712
+#: scripts/blocks/edit.js:716
 msgid "Numbers"
 msgstr ""
 
-#: scripts/blocks/edit.js:717
+#: scripts/blocks/edit.js:721
 msgid "Hide numbers"
 msgstr ""
 
-#: scripts/blocks/edit.js:724
+#: scripts/blocks/edit.js:728
 msgid "Prepend before alphabet"
 msgstr ""
 
-#: scripts/blocks/edit.js:731
+#: scripts/blocks/edit.js:735
 msgid "Append after alphabet"
 msgstr ""
 
-#: scripts/blocks/edit.js:750
+#: scripts/blocks/edit.js:754
 msgid "Group letters"
 msgstr ""
 
-#: scripts/blocks/edit.js:751
+#: scripts/blocks/edit.js:755
 msgid "The number of letters to include in a single group"
 msgstr ""
 
-#: scripts/blocks/edit.js:776
+#: scripts/blocks/edit.js:780
 msgid "Group numbers"
 msgstr ""
 
-#: scripts/blocks/edit.js:780
+#: scripts/blocks/edit.js:784
 msgid "Group 0-9 as a single letter"
 msgstr ""
 
-#: scripts/blocks/edit.js:801
+#: scripts/blocks/edit.js:805
 msgid "Display symbols entry first"
 msgstr ""
 
-#: scripts/blocks/edit.js:810
+#: scripts/blocks/edit.js:814
 msgid "Show back to top link"
 msgstr ""
 
-#: scripts/blocks/edit.js:820
+#: scripts/blocks/edit.js:824
 msgid "Columns"
 msgstr ""
 
-#: scripts/blocks/edit.js:834
+#: scripts/blocks/edit.js:838
 msgid "Column width"
 msgstr ""
 
-#: scripts/blocks/edit.js:849
+#: scripts/blocks/edit.js:853
 msgid "Column gap"
 msgstr ""
 
-#: scripts/blocks/edit.js:891
+#: scripts/blocks/edit.js:895
 msgid "The AlphaListing configuration is incomplete:"
 msgstr ""
 
-#: scripts/blocks/edit.js:908
+#: scripts/blocks/edit.js:912
 msgid "Error Loading the listing..."
 msgstr ""
 
-#: scripts/blocks/edit.js:916
+#: scripts/blocks/edit.js:920
 msgid "The listing has returned an empty page. This is likely an error."
 msgstr ""
 

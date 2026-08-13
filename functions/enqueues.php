@@ -40,11 +40,16 @@ function alphalisting_do_enqueue() {
 		ALPHALISTING_VERSION,
 		true
 	);
-	
-	wp_localize_script(
+
+	/*
+	 * wp_add_inline_script() rather than wp_localize_script(): this is plain
+	 * configuration data, not translations, and wp_localize_script() runs every value
+	 * through html_entity_decode(), which corrupts values containing an ampersand.
+	 */
+	wp_add_inline_script(
 		'alphalisting-widget-admin',
-		'alphalisting_widget_admin',
-		array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+		'var alphalisting_widget_admin = ' . wp_json_encode( array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) ) . ';',
+		'before'
 	);
 
 	$add_styles = get_option( 'alphalisting-add-styling', true );

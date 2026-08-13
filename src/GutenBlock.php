@@ -2,7 +2,7 @@
 /**
  * Server-side rendering of the `alphalisting` block.
  *
- * @package WordPress
+ * @package alphalisting
  */
 
 declare(strict_types=1);
@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Server-side rendering of the `alphalisting` block implementation class.
  *
- * @package WordPress
+ * @package alphalisting
  */
-class GutenBlock extends Singleton implements Extension {
+class GutenBlock extends Singleton {
 	/**
 	 * Render the block.
 	 *
@@ -29,7 +29,7 @@ class GutenBlock extends Singleton implements Extension {
 	public function render( $attributes ) {
 		global $shortcode_tags;
 		if ( empty( $shortcode_tags ) || ! is_array( $shortcode_tags ) || ! array_key_exists( 'alphalisting', $shortcode_tags ) ) {
-			return 'The AlphaListing plugin has been disabled.';
+			return esc_html__( 'The AlphaListing plugin has been disabled.', 'alphalisting' );
 		}
 
 		return call_user_func( $shortcode_tags['alphalisting'], $attributes );

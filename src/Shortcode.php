@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Shortcode handler.
  */
-class Shortcode extends Singleton implements Extension {
+class Shortcode extends Singleton {
 	/**
 	 * Bind the shortcode to the handler.
 	 *
@@ -93,7 +93,10 @@ class Shortcode extends Singleton implements Extension {
 		$target = '';
 		if ( ! empty( $attributes['target'] ) ) {
 			if ( intval( $attributes['target'] ) > 0 ) {
-				$target = get_permalink( $attributes['target'] );
+				// get_permalink() returns false for a post ID that no longer exists;
+				// $target feeds get_the_letters( string $target ), which would fatal.
+				$permalink = get_permalink( $attributes['target'] );
+				$target    = is_string( $permalink ) ? $permalink : '';
 			} else {
 				$target = $attributes['target'];
 			}

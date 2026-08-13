@@ -3,15 +3,17 @@
  * Example template for the AlphaListing plugin
  *
  * This template will be given the variable `$a_z_query` which is an instance of
- * `A_Z_Listing`.
+ * `eslin87\AlphaListing\Query`.
  *
  * You can override the default template by copying this file into your theme
  * directory and renaming it to `a-z-listing.php`.
  *
- * @package a-z-listing
+ * @package alphalisting
  */
 
- if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 ?>
 <div id="<?php $a_z_query->the_instance_id(); ?>" style="<?php $a_z_query->get_customized_column_styles(); ?>" class="az-listing">
