@@ -680,6 +680,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
+										
 										<TextControl
 											label={ __( 'CSS class names', 'alphalisting' ) }
 											value={ attributes.className ?? '' }
@@ -689,6 +690,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
+
 										<TextControl
 											label={ __( 'Alphabet', 'alphalisting' ) }
 											value={ attributes.alphabet ?? defaults['alphabet'].default }
@@ -698,20 +700,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
-                                        { 'posts' === attributes.display && (
-                                            <ToggleControl
-                                                label={ __( 'Group by last word', 'alphalisting' ) }
-                                                checked={ 'last-word' === attributes['group-by'] }
-                                                onChange={ ( enabled ) =>
-                                                    setAttributes( {
-                                                        'group-by': enabled ? 'last-word' : '',
-                                                    } )
-                                                }
-                                                help={ __( 'Group and sort posts by the last word of their title.', 'alphalisting' ) }
-                                                __next40pxDefaultSize
-                                                __nextHasNoMarginBottom
-                                            />
-                                        ) }
+
 										<SelectControl
 											label={ __( 'Numbers', 'alphalisting' ) }
 											value={ attributes.numbers ?? defaults['numbers'].default }
@@ -799,7 +788,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 													__next40pxDefaultSize
 													__nextHasNoMarginBottom
 												/>
-											) }
+											)
+										}
 
 										<ToggleControl
 											label={ __( 'Display symbols entry first', 'alphalisting' ) }
@@ -810,6 +800,22 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
+
+										{ 'posts' === attributes.display && (
+                                            <ToggleControl
+                                                label={ __( 'Group by last word', 'alphalisting' ) }
+                                                checked={ 'last-word' === attributes['group-by'] }
+                                                onChange={ ( enabled ) =>
+                                                    setAttributes( {
+                                                        'group-by': enabled ? 'last-word' : '',
+                                                    } )
+                                                }
+                                                help={ __( 'Group and sort posts by the last word of their title.', 'alphalisting' ) }
+                                                __next40pxDefaultSize
+                                                __nextHasNoMarginBottom
+                                            />
+                                        ) }
+
 										<ToggleControl
 											label={ __( 'Show back to top link', 'alphalisting' ) }
 											checked={ !! attributes['back-to-top'] }
@@ -849,6 +855,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
+
 										<UnitControl
 											label={ __( 'Column gap', 'alphalisting' ) }
 											value={ sanitizedColumnGap }

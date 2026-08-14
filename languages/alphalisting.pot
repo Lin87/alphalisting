@@ -9,16 +9,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-13T23:06:32+00:00\n"
+"POT-Creation-Date: 2026-08-14T13:49:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: alphalisting\n"
 
 #. Plugin Name of the plugin
 #: alphalisting.php:5
-#: scripts/blocks/edit.js:894
-#: scripts/blocks/edit.js:910
-#: scripts/blocks/edit.js:918
+#: scripts/blocks/edit.js:901
+#: scripts/blocks/edit.js:917
+#: scripts/blocks/edit.js:925
 #: scripts/blocks/index.js:91
 msgid "AlphaListing"
 msgstr ""
@@ -253,83 +253,83 @@ msgstr ""
 msgid "Listing ID"
 msgstr ""
 
-#: scripts/blocks/edit.js:684
+#: scripts/blocks/edit.js:685
 msgid "CSS class names"
 msgstr ""
 
-#: scripts/blocks/edit.js:693
+#: scripts/blocks/edit.js:695
 msgid "Alphabet"
 msgstr ""
 
-#: scripts/blocks/edit.js:703
-msgid "Group by last word"
-msgstr ""
-
-#: scripts/blocks/edit.js:710
-msgid "Group and sort posts by the last word of their title."
-msgstr ""
-
-#: scripts/blocks/edit.js:716
+#: scripts/blocks/edit.js:705
 msgid "Numbers"
 msgstr ""
 
-#: scripts/blocks/edit.js:721
+#: scripts/blocks/edit.js:710
 msgid "Hide numbers"
 msgstr ""
 
-#: scripts/blocks/edit.js:728
+#: scripts/blocks/edit.js:717
 msgid "Prepend before alphabet"
 msgstr ""
 
-#: scripts/blocks/edit.js:735
+#: scripts/blocks/edit.js:724
 msgid "Append after alphabet"
 msgstr ""
 
-#: scripts/blocks/edit.js:754
+#: scripts/blocks/edit.js:743
 msgid "Group letters"
 msgstr ""
 
-#: scripts/blocks/edit.js:755
+#: scripts/blocks/edit.js:744
 msgid "The number of letters to include in a single group"
 msgstr ""
 
-#: scripts/blocks/edit.js:780
+#: scripts/blocks/edit.js:769
 msgid "Group numbers"
 msgstr ""
 
-#: scripts/blocks/edit.js:784
+#: scripts/blocks/edit.js:773
 msgid "Group 0-9 as a single letter"
 msgstr ""
 
-#: scripts/blocks/edit.js:805
+#: scripts/blocks/edit.js:795
 msgid "Display symbols entry first"
 msgstr ""
 
-#: scripts/blocks/edit.js:814
+#: scripts/blocks/edit.js:806
+msgid "Group by last word"
+msgstr ""
+
+#: scripts/blocks/edit.js:813
+msgid "Group and sort posts by the last word of their title."
+msgstr ""
+
+#: scripts/blocks/edit.js:820
 msgid "Show back to top link"
 msgstr ""
 
-#: scripts/blocks/edit.js:824
+#: scripts/blocks/edit.js:830
 msgid "Columns"
 msgstr ""
 
-#: scripts/blocks/edit.js:838
+#: scripts/blocks/edit.js:844
 msgid "Column width"
 msgstr ""
 
-#: scripts/blocks/edit.js:853
+#: scripts/blocks/edit.js:860
 msgid "Column gap"
 msgstr ""
 
-#: scripts/blocks/edit.js:895
+#: scripts/blocks/edit.js:902
 msgid "The AlphaListing configuration is incomplete:"
 msgstr ""
 
-#: scripts/blocks/edit.js:912
+#: scripts/blocks/edit.js:919
 msgid "Error Loading the listing..."
 msgstr ""
 
-#: scripts/blocks/edit.js:920
+#: scripts/blocks/edit.js:927
 msgid "The listing has returned an empty page. This is likely an error."
 msgstr ""
 
