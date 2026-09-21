@@ -2,23 +2,23 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: AlphaListing 4.5.1\n"
+"Project-Id-Version: AlphaListing 4.6.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alphalisting\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-21T15:51:46+00:00\n"
+"POT-Creation-Date: 2026-09-21T16:46:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: alphalisting\n"
 
 #. Plugin Name of the plugin
 #: alphalisting.php:5
-#: scripts/blocks/edit.js:902
-#: scripts/blocks/edit.js:918
-#: scripts/blocks/edit.js:926
+#: scripts/blocks/edit.js:927
+#: scripts/blocks/edit.js:943
+#: scripts/blocks/edit.js:951
 #: scripts/blocks/index.js:91
 msgid "AlphaListing"
 msgstr ""
@@ -297,43 +297,75 @@ msgstr ""
 msgid "Group and sort posts by the last word of their title."
 msgstr ""
 
-#: scripts/blocks/edit.js:804
+#: scripts/blocks/edit.js:805
+msgid "Ignore leading articles"
+msgstr ""
+
+#: scripts/blocks/edit.js:808
+msgid "Do not ignore articles"
+msgstr ""
+
+#: scripts/blocks/edit.js:809
+msgid "English (a, an, the)"
+msgstr ""
+
+#: scripts/blocks/edit.js:810
+msgid "French (le, la, les, un, une, des)"
+msgstr ""
+
+#: scripts/blocks/edit.js:811
+msgid "Spanish (el, la, los, las, un, una)"
+msgstr ""
+
+#: scripts/blocks/edit.js:812
+msgid "Italian (il, lo, la, i, gli, le, un, uno, una)"
+msgstr ""
+
+#: scripts/blocks/edit.js:820
+msgid "Not available while posts are grouped by their last word."
+msgstr ""
+
+#: scripts/blocks/edit.js:821
+msgid "Sort posts by the first word after a leading article. The full title is still displayed."
+msgstr ""
+
+#: scripts/blocks/edit.js:829
 msgid "Show back to top link"
 msgstr ""
 
-#: scripts/blocks/edit.js:814
+#: scripts/blocks/edit.js:839
 msgid "Listing ID"
 msgstr ""
 
-#: scripts/blocks/edit.js:815
+#: scripts/blocks/edit.js:840
 msgid "The HTML id attribute for this listing, used as the target for its anchor links. This is not a post or term ID."
 msgstr ""
 
-#: scripts/blocks/edit.js:833
+#: scripts/blocks/edit.js:858
 msgid "Layout"
 msgstr ""
 
-#: scripts/blocks/edit.js:835
+#: scripts/blocks/edit.js:860
 msgid "Columns"
 msgstr ""
 
-#: scripts/blocks/edit.js:849
+#: scripts/blocks/edit.js:874
 msgid "Column width"
 msgstr ""
 
-#: scripts/blocks/edit.js:865
+#: scripts/blocks/edit.js:890
 msgid "Column gap"
 msgstr ""
 
-#: scripts/blocks/edit.js:903
+#: scripts/blocks/edit.js:928
 msgid "The AlphaListing configuration is incomplete:"
 msgstr ""
 
-#: scripts/blocks/edit.js:920
+#: scripts/blocks/edit.js:945
 msgid "Error Loading the listing..."
 msgstr ""
 
-#: scripts/blocks/edit.js:928
+#: scripts/blocks/edit.js:953
 msgid "The listing has returned an empty page. This is likely an error."
 msgstr ""
 

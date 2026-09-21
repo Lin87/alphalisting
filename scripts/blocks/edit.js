@@ -800,6 +800,31 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											/>
 										) }
 
+										{ 'posts' === attributes.display && (
+											<SelectControl
+												label={ __( 'Ignore leading articles', 'alphalisting' ) }
+												value={ attributes['ignore-articles'] ?? defaults['ignore-articles'].default }
+												options={ [
+													{ value: '', label: __( 'Do not ignore articles', 'alphalisting' ) },
+													{ value: 'en', label: __( 'English (a, an, the)', 'alphalisting' ) },
+													{ value: 'fr', label: __( 'French (le, la, les, un, une, des)', 'alphalisting' ) },
+													{ value: 'es', label: __( 'Spanish (el, la, los, las, un, una)', 'alphalisting' ) },
+													{ value: 'it', label: __( 'Italian (il, lo, la, i, gli, le, un, uno, una)', 'alphalisting' ) },
+												] }
+												onChange={ ( value ) =>
+													setAttributes( { 'ignore-articles': value } )
+												}
+												disabled={ 'last-word' === attributes['group-by'] }
+												help={
+													'last-word' === attributes['group-by']
+														? __( 'Not available while posts are grouped by their last word.', 'alphalisting' )
+														: __( 'Sort posts by the first word after a leading article. The full title is still displayed.', 'alphalisting' )
+												}
+												__next40pxDefaultSize
+												__nextHasNoMarginBottom
+											/>
+										) }
+
 										<ToggleControl
 											label={ __( 'Show back to top link', 'alphalisting' ) }
 											checked={ !! attributes['back-to-top'] }

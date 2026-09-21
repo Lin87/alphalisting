@@ -40,6 +40,11 @@
         "enum": ["", "last-word"],
         "default": ""
     },
+    "ignore-articles": {
+        "type": "string",
+        "enum": ["", "en", "fr", "es", "it"],
+        "default": ""
+    },
     "instance-id": {
         "type": "string"
     },
