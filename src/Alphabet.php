@@ -54,6 +54,39 @@ class Alphabet {
 	public $keyed_alphabet;
 
 	/**
+	 * The characters of the alphabet in order, as used when ordering items
+	 * *within* a letter heading. This is identical to `$alphabet_keys` unless
+	 * something — letter grouping, for example — has merged several distinct
+	 * letters into a single heading. In that case this array still contains
+	 * every individual letter, so that items under an `A-C` heading can be
+	 * ordered by their real initial letter rather than all being treated as `A`.
+	 *
+	 * @since 4.5.1
+	 * @var array<int,string>
+	 * @see $alphabet_keys
+	 */
+	public $sorting_keys;
+
+	/**
+	 * The un-merged equivalent of `$keyed_alphabet`, used only for ordering.
+	 *
+	 * @since 4.5.1
+	 * @var array<string,string>
+	 * @see $keyed_alphabet
+	 */
+	public $sorting_keyed_alphabet;
+
+	/**
+	 * Lookup of each sorting key to its offset in `$sorting_keys`, keyed the
+	 * same way as `$sorting_keyed_alphabet`. Built once so that comparing two
+	 * titles does not have to scan `$sorting_keys` for every character.
+	 *
+	 * @since 4.5.1
+	 * @var array<string,int>
+	 */
+	private $sorting_positions;
+
+	/**
 	 * Any unknown letter is sorted to be before the rest of the alphabet
 	 *
 	 * @since 4.1.0
@@ -110,11 +143,66 @@ class Alphabet {
 		 */
 		$others = apply_filters( 'alphalisting-non-alpha-char', $others ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
+		/**
+		 * Filters the alphabet used to order items *within* a letter heading.
+		 *
+		 * This defaults to the alphabet itself, and only needs to differ when
+		 * something has merged several distinct letters into a single heading —
+		 * letter grouping, for example, concatenates `Aa`, `Bb` and `Cc` into a
+		 * single `AaBbCc` group so that they share one heading. Ordering the
+		 * items under that heading needs to know that `a`, `b` and `c` are still
+		 * separate letters, so grouping returns the un-merged alphabet here.
+		 *
+		 * The string uses the same format as the `alphalisting_alphabet` filter.
+		 *
+		 * @since 4.5.1
+		 * @param string $alphabet The alphabet, after grouping has been applied.
+		 */
+		$sorting_alphabet = apply_filters( 'alphalisting_sorting_alphabet', $alphabet );
+
 		$alphabet_groups = explode( ',', $alphabet );
 		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 1 ) {
 			do_action( 'alphalisting_log', 'AlphaListing: Alphabet Groups', $alphabet_groups );
 		}
-		$letters = array_reduce(
+		$letters = self::build_keyed_alphabet( $alphabet_groups );
+
+		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 2 ) {
+			do_action( 'alphalisting_log', 'AlphaListing: Alphabet', $letters );
+		}
+
+		$this->unknown_letter          = $others;
+		$this->unknown_letter_is_first = ! ! apply_filters( 'alphalisting_unknown_letter_is_first', false );
+		$this->alphabet_keys           = array_values( array_unique( $letters ) );
+		$this->keyed_alphabet          = $letters;
+
+		if ( $sorting_alphabet === $alphabet ) {
+			// Nothing merged any letters together, so ordering uses the same map.
+			$sorting_letters = $letters;
+		} else {
+			$sorting_letters = self::build_keyed_alphabet( explode( ',', $sorting_alphabet ) );
+
+			if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 2 ) {
+				do_action( 'alphalisting_log', 'AlphaListing: Sorting Alphabet', $sorting_letters );
+			}
+		}
+
+		$this->sorting_keyed_alphabet = $sorting_letters;
+		$this->sorting_keys           = array_values( array_unique( $sorting_letters ) );
+		$this->sorting_positions      = array();
+		foreach ( $this->sorting_keys as $offset => $sorting_key ) {
+			$this->sorting_positions[ "__$sorting_key" ] = $offset;
+		}
+	}
+
+	/**
+	 * Build the map of every alphabet character to the character identifying its group.
+	 *
+	 * @since 4.5.1
+	 * @param array<int,string> $alphabet_groups The comma-separated groups of the alphabet.
+	 * @return array<string,string> Each character, prefixed with `__`, mapped to its group character.
+	 */
+	private static function build_keyed_alphabet( array $alphabet_groups ): array {
+		return array_reduce(
 			$alphabet_groups,
 			/**
 			 * Closure to extract the alphabet groups
@@ -146,15 +234,6 @@ class Alphabet {
 			},
 			array()
 		);
-
-		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 2 ) {
-			do_action( 'alphalisting_log', 'AlphaListing: Alphabet', $letters );
-		}
-
-		$this->unknown_letter          = $others;
-		$this->unknown_letter_is_first = ! ! apply_filters( 'alphalisting_unknown_letter_is_first', false );
-		$this->alphabet_keys           = array_values( array_unique( $letters ) );
-		$this->keyed_alphabet          = $letters;
 	}
 
 	/**
@@ -219,8 +298,8 @@ class Alphabet {
 		$minimum_length    = min( count( $first_characters ), count( $second_characters ) );
 
 		for ( $index = 0; $index < $minimum_length; ++$index ) {
-			$first_position  = array_search( $first_characters[ $index ], $this->alphabet_keys, true );
-			$second_position = array_search( $second_characters[ $index ], $this->alphabet_keys, true );
+			$first_position  = $this->sorting_positions[ '__' . $first_characters[ $index ] ] ?? null;
+			$second_position = $this->sorting_positions[ '__' . $second_characters[ $index ] ] ?? null;
 			$first_unknown   = ! is_int( $first_position );
 			$second_unknown  = ! is_int( $second_position );
 
@@ -252,11 +331,29 @@ class Alphabet {
 	private function normalize_string_for_sorting( string $value ): array {
 		return array_map(
 			function( string $character ): string {
-				$normalized = $this->get_letter_for_key( $character );
+				$normalized = $this->get_sorting_letter_for_key( $character );
 				return $normalized === $this->unknown_letter ? $character : $normalized;
 			},
 			Strings::mb_string_to_array( $value )
 		);
+	}
+
+	/**
+	 * Get the ordering letter for a key.
+	 *
+	 * This is the counterpart of `get_letter_for_key()` for ordering rather than
+	 * for choosing a heading: where that method collapses every letter sharing a
+	 * heading down to a single character, this one keeps them apart.
+	 *
+	 * @since 4.5.1
+	 * @param string $key The key to look up.
+	 * @return string The letter.
+	 */
+	private function get_sorting_letter_for_key( string $key ): string {
+		if ( $key === $this->unknown_letter || ! isset( $this->sorting_keyed_alphabet[ "__$key" ] ) ) {
+			return $this->unknown_letter;
+		}
+		return $this->sorting_keyed_alphabet[ "__$key" ];
 	}
 
 	/**

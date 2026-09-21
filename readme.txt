@@ -5,7 +5,7 @@ Tags: a to z, a-z, index, listing, widget
 Requires at least: 6.0
 Requires PHP: 8.0
 Tested up to: 7.1
-Stable tag: 4.5.0
+Stable tag: 4.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +55,11 @@ Comprehensive documentation is now available:
 2. An example of Widget display
 
 == Changelog ==
+
+= 4.5.1 =
+
+* Bugfix: Items under a grouped letter heading (such as `A-C`, from the "Group letters" setting or `grouping="3"`) are listed in alphabetical order again. They were previously ordered by the second character of the title, so "Banana" could appear before "Apple".
+* Bugfix: Items under the grouped `0-9` heading are now ordered the same way as when the numbers are listed individually.
 
 = 4.5.0 =
 

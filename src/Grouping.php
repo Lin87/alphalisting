@@ -36,6 +36,15 @@ class Grouping {
 	private $headings;
 
 	/**
+	 * Each grouped alphabet group mapped back to the list of original groups it
+	 * was built from. Used to undo the grouping when ordering items.
+	 *
+	 * @since 4.5.1
+	 * @var array<string,array<int,string>>
+	 */
+	private $ungrouped = array();
+
+	/**
 	 * Add filters to group the alphabet letters
 	 *
 	 * @since 2.0.0
@@ -46,6 +55,7 @@ class Grouping {
 
 		if ( 1 < $grouping ) {
 			add_filter( 'alphalisting-alphabet', array( $this, 'alphabet_filter' ), 2 );
+			add_filter( 'alphalisting_sorting_alphabet', array( $this, 'sorting_alphabet_filter' ), 2 );
 			add_filter( 'the-a-z-letter-title', array( $this, 'heading' ), 5 );
 		}
 	}
@@ -58,6 +68,7 @@ class Grouping {
 	 */
 	public function teardown() {
 		remove_filter( 'alphalisting-alphabet', array( $this, 'alphabet_filter' ), 2 );
+		remove_filter( 'alphalisting_sorting_alphabet', array( $this, 'sorting_alphabet_filter' ), 2 );
 		remove_filter( 'the-a-z-letter-title', array( $this, 'heading' ), 5 );
 	}
 
@@ -76,7 +87,8 @@ class Grouping {
 		$i = 0;
 		$j = 0;
 
-		$grouping = $this->grouping;
+		$grouping  = $this->grouping;
+		$ungrouped = array();
 
 		$groups = array_reduce(
 			$letters,
@@ -87,13 +99,14 @@ class Grouping {
 			 * @param string $letter
 			 * @return array<int,string>
 			 */
-			function( array $carry, string $letter ) use ( $grouping, &$headings, &$i, &$j ) {
+			function( array $carry, string $letter ) use ( $grouping, &$headings, &$ungrouped, &$i, &$j ) {
 				if ( isset( $carry[ $j ] ) ) {
 					$carry[ $j ] = $carry[ $j ] . $letter;
 				} else {
 					$carry[ $j ] = $letter;
 				}
-				$headings[ $j ][] = Strings::maybe_mb_substr( $letter, 0, 1 );
+				$headings[ $j ][]  = Strings::maybe_mb_substr( $letter, 0, 1 );
+				$ungrouped[ $j ][] = $letter;
 
 				if ( $i + 1 === $grouping ) {
 					$i = 0;
@@ -123,7 +136,53 @@ class Grouping {
 			array()
 		);
 
+		$this->ungrouped = array();
+		foreach ( $groups as $offset => $group ) {
+			$this->ungrouped[ "__$group" ] = $ungrouped[ $offset ];
+		}
+
 		return join( ',', $groups );
+	}
+
+	/**
+	 * Undo the grouping for the purposes of ordering the items within a group
+	 *
+	 * Grouping concatenates several alphabet groups into one so that they share
+	 * a single heading. That is what we want for the heading, but it would make
+	 * every letter in the group interchangeable when ordering the items beneath
+	 * it, so here we hand back the original, un-concatenated groups.
+	 *
+	 * Only the groups we created ourselves are replaced. Anything else in the
+	 * alphabet — the numbers added afterwards, for instance — is passed through
+	 * untouched, so this does not depend on which filters ran before us.
+	 *
+	 * @since 4.5.1
+	 * @param string $alphabet The grouped alphabet.
+	 * @return string The alphabet with our own groups expanded again.
+	 */
+	public function sorting_alphabet_filter( string $alphabet ): string {
+		if ( empty( $this->ungrouped ) ) {
+			return $alphabet;
+		}
+
+		$parts = array_map(
+			/**
+			 * Closure to expand a single group back into its original groups
+			 *
+			 * @param string $part
+			 * @return string
+			 */
+			function( string $part ): string {
+				$group = trim( $part );
+				if ( ! isset( $this->ungrouped[ "__$group" ] ) ) {
+					return $part;
+				}
+				return join( ',', $this->ungrouped[ "__$group" ] );
+			},
+			explode( ',', $alphabet )
+		);
+
+		return join( ',', $parts );
 	}
 
 	/**

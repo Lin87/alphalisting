@@ -45,6 +45,7 @@ class Numbers {
 			$this->position = $position;
 			$this->group    = $group;
 			add_filter( 'alphalisting-alphabet', array( $this, 'add_to_alphabet' ) );
+			add_filter( 'alphalisting_sorting_alphabet', array( $this, 'ungroup_for_sorting' ) );
 			add_filter( 'the-a-z-letter-title', array( $this, 'title' ) );
 		}
 	}
@@ -57,6 +58,7 @@ class Numbers {
 	 */
 	public function teardown() {
 		remove_filter( 'alphalisting-alphabet', array( $this, 'add_to_alphabet' ) );
+		remove_filter( 'alphalisting_sorting_alphabet', array( $this, 'ungroup_for_sorting' ) );
 		remove_filter( 'the-a-z-letter-title', array( $this, 'title' ) );
 	}
 
@@ -79,6 +81,38 @@ class Numbers {
 		} else {
 			return join( ',', array( $alphabet, $numbers ) );
 		}
+	}
+
+	/**
+	 * Split the grouped numbers apart again for the purposes of ordering
+	 *
+	 * The numbers share a single `0-9` heading when grouped, but the items
+	 * beneath that heading should still be ordered by their real first digit,
+	 * exactly as they are when the numbers are listed individually.
+	 *
+	 * @since 4.5.1
+	 * @param string $alphabet The alphabet used for ordering.
+	 * @return string The alphabet with the number group split into single digits.
+	 */
+	public function ungroup_for_sorting( string $alphabet ): string {
+		if ( true !== $this->group ) {
+			return $alphabet;
+		}
+
+		$parts = array_map(
+			/**
+			 * Closure to split the grouped numbers back into individual digits
+			 *
+			 * @param string $part
+			 * @return string
+			 */
+			function( string $part ): string {
+				return '0123456789' === trim( $part ) ? '0,1,2,3,4,5,6,7,8,9' : $part;
+			},
+			explode( ',', $alphabet )
+		);
+
+		return join( ',', $parts );
 	}
 
 	/**
