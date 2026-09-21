@@ -9,7 +9,7 @@ This file tells AI coding agents how to work safely and effectively in this repo
 - **What this is:** A WordPress plugin that displays posts/pages/terms alphabetically (A–Z index), via a Gutenberg block, a shortcode, and a widget.
 - **Don't break:** The `[alphalisting]` shortcode attributes and behavior, the block's attributes, translations (`textdomain: alphalisting`), and public PHP hooks/filters — including their **legacy dashed aliases**.
 - **Runtime reqs:** PHP **≥ 8.0** (`mbstring`, polyfilled by `symfony/polyfill-mbstring`), WordPress **≥ 6.0**, tested up to **7.1**.
-- **Current version:** `4.5.1`. It must match in **three** places: the `Version:` header in `alphalisting.php`, `Stable tag` in `readme.txt`, and `version` in `package.json`.
+- **Current version:** `4.6.0`. It must match in **three** places: the `Version:` header in `alphalisting.php`, `Stable tag` in `readme.txt`, and `version` in `package.json`.
 - **There is no CI.** No `.github/` workflows exist — nothing runs on push. Local verification is the only gate.
 - **No regressions.** Nothing here is covered by tests, so a regression ships silently. See **No regressions** below.
 
@@ -23,7 +23,7 @@ This file tells AI coding agents how to work safely and effectively in this repo
 ### Layout
 
 - `alphalisting.php` — bootstrap. Defines `ALPHALISTING_VERSION`, `ALPHALISTING_LOG`, `ALPHALISTING_PLUGIN_FILE`, `ALPHALISTING_DEFAULT_TEMPLATE`; loads `vendor/autoload.php` and the `functions/` + `widgets/` files; then `alphalisting_init()` on `init` priority **5** instantiates every singleton.
-- `src/` — PSR-4 `eslin87\AlphaListing\`. Core: `Alphabet`, `Query`, `Indices`, `Grouping`, `Numbers`, `Strings`, `Shortcode`, `GutenBlock`, `Singleton`, `Extension`. Plus `src/Shortcode/` (`Query`, `PostsQuery`, `TermsQuery`, `Extension`) and `src/Shortcode/QueryParts/` (28 files — one per shortcode attribute, plus three abstract bases).
+- `src/` — PSR-4 `eslin87\AlphaListing\`. Core: `Alphabet`, `Query`, `Indices`, `Grouping`, `Numbers`, `Strings`, `Shortcode`, `GutenBlock`, `Singleton`, `Extension`. Plus `src/Shortcode/` (`Query`, `PostsQuery`, `TermsQuery`, `Extension`) and `src/Shortcode/QueryParts/` (29 files — one per shortcode attribute, plus three abstract bases).
 - `widgets/` — `class-alphalisting-widget.php` (also PSR-4 mapped).
 - `functions/` — `enqueues.php`, `health-check.php`, `helpers.php`, `scripts.php`, `styles.php`.
 - `templates/` — `a-z-listing.php` (the default, referenced by `ALPHALISTING_DEFAULT_TEMPLATE`) and `a-z-listing.example.php`.
@@ -65,7 +65,7 @@ It also hooks `alphalisting_shortcode_start` → `handler()` and `alphalisting_s
 1. Add a class to `src/Shortcode/QueryParts/`, overriding `sanitize_attribute()` and/or `shortcode_query()` / `shortcode_query_for_display_and_attribute()`.
 2. Register it in `alphalisting_init()` in `alphalisting.php` as `ClassName::instance()->activate( __FILE__ )->initialize();`. **Append it; don't reorder the list.** Registration order is the order the keys land in the shortcode attribute array, which is the order `Shortcode\Query::apply_query_to_shortcode()` processes them in.
 3. Add a matching entry to `scripts/blocks/attributes.json` so the block exposes it.
-4. Add the editor control to the fitting `PanelBody` in `scripts/blocks/edit.js` — *Listing selection* (what is listed), *Alphabet & grouping* (how items are bucketed and ordered), *Layout* (how the listing is laid out), or *Advanced* — or to the relevant `scripts/components/*` panel.
+4. Add the editor control to the fitting `PanelBody` in `scripts/blocks/edit.js` — *Listing selection* (what is listed), *Display options* (how items are bucketed, ordered, and labelled), or *Layout* (columns) — or to the relevant `scripts/components/*` panel. Those three are the only panels; each wraps a `*.Slot` render-prop for third-party fills.
 
 Copy `QueryParts/BackToTop.php` (simple, boolean-ish) or `QueryParts/GroupBy.php` (enum affecting sorting) as your model. Copy `QueryParts/HideEmpty_Deprecated.php` as the model for deprecating an attribute. For an attribute that only needs to exist and be read from `$attributes` elsewhere, copy `QueryParts/Target.php` — a declaration-only part that overrides nothing.
 
@@ -76,7 +76,7 @@ Copy `QueryParts/BackToTop.php` (simple, boolean-ish) or `QueryParts/GroupBy.php
 There is **no `block.json`**. Registration is PHP-side in `src/GutenBlock.php`:
 
 - `register_block_type( 'alphalisting/block', … )`
-- `attributes` are `json_decode`d from `scripts/blocks/attributes.json` (23 entries), then passed through the `alphalisting_get_gutenberg_attributes` filter.
+- `attributes` are `json_decode`d from `scripts/blocks/attributes.json` (26 entries), then passed through the `alphalisting_get_gutenberg_attributes` filter.
 - `editor_script` `alphalisting-block-editor` loads `build/index.js` and reads its dependency list from `build/index.asset.php` — it **throws `\Error` if that file is missing**, so `npm run build` must have been run or the editor breaks.
 - `editor_style` ← `css/editor.css`; `style` ← `css/alphalisting-default.css`.
 - `render_callback` delegates to the registered `alphalisting` shortcode callback — **block and shortcode share one render path**, so a shortcode change is a block change.
@@ -115,6 +115,65 @@ heading breaks. Do not "fix" ordering with a blanket re-sort in `Query::the_lett
 that with `strcasecmp` and it had to be removed because it clobbered `group-by="last-word"`. Fixing
 it in `compare_strings()` corrects the default comparator, `GroupBy`, and third-party
 `alphalisting_item_sorting_comparator` callbacks that delegate to it, all at once.
+
+---
+
+## Index letter vs. displayed title
+
+**The indexed title, the sort key, and the displayed link text are all one stored string.**
+`Indices::get_item_indices()` stores the post-`alphalisting_pre_index_item_title` title in the
+index entry's `'title'`; `Query::get_all_indices()` sorts on that same value, and
+`Query::get_the_title()` reads it back to render the link. So
+`alphalisting_pre_index_item_title` is **not** the hook for an indexing-only transform — it
+rewrites the visible link text too.
+
+The indexing-only seam is `alphalisting_item_index_letter`: it receives the title, but the
+letter it returns does not write back to the stored title. Pair it with
+`alphalisting_item_sorting_comparator`:
+
+| Filter | Decides |
+|---|---|
+| `alphalisting_item_index_letter` | **which heading** the item files under |
+| `alphalisting_item_sorting_comparator` | **the order within** that heading |
+
+**Hooking one without the other yields a listing whose letters disagree with its order.** The
+comparator only reorders *inside* a bucket that the index filter already assigned, so a "sort
+by X" attribute that skips the index filter sorts items that are still in the wrong letter.
+`QueryParts/GroupBy.php` (`group-by="last-word"`) and `QueryParts/IgnoreArticles.php`
+(`ignore-articles`) are the two worked examples — copy either.
+
+Further gotchas for anything on this pair:
+
+- **They collide.** `GroupBy` and `IgnoreArticles` both hook these two filters, and
+  `IgnoreArticles` is registered later in `alphalisting_init()`, so it would silently win.
+  It deliberately stands down when `group-by="last-word"` is set, rather than racing it; the
+  block editor disables its control to match. A third attribute here must resolve the same
+  conflict explicitly.
+- **Empty attribute values never reach the query filters at all.**
+  `Shortcode\Query::apply_query_to_shortcode()` skips `empty( $value )`, so a query part with
+  a falsey `$default_value` is inert by construction — and one with a non-empty default (like
+  `back-to-top`) fires on *every* listing. Prefer the former for anything new.
+- **Set a `$query['_alphalisting_<name>']` marker** for anything that changes bucketing or
+  ordering, or an external cache will serve the default listing in its place.
+- **Per-render state belongs in `handler()`.** `Extension::cleanup()` is `final` and only
+  unhooks; it does not reset your properties. `alphalisting_shortcode_start` → `handler()`
+  fires *before* attributes are sanitized and the query is built, so reset there.
+- **The default comparator lowercases with `strtolower()`, not `mb_strtolower()`** — an
+  ASCII-only wart in `Query::get_all_indices()`. It does not bite `IgnoreArticles` because
+  every article in all four supported languages is ASCII; a language with an accented article
+  would need its own case folding.
+- **Do not add `remove_accents()` or transliteration** to letter logic. The alphabet string
+  already groups accents with their base letter (`EÉÈËÊeéèëê`), so `Étranger` buckets and
+  sorts under E for free. Transliterating diverges from the alphabet the rest of the plugin
+  sorts by, and breaks a custom `alphabet=""` that files accents separately on purpose.
+- **Elided articles carry no space, and apostrophes come in several characters.**
+  `L'Étranger` and `Un'Altra Vita` are a single whitespace token, so a first-word split files
+  them under L and U. `IgnoreArticles` matches `l'`/`un'` *before* the word-split branch,
+  against a class covering `'` (U+0027), `’` (U+2019 — what `wptexturize` stores in saved
+  post titles, so it is the common case) and `ʼ` (U+02BC), with an optional trailing space.
+  Normalise for the match only and cut the remainder out of the original string, so the
+  displayed title keeps its own apostrophe. The inverse matters too: only a leading *article*
+  is elided, so `O'Brien Hall` must survive untouched.
 
 ---
 
@@ -216,7 +275,7 @@ find . -name "*.php" -not -path "./vendor/*" -not -path "./node_modules/*" -prin
 Registered in `src/Shortcode.php`. `Shortcode::handle()` seeds **no** attributes of its own — every one is contributed by a `QueryParts` class. All of these are public API:
 
 - **Any display:** `display`, `return`, `alphabet`, `numbers`, `group-numbers`, `grouping`, `symbols-first`, `back-to-top`, `target`, `instance-id`, `columns`, `column-width`, `column-gap`
-- **`display="posts"`:** `post-type`, `parent-post`, `terms`, `exclude-posts`, `exclude-terms`, `get-all-children`, `group-by`
+- **`display="posts"`:** `post-type`, `parent-post`, `terms`, `exclude-posts`, `exclude-terms`, `get-all-children`, `group-by`, `ignore-articles`
 - **`display="terms"`:** `taxonomy`, `terms`, `parent-term`, `parent-term-id`, `exclude-terms`, `hide-empty-terms`, `hide-empty` *(deprecated)*
 
 Special cases worth knowing: `return="letters"` renders only the `<div class="az-letters">` block; `grouping="numbers"` is special-cased; `target` accepts a post ID or a URL.
@@ -234,7 +293,7 @@ Hook families and where they live:
 | Area | File | Examples |
 |---|---|---|
 | Shortcode attributes & query | `src/Shortcode/Query.php`, `src/Query.php` | `alphalisting_get_shortcode_attributes`, `alphalisting_sanitize_shortcode_attributes`, `alphalisting_shortcode_query_types`, `alphalisting_query` |
-| Items & indices | `src/Indices.php` | `alphalisting_get_item_title_for_display__{type}`, `alphalisting_pre_index_item_title`, `alphalisting_item_index_letter` |
+| Items & indices | `src/Indices.php`, `src/Shortcode/QueryParts/IgnoreArticles.php` | `alphalisting_get_item_title_for_display__{type}`, `alphalisting_pre_index_item_title`, `alphalisting_item_index_letter`, `alphalisting_articles_for_language` |
 | Alphabet | `src/Alphabet.php` | `alphalisting_alphabet`, `alphalisting_sorting_alphabet`, `alphalisting_non_alpha_char`, `alphalisting_unknown_letter_is_first` |
 | Sorting & sections | `src/Query.php` | `alphalisting_item_sorting_comparator`, `alphalisting_sections`, `alphalisting_extract_item_indices` |
 | Block | `src/GutenBlock.php` | `alphalisting_get_gutenberg_attributes` |
@@ -347,7 +406,7 @@ WordPress.org expects. Requires PHP, Composer, and a prior `composer install`.
   - `src/Shortcode/Extension.php` — changes every attribute at once.
   - The shared `render_callback` in `src/GutenBlock.php` — one change hits block *and* shortcode.
   - `scripts/blocks/shortcode-upgrader.js` — migrates existing content.
-  - `alphalisting_item_sorting_comparator`, `src/Alphabet.php`, and index-letter logic — subtle ordering regressions. See **Alphabet: headings vs. ordering**.
+  - `alphalisting_item_sorting_comparator`, `src/Alphabet.php`, and index-letter logic — subtle ordering regressions. See **Alphabet: headings vs. ordering** and **Index letter vs. displayed title**.
   - Renaming shortcode args, changing defaults, altering template markup IDs/classes, removing public hooks.
 - **Forbidden for agents:** do **not** modify `.wordpress-org/` contents.
 

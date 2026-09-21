@@ -5,7 +5,7 @@ Tags: a to z, a-z, index, listing, widget
 Requires at least: 6.0
 Requires PHP: 8.0
 Tested up to: 7.1
-Stable tag: 4.5.1
+Stable tag: 4.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +55,10 @@ Comprehensive documentation is now available:
 2. An example of Widget display
 
 == Changelog ==
+
+= 4.6.0 =
+
+* New: Post listings can ignore a leading article when choosing a title's letter and when sorting, so "The Great Gatsby" is listed under G. Choose a language under "Ignore leading articles" in the block settings, or add `ignore-articles="en"` to the shortcode. English, French, Spanish, and Italian are supported, one language per listing, and elided forms such as "L'Étranger" and "Un'Altra Vita" are recognised. The full title is still displayed.
 
 = 4.5.1 =
 

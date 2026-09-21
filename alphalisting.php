@@ -9,7 +9,7 @@
  * Original Author URI: https://profiles.wordpress.org/diddledani/
  * Text Domain:     	alphalisting
  * Domain Path:     	/languages
- * Version:         	4.5.1
+ * Version:         	4.6.0
  * Requires at least:	6.0
  * Requires PHP:    	8.0
  * License:				GPLv2 or later
@@ -87,5 +87,6 @@ function alphalisting_init() {
 	\eslin87\AlphaListing\Shortcode\QueryParts\SymbolsFirst::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\Taxonomy::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\TermsTerms::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\IgnoreArticles::instance()->activate( __FILE__ )->initialize();
 }
 add_action( 'init', 'alphalisting_init', 5 );
