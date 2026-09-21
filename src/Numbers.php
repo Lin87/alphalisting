@@ -84,11 +84,8 @@ class Numbers {
 	}
 
 	/**
-	 * Split the grouped numbers apart again for the purposes of ordering
-	 *
-	 * The numbers share a single `0-9` heading when grouped, but the items
-	 * beneath that heading should still be ordered by their real first digit,
-	 * exactly as they are when the numbers are listed individually.
+	 * Split the grouped numbers apart again so items under the shared `0-9`
+	 * heading order by their real first digit.
 	 *
 	 * @since 4.5.1
 	 * @param string $alphabet The alphabet used for ordering.
@@ -100,12 +97,6 @@ class Numbers {
 		}
 
 		$parts = array_map(
-			/**
-			 * Closure to split the grouped numbers back into individual digits
-			 *
-			 * @param string $part
-			 * @return string
-			 */
 			function( string $part ): string {
 				return '0123456789' === trim( $part ) ? '0,1,2,3,4,5,6,7,8,9' : $part;
 			},

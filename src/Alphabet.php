@@ -54,12 +54,8 @@ class Alphabet {
 	public $keyed_alphabet;
 
 	/**
-	 * The characters of the alphabet in order, as used when ordering items
-	 * *within* a letter heading. This is identical to `$alphabet_keys` unless
-	 * something — letter grouping, for example — has merged several distinct
-	 * letters into a single heading. In that case this array still contains
-	 * every individual letter, so that items under an `A-C` heading can be
-	 * ordered by their real initial letter rather than all being treated as `A`.
+	 * `$alphabet_keys` for ordering rather than for headings: letters merged
+	 * into one heading by grouping are still listed separately here.
 	 *
 	 * @since 4.5.1
 	 * @var array<int,string>
@@ -68,7 +64,7 @@ class Alphabet {
 	public $sorting_keys;
 
 	/**
-	 * The un-merged equivalent of `$keyed_alphabet`, used only for ordering.
+	 * `$keyed_alphabet` for ordering rather than for headings.
 	 *
 	 * @since 4.5.1
 	 * @var array<string,string>
@@ -77,9 +73,8 @@ class Alphabet {
 	public $sorting_keyed_alphabet;
 
 	/**
-	 * Lookup of each sorting key to its offset in `$sorting_keys`, keyed the
-	 * same way as `$sorting_keyed_alphabet`. Built once so that comparing two
-	 * titles does not have to scan `$sorting_keys` for every character.
+	 * Each sorting key mapped to its offset in `$sorting_keys`, so comparing
+	 * titles does not scan that array for every character.
 	 *
 	 * @since 4.5.1
 	 * @var array<string,int>
@@ -144,16 +139,9 @@ class Alphabet {
 		$others = apply_filters( 'alphalisting-non-alpha-char', $others ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		/**
-		 * Filters the alphabet used to order items *within* a letter heading.
-		 *
-		 * This defaults to the alphabet itself, and only needs to differ when
-		 * something has merged several distinct letters into a single heading —
-		 * letter grouping, for example, concatenates `Aa`, `Bb` and `Cc` into a
-		 * single `AaBbCc` group so that they share one heading. Ordering the
-		 * items under that heading needs to know that `a`, `b` and `c` are still
-		 * separate letters, so grouping returns the un-merged alphabet here.
-		 *
-		 * The string uses the same format as the `alphalisting_alphabet` filter.
+		 * Filters the alphabet used to order items within a heading. Same format
+		 * as `alphalisting_alphabet`. Defaults to the alphabet itself; return the
+		 * un-merged alphabet if you have merged letters into a shared heading.
 		 *
 		 * @since 4.5.1
 		 * @param string $alphabet The alphabet, after grouping has been applied.
@@ -176,7 +164,6 @@ class Alphabet {
 		$this->keyed_alphabet          = $letters;
 
 		if ( $sorting_alphabet === $alphabet ) {
-			// Nothing merged any letters together, so ordering uses the same map.
 			$sorting_letters = $letters;
 		} else {
 			$sorting_letters = self::build_keyed_alphabet( explode( ',', $sorting_alphabet ) );
@@ -244,8 +231,7 @@ class Alphabet {
 	 * @return string The letter.
 	 */
 	public function get_letter_for_key( string $key ): string {
-		// isset() rather than in_array( …, array_keys( … ) ): this runs once per
-		// character per title while sorting, so the O(n) scan was measurable.
+		// isset() rather than in_array(): this is hot, the O(n) scan was measurable.
 		if ( $key === $this->unknown_letter || ! isset( $this->keyed_alphabet[ "__$key" ] ) ) {
 			return $this->unknown_letter;
 		}
@@ -339,11 +325,7 @@ class Alphabet {
 	}
 
 	/**
-	 * Get the ordering letter for a key.
-	 *
-	 * This is the counterpart of `get_letter_for_key()` for ordering rather than
-	 * for choosing a heading: where that method collapses every letter sharing a
-	 * heading down to a single character, this one keeps them apart.
+	 * `get_letter_for_key()` for ordering: letters sharing a heading stay apart.
 	 *
 	 * @since 4.5.1
 	 * @param string $key The key to look up.

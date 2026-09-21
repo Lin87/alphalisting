@@ -36,8 +36,7 @@ class Grouping {
 	private $headings;
 
 	/**
-	 * Each grouped alphabet group mapped back to the list of original groups it
-	 * was built from. Used to undo the grouping when ordering items.
+	 * Each group we created, mapped back to the groups it was built from.
 	 *
 	 * @since 4.5.1
 	 * @var array<string,array<int,string>>
@@ -145,16 +144,9 @@ class Grouping {
 	}
 
 	/**
-	 * Undo the grouping for the purposes of ordering the items within a group
-	 *
-	 * Grouping concatenates several alphabet groups into one so that they share
-	 * a single heading. That is what we want for the heading, but it would make
-	 * every letter in the group interchangeable when ordering the items beneath
-	 * it, so here we hand back the original, un-concatenated groups.
-	 *
-	 * Only the groups we created ourselves are replaced. Anything else in the
-	 * alphabet — the numbers added afterwards, for instance — is passed through
-	 * untouched, so this does not depend on which filters ran before us.
+	 * Expand our own groups again so items under a shared heading still order
+	 * by their real letter. Groups we did not create are passed through, so
+	 * this does not depend on which filters ran before us.
 	 *
 	 * @since 4.5.1
 	 * @param string $alphabet The grouped alphabet.
@@ -166,12 +158,6 @@ class Grouping {
 		}
 
 		$parts = array_map(
-			/**
-			 * Closure to expand a single group back into its original groups
-			 *
-			 * @param string $part
-			 * @return string
-			 */
 			function( string $part ): string {
 				$group = trim( $part );
 				if ( ! isset( $this->ungrouped[ "__$group" ] ) ) {

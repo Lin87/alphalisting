@@ -9,8 +9,9 @@ This file tells AI coding agents how to work safely and effectively in this repo
 - **What this is:** A WordPress plugin that displays posts/pages/terms alphabetically (A–Z index), via a Gutenberg block, a shortcode, and a widget.
 - **Don't break:** The `[alphalisting]` shortcode attributes and behavior, the block's attributes, translations (`textdomain: alphalisting`), and public PHP hooks/filters — including their **legacy dashed aliases**.
 - **Runtime reqs:** PHP **≥ 8.0** (`mbstring`, polyfilled by `symfony/polyfill-mbstring`), WordPress **≥ 6.0**, tested up to **7.1**.
-- **Current version:** `4.5.0`. It must match in **three** places: the `Version:` header in `alphalisting.php`, `Stable tag` in `readme.txt`, and `version` in `package.json`.
+- **Current version:** `4.5.1`. It must match in **three** places: the `Version:` header in `alphalisting.php`, `Stable tag` in `readme.txt`, and `version` in `package.json`.
 - **There is no CI.** No `.github/` workflows exist — nothing runs on push. Local verification is the only gate.
+- **No regressions.** Nothing here is covered by tests, so a regression ships silently. See **No regressions** below.
 
 ---
 
@@ -84,6 +85,39 @@ There is **no `block.json`**. Registration is PHP-side in `src/GutenBlock.php`:
 
 ---
 
+## Alphabet: headings vs. ordering
+
+`src/Alphabet.php` is built from a comma-separated string (`AÁÀÄÂaáàäâ,Bb,CÇcç,…`). Every character
+in a comma-group maps to that group's first character, which is what puts `a` and `Á` under the
+same `A` heading.
+
+That map answers **which heading an item belongs to**. It cannot also answer **how to order items
+within a heading**, because `src/Grouping.php` implements `grouping="3"` by *concatenating*
+consecutive comma-groups into one (`Aa,Bb,Cc` → `AaBbCc`). Collapsing is correct for the heading and
+wrong for the order: with everything in the group flattened to `A`, `Alphabet::compare_strings()`
+sees `apple` as `A,P,P` and `banana` as `A,A,M`, ties on the first character, and lets the second
+decide — so `banana` sorts first. Same for the `0-9` heading from `grouping="numbers"`.
+
+So `Alphabet` keeps **two** maps:
+
+| Purpose | Properties | Used by |
+|---|---|---|
+| Heading / bucketing — letters merged | `alphabet_keys`, `keyed_alphabet`, `get_letter_for_key()` | `src/Indices.php`, the letter list, `get_key_for_offset()`, `chars()`, `loop()` |
+| Ordering — letters kept apart | `sorting_keys`, `sorting_keyed_alphabet`, `sorting_positions` | `compare_strings()` only |
+
+The second is fed by the `alphalisting_sorting_alphabet` filter, applied to the *final* alphabet.
+It defaults to the alphabet itself, in which case both maps are the same array and behaviour is
+unchanged. `Grouping` and `Numbers` hook it to hand back their un-merged groups, each replacing only
+the groups it created so the result does not depend on filter priority.
+
+Anything that merges letters into one heading must hook this filter too, or ordering under that
+heading breaks. Do not "fix" ordering with a blanket re-sort in `Query::the_letter()` — 4.3.2 did
+that with `strcasecmp` and it had to be removed because it clobbered `group-by="last-word"`. Fixing
+it in `compare_strings()` corrects the default comparator, `GroupBy`, and third-party
+`alphalisting_item_sorting_comparator` callbacks that delegate to it, all at once.
+
+---
+
 ## Dev environment setup
 
 PHP ≥ 8.0 with `mbstring`; Node ≥ 18; Composer.
@@ -119,6 +153,33 @@ npm run package        # release zip — see Packaging & release. Do NOT use for
 
 ---
 
+## No regressions
+
+There is no test suite and no CI, so nothing will catch a regression for you — it ships to
+WordPress.org and users find it. **A change must not break existing behaviour.** Treat this as part
+of the task, not a nice-to-have: a fix that trades one bug for another is not done.
+
+Before calling a change finished:
+
+- **Know what you are changing the behaviour of.** Read the code path end to end and list every
+  caller of what you touched. Shared code paths are the trap — the block and the shortcode render
+  through the same callback, and `Alphabet` serves both headings and ordering.
+- **Prove the old behaviour still holds**, not just that the new behaviour works. Exercise the
+  *unchanged* configuration as deliberately as the fixed one, and diff the before/after output.
+  Running the same check against `git stash`ed or `git show HEAD:`-extracted source, from a temp
+  directory outside the repo, is the cheapest way to do this.
+- **Prefer changes that are inert by default.** A new filter that defaults to today's value, or a
+  branch that reuses the existing object when nothing opted in, cannot regress the common case.
+- **Re-read the diff** for accidental scope: a renamed property, a changed default, a moved hook, a
+  helper that is now shared by a second caller.
+- **Check the risky list** under **Safe vs risky areas**, and the public API under **Backward
+  compatibility**, before you touch anything on them.
+
+If you cannot verify a part of the change, say so explicitly in the PR description rather than
+implying it was tested.
+
+---
+
 ## Verification & linting
 
 **This repository has no test suite, and agents must not add one.** There is no PHPUnit, jest, PHPCS, `npm test`, or `test/` directory. Do **not** create test files, test directories, scratch harnesses, debug scripts, or `verify-*.php`-style throwaways anywhere in the repo — not in a new `test/`, not alongside the code they exercise. If you need to execute something to convince yourself a change works, run it from a temp directory outside the repo and delete it when you're done.
@@ -139,7 +200,7 @@ npm run lint:pkg-json
 npm run format:js
 ```
 
-Nothing enforces lint in CI, so the baseline is already dirty: as of 4.5.0 `lint:js` reports **~1713 problems**, almost all `prettier/prettier` "Delete `␍`" CRLF line-ending errors. Do not run `--fix` across `scripts/` to clean this up — it would rewrite every file and bury your actual change. Compare against the baseline instead of expecting zero.
+Nothing enforces lint in CI, so the baseline is already dirty: as of 4.5.1 `lint:js` reports **~1713 problems**, almost all `prettier/prettier` "Delete `␍`" CRLF line-ending errors. Do not run `--fix` across `scripts/` to clean this up — it would rewrite every file and bury your actual change. Compare against the baseline instead of expecting zero.
 
 PHP syntax sanity sweep:
 
@@ -174,7 +235,7 @@ Hook families and where they live:
 |---|---|---|
 | Shortcode attributes & query | `src/Shortcode/Query.php`, `src/Query.php` | `alphalisting_get_shortcode_attributes`, `alphalisting_sanitize_shortcode_attributes`, `alphalisting_shortcode_query_types`, `alphalisting_query` |
 | Items & indices | `src/Indices.php` | `alphalisting_get_item_title_for_display__{type}`, `alphalisting_pre_index_item_title`, `alphalisting_item_index_letter` |
-| Alphabet | `src/Alphabet.php` | `alphalisting_alphabet`, `alphalisting_non_alpha_char`, `alphalisting_unknown_letter_is_first` |
+| Alphabet | `src/Alphabet.php` | `alphalisting_alphabet`, `alphalisting_sorting_alphabet`, `alphalisting_non_alpha_char`, `alphalisting_unknown_letter_is_first` |
 | Sorting & sections | `src/Query.php` | `alphalisting_item_sorting_comparator`, `alphalisting_sections`, `alphalisting_extract_item_indices` |
 | Block | `src/GutenBlock.php` | `alphalisting_get_gutenberg_attributes` |
 | Styles/output | `functions/enqueues.php`, `templates/` | `alphalisting_add_styling`, `alphalisting_styles`, `alphalisting_show_back_to_top` |
@@ -286,7 +347,7 @@ WordPress.org expects. Requires PHP, Composer, and a prior `composer install`.
   - `src/Shortcode/Extension.php` — changes every attribute at once.
   - The shared `render_callback` in `src/GutenBlock.php` — one change hits block *and* shortcode.
   - `scripts/blocks/shortcode-upgrader.js` — migrates existing content.
-  - `alphalisting_item_sorting_comparator`, `src/Alphabet.php`, and index-letter logic — subtle ordering regressions.
+  - `alphalisting_item_sorting_comparator`, `src/Alphabet.php`, and index-letter logic — subtle ordering regressions. See **Alphabet: headings vs. ordering**.
   - Renaming shortcode args, changing defaults, altering template markup IDs/classes, removing public hooks.
 - **Forbidden for agents:** do **not** modify `.wordpress-org/` contents.
 
