@@ -30,11 +30,11 @@ class SymbolsFirst extends Extension {
 	/**
 	 * Update the query with this extension's additional configuration.
 	 *
-	 * @param \AlphaListing\Query $query      The query.
-	 * @param string             $display    The display/query type.
-	 * @param string             $key        The name of the attribute.
-	 * @param mixed              $value      The shortcode attribute value.
-	 * @param array              $attributes The complete set of shortcode attributes.
+	 * @param \eslin87\AlphaListing\Query $query      The query.
+	 * @param string                      $display    The display/query type.
+	 * @param string                      $key        The name of the attribute.
+	 * @param mixed                       $value      The shortcode attribute value.
+	 * @param array                       $attributes The complete set of shortcode attributes.
 	 * @return mixed The updated query.
 	 */
 	public function shortcode_query( $query, string $display, string $key, $value, array $attributes ) {

@@ -13,13 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \eslin87\AlphaListing\Extension;
 use \eslin87\AlphaListing\Singleton;
 
 /**
  * Query Type extension parent class
  */
-abstract class Query extends Singleton implements Extension {
+abstract class Query extends Singleton {
 	/**
 	 * The display/query type name.
 	 *

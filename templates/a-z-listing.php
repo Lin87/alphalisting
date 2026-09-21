@@ -11,7 +11,9 @@
  * @package alphalisting
  */
 
- if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 /**
  * This value indicates the number of posts to require before a second column

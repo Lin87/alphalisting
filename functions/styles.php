@@ -16,10 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 0.7
  * @since 4.0.0 Don't conditionally load to alleviate issues with not loading.
- * @param bool $unused Not used.
  * @return void
  */
-function alphalisting_enqueue_styles( bool $unused = false ) {
+function alphalisting_enqueue_styles() {
 	wp_enqueue_style( 'alphalisting' );
 }
 

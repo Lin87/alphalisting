@@ -9,7 +9,9 @@
  * Original Author URI: https://profiles.wordpress.org/diddledani/
  * Text Domain:     	alphalisting
  * Domain Path:     	/languages
- * Version:         	4.4.0
+ * Version:         	4.6.0
+ * Requires at least:	6.0
+ * Requires PHP:    	8.0
  * License:				GPLv2 or later
  *
  * @package         alphalisting
@@ -56,14 +58,24 @@ function alphalisting_init() {
 	\eslin87\AlphaListing\Shortcode\PostsQuery::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\TermsQuery::instance()->activate( __FILE__ )->initialize();
 
-	// Shortcode attribute handlers.
-	\eslin87\AlphaListing\Shortcode\QueryParts\Alphabet::instance()->activate( __FILE__ )->initialize();
+	// Shortcode attribute handlers -- one per attribute, nothing is seeded in
+	// Shortcode::handle(). This order is the order apply_query_to_shortcode()
+	// processes the attributes in, so append rather than reorder.
 	\eslin87\AlphaListing\Shortcode\QueryParts\BackToTop::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Display::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\GetAllChildren::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\GroupNumbers::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Grouping::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Numbers::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\ReturnType::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Target::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Alphabet::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\Columns::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ColumnGap::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ColumnWidth::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ExcludePosts::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ExcludeTerms::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\GroupBy::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\HideEmpty_Deprecated::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\HideEmptyTerms::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\InstanceId::instance()->activate( __FILE__ )->initialize();
@@ -75,5 +87,6 @@ function alphalisting_init() {
 	\eslin87\AlphaListing\Shortcode\QueryParts\SymbolsFirst::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\Taxonomy::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\TermsTerms::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\IgnoreArticles::instance()->activate( __FILE__ )->initialize();
 }
 add_action( 'init', 'alphalisting_init', 5 );

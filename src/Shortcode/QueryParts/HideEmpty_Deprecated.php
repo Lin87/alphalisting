@@ -1,6 +1,6 @@
 <?php
 /**
- * Hide Empty Terms Query Part.
+ * Deprecated Hide Empty Terms Query Part.
  *
  * @package alphalisting
  */
@@ -13,12 +13,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use \eslin87\AlphaListing\Shortcode\Extension;
-
 /**
- * Deprecated Hide Empty Terms Query Part extension
+ * Deprecated Hide Empty Terms Query Part extension.
+ *
+ * Handles the legacy `hide-empty` attribute. The behavior is identical to
+ * `hide-empty-terms`, so only the attribute name differs.
+ *
+ * @since 4.0.0 deprecated in favor of the `hide-empty-terms` attribute.
  */
-class HideEmpty_Deprecated extends Extension {
+class HideEmpty_Deprecated extends HideEmptyTerms {
 	/**
 	 * The attribute for this Query Part.
 	 *
@@ -28,27 +31,18 @@ class HideEmpty_Deprecated extends Extension {
 	public $attribute_name = 'hide-empty';
 
 	/**
-	 * The types of listing this shortcode extension may be used with.
-	 *
-	 * @since 4.0.0
-	 * @var array<string>
-	 */
-	public $display_types = array( 'terms' );
-
-	/**
 	 * Update the query with this extension's additional configuration.
 	 *
-	 * @param \AlphaListing\Query $query      The query.
-	 * @param string             $display    The display/query type.
-	 * @param string             $key        The name of the attribute.
-	 * @param mixed              $value      The shortcode attribute value.
-	 * @param array              $attributes The complete set of shortcode attributes.
+	 * @param \eslin87\AlphaListing\Query $query      The query.
+	 * @param string                      $display    The display/query type.
+	 * @param string                      $key        The name of the attribute.
+	 * @param mixed                       $value      The shortcode attribute value.
+	 * @param array                       $attributes The complete set of shortcode attributes.
 	 * @return mixed The updated query.
 	 */
 	public function shortcode_query_for_display_and_attribute( $query, string $display, string $key, $value, array $attributes ) {
-		if ( ! isset( $query['hide_empty'] ) || empty( $query['hide_empty'] ) ) {
-			$query['hide_empty'] = alphalisting_is_truthy( $value );
-		}
-		return $query;
+		_deprecated_argument( 'hide-empty', '4.0.0', 'Use the hide-empty-terms attribute instead.' );
+
+		return parent::shortcode_query_for_display_and_attribute( $query, $display, $key, $value, $attributes );
 	}
 }

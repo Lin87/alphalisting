@@ -43,8 +43,9 @@ class Numbers {
 	public function __construct( string $position = 'hide', bool $group = false ) {
 		if ( 'before' === $position || 'after' === $position ) {
 			$this->position = $position;
-			$this->group    = alphalisting_is_truthy( $group );
+			$this->group    = $group;
 			add_filter( 'alphalisting-alphabet', array( $this, 'add_to_alphabet' ) );
+			add_filter( 'alphalisting_sorting_alphabet', array( $this, 'ungroup_for_sorting' ) );
 			add_filter( 'the-a-z-letter-title', array( $this, 'title' ) );
 		}
 	}
@@ -57,6 +58,7 @@ class Numbers {
 	 */
 	public function teardown() {
 		remove_filter( 'alphalisting-alphabet', array( $this, 'add_to_alphabet' ) );
+		remove_filter( 'alphalisting_sorting_alphabet', array( $this, 'ungroup_for_sorting' ) );
 		remove_filter( 'the-a-z-letter-title', array( $this, 'title' ) );
 	}
 
@@ -68,10 +70,6 @@ class Numbers {
 	 * @return string The alphabet with numbers either prepended or appended
 	 */
 	public function add_to_alphabet( string $alphabet ): string {
-		if ( 'hide' === $this->position ) {
-			return $alphabet;
-		}
-
 		if ( true === $this->group ) {
 			$numbers = '0123456789';
 		} else {
@@ -83,6 +81,29 @@ class Numbers {
 		} else {
 			return join( ',', array( $alphabet, $numbers ) );
 		}
+	}
+
+	/**
+	 * Split the grouped numbers apart again so items under the shared `0-9`
+	 * heading order by their real first digit.
+	 *
+	 * @since 4.5.1
+	 * @param string $alphabet The alphabet used for ordering.
+	 * @return string The alphabet with the number group split into single digits.
+	 */
+	public function ungroup_for_sorting( string $alphabet ): string {
+		if ( true !== $this->group ) {
+			return $alphabet;
+		}
+
+		$parts = array_map(
+			function( string $part ): string {
+				return '0123456789' === trim( $part ) ? '0,1,2,3,4,5,6,7,8,9' : $part;
+			},
+			explode( ',', $alphabet )
+		);
+
+		return join( ',', $parts );
 	}
 
 	/**

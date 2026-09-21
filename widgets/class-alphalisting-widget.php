@@ -118,9 +118,9 @@ class AlphaListing_Widget extends \WP_Widget {
 		$listing_terms_include_id   = $this->get_field_id( 'terms' );
 		$listing_terms_include_name = $this->get_field_name( 'terms' );
 
-		$listing_terms_exclude      = $instance['terms_exclude'] ?? '';
-		$listing_terms_exclude_id   = $this->get_field_id( 'terms_exclude' );
-		$listing_terms_exclude_name = $this->get_field_name( 'terms_exclude' );
+		$listing_terms_exclude      = $instance['exclude_terms'] ?? ( $instance['terms_exclude'] ?? '' );
+		$listing_terms_exclude_id   = $this->get_field_id( 'exclude_terms' );
+		$listing_terms_exclude_name = $this->get_field_name( 'exclude_terms' );
 
 		$listing_hide_empty_terms      = $instance['hide_empty_terms'] ?? '';
 		$listing_hide_empty_terms_id   = $this->get_field_id( 'hide_empty_terms' );
@@ -313,13 +313,17 @@ class AlphaListing_Widget extends \WP_Widget {
 	 * @param  array<string,mixed> $old_instance the previous configuration values.
 	 * @return array<string,mixed> sanitized version of the new configuration values to be saved
 	 */
-    public function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
 
 		$target_post_title  = wp_strip_all_tags( $new_instance['target_post_title'] ?? '' );
 		$parent_post_title  = wp_strip_all_tags( $new_instance['parent_post_title'] ?? '' );
 		$all_children_input = $new_instance['all_children'] ?? '';
 		$hide_empty_input   = $new_instance['hide_empty_terms'] ?? '';
+
+		// The field was historically named `terms_exclude` in form(); read it as a
+		// fallback so values stored under the old key survive an upgrade.
+		$exclude_terms_input = $new_instance['exclude_terms'] ?? ( $new_instance['terms_exclude'] ?? '' );
 
 		$instance['title']             = wp_strip_all_tags( $new_instance['title'] ?? '' );
 		$instance['type']              = wp_strip_all_tags( $new_instance['type'] ?? '' );
@@ -331,19 +335,19 @@ class AlphaListing_Widget extends \WP_Widget {
 		$instance['all_children']      = 'on' === $all_children_input ? 'true' : 'false';
 		$instance['parent_term']       = wp_strip_all_tags( $new_instance['parent_term'] ?? '' );
 		$instance['terms']             = wp_strip_all_tags( $new_instance['terms'] ?? '' );
-		$instance['exclude_terms']     = wp_strip_all_tags( $new_instance['exclude_terms'] ?? '' );
+		$instance['exclude_terms']     = wp_strip_all_tags( $exclude_terms_input );
 		$instance['hide_empty_terms']  = 'on' === $hide_empty_input ? 'true' : 'false';
 
 		if ( '' === $target_post_title ) {
 			$instance['post'] = 0;
 		}
-		
+
 		if ( '' === $parent_post_title ) {
 			$instance['parent_post'] = 0;
 		}
 
 		return $instance;
-    }
+	}
 
 	/**
 	 * Print the user-visible widget to the page
@@ -447,7 +451,9 @@ function get_the_section_a_z_widget( array $args, array $instance ): string { //
 		$title = esc_html__( 'A-Z Site Map', 'alphalisting' );
 	}
 
-	$hide_empty_terms = true === $instance['hide_empty_terms'] ? 'true' : 'false';
+	// `update()` stores this as the string 'true'/'false' while `wp_parse_args()`
+	// above defaults it to a boolean, so compare truthiness rather than identity.
+	$hide_empty_terms = alphalisting_is_truthy( $instance['hide_empty_terms'] ) ? 'true' : 'false';
 
 	$ret  = '';
 	$ret .= $args['before_widget'];
@@ -457,26 +463,37 @@ function get_the_section_a_z_widget( array $args, array $instance ): string { //
 	$ret .= $title;
 	$ret .= $args['after_title'];
 
-	$ret .= do_shortcode(
-		"[alphalisting
-            alphabet=''
-            display='{$instance['type']}'
-            exclude-posts=''
-            exclude-terms='{$instance['exclude_terms']}'
-            get-all-children='{$instance['all_children']}'
-            group-numbers=''
-            grouping=''
-            hide-empty-terms='{$hide_empty_terms}'
-            numbers='hide'
-            parent-post='{$instance['parent_post']}'
-            parent-term='{$instance['parent_term']}'
-            post-type='{$instance['post_type']}'
-            return='letters'
-            target='{$target_url}'
-            taxonomy='{$instance['taxonomy']}'
-            terms='{$instance['terms']}'
-        ]"
+	/*
+	 * Pass the attributes to the shortcode handler directly rather than building a
+	 * `[alphalisting ...]` string. Interpolating stored widget values into shortcode
+	 * syntax is unsafe -- a `'` closes the attribute early and a `]` terminates the
+	 * shortcode, letting following text be parsed as new shortcodes -- and no escaper
+	 * covers both characters. This is the same mechanism GutenBlock::render() uses,
+	 * so the widget, block, and shortcode all share one render path.
+	 */
+	$attributes = array(
+		'alphabet'         => '',
+		'display'          => (string) $instance['type'],
+		'exclude-posts'    => '',
+		'exclude-terms'    => (string) $instance['exclude_terms'],
+		'get-all-children' => (string) $instance['all_children'],
+		'group-numbers'    => '',
+		'grouping'         => '',
+		'hide-empty-terms' => $hide_empty_terms,
+		'numbers'          => 'hide',
+		'parent-post'      => (string) $instance['parent_post'],
+		'parent-term'      => (string) $instance['parent_term'],
+		'post-type'        => (string) $instance['post_type'],
+		'return'           => 'letters',
+		'target'           => (string) $target_url,
+		'taxonomy'         => (string) $instance['taxonomy'],
+		'terms'            => (string) $instance['terms'],
 	);
+
+	global $shortcode_tags;
+	if ( isset( $shortcode_tags['alphalisting'] ) ) {
+		$ret .= call_user_func( $shortcode_tags['alphalisting'], $attributes );
+	}
 
 	$ret .= '</div>';
 	$ret .= $args['after_widget'];
@@ -523,8 +540,6 @@ function alphalisting_search_titles_only( $search, $wp_query ) {
  * @return array<int,object> the post IDs that are found.
  */
 function alphalisting_get_posts_by_title( string $post_title, string $post_type = '' ): array {
-	global $wpdb;
-
 	$params = array(
 		's'                      => $post_title,
 		'update_post_meta_cache' => false,
@@ -593,7 +608,7 @@ function alphalisting_get_autocomplete_post_titles() {
 	foreach ( $results as $result ) {
 		$titles[] = array(
 			'value' => intval( $result->ID ),
-			'label' => addslashes( $result->post_title ),
+			'label' => $result->post_title,
 		);
 	}
 
@@ -612,14 +627,3 @@ function alphalisting_widget() {
 	register_widget( __NAMESPACE__ . '\\AlphaListing_Widget' );
 }
 add_action( 'widgets_init', __NAMESPACE__ . '\\alphalisting_widget' );
-
-/**
- * Enqueue the jquery-ui autocomplete script
- *
- * @since 2.0.0
- * @return void
- */
-function alphalisting_autocomplete_script() {
-	wp_enqueue_script( 'jquery-ui-autocomplete' );
-}
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\alphalisting_autocomplete_script' );

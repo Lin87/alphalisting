@@ -91,38 +91,13 @@ abstract class Extension extends Singleton implements \eslin87\AlphaListing\Exte
 	}
 
 	/**
-	 * Remove a hook.
-	 *
-	 * @since 1.0.0
-	 * @param string   $type The hook type (filter or action).
-	 * @param string   $name The hook name.
-	 * @param callable $function The function to call.
-	 * @param int      $order The order to call this function.
-	 * @param int      $arguments The number of arguments the function expects.
-	 */
-        final protected function remove_hook( string $type, string $name, callable $function, int $order = 10, int $arguments = 1 ) {
-                $hook = array( $name, $function, $order, $arguments );
-                call_user_func_array( "remove_$type", $hook );
-                if ( isset( $this->hooks[ $type ] ) ) {
-                        $this->hooks[ $type ] = array_values(
-                                array_filter(
-                                        $this->hooks[ $type ],
-                                        function( $item ) use ( $hook ) {
-                                                return $item !== $hook;
-                                        }
-                                )
-                        );
-                }
-        }
-
-	/**
 	 * Unhook all our filters and actions.
 	 *
 	 * @since 1.0.0
 	 */
 	final public function cleanup() {
 		foreach ( array_keys( $this->hooks ) as $type ) {
-			while ( $hook = array_shift( $this->hooks[ $type ] ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
+			while ( null !== ( $hook = array_shift( $this->hooks[ $type ] ) ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 				call_user_func_array( "remove_$type", $hook );
 			}
 		}

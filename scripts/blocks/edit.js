@@ -56,6 +56,7 @@ addFilter(
 		terms: [ ...defaults.terms.default ],
 		'exclude-posts': [ ...defaults['exclude-posts'].default ],
 		'parent-post': defaults['parent-post'].default,
+		'get-all-children': defaults['get-all-children'].default,
 	} ),
 	5
 );
@@ -460,6 +461,10 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 		}
 	}, [ attributes['post-type'], setAttributes ] );
 
+	// Generated once per mount rather than inline in the control's `value`, where a
+	// fresh UUID was minted on every render and never persisted.
+	const fallbackInstanceId = useMemo( () => uuid(), [] );
+
 	const excludePostsTokens = useMemo(
 		() => sanitizeNumericTokenList( attributes['exclude-posts'] ).map( ( token ) => token.toString() ),
 		[ attributes['exclude-posts'] ]
@@ -482,7 +487,10 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 		: String( attributes['parent-term'] ?? '' );
 	const hasTermParentSelection = attributes.display === 'terms'
 		&& ( parentTermValue.trim() !== '' );
-	const showDescendantsToggle = hasTermParentSelection;
+	// ParentPost reads `get-all-children` too, not just ParentTermCommon.
+	const hasPostParentSelection = attributes.display === 'posts'
+		&& sanitizePositiveInteger( attributes['parent-post'] ) !== null;
+	const showDescendantsToggle = hasTermParentSelection || hasPostParentSelection;
 
     const inspectorControls = (
         <InspectorControls>
@@ -668,24 +676,6 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 								{ ( subFills ) => (
 									<>
 										<TextControl
-											label={ __( 'Listing ID', 'alphalisting' ) }
-											value={ attributes['instance-id'] ?? uuid() }
-											onChange={ (value) =>
-												setAttributes( { 'instance-id': value } )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
-										<TextControl
-											label={ __( 'CSS class names', 'alphalisting' ) }
-											value={ attributes.className ?? '' }
-											onChange={ ( value ) =>
-													setAttributes( { className: value } )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
-										<TextControl
 											label={ __( 'Alphabet', 'alphalisting' ) }
 											value={ attributes.alphabet ?? defaults['alphabet'].default }
 											onChange={ ( value ) =>
@@ -694,6 +684,7 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
+
 										<SelectControl
 											label={ __( 'Numbers', 'alphalisting' ) }
 											value={ attributes.numbers ?? defaults['numbers'].default }
@@ -781,7 +772,8 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 													__next40pxDefaultSize
 													__nextHasNoMarginBottom
 												/>
-											) }
+											)
+										}
 
 										<ToggleControl
 											label={ __( 'Display symbols entry first', 'alphalisting' ) }
@@ -792,6 +784,47 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
+
+										{ 'posts' === attributes.display && (
+											<ToggleControl
+												label={ __( 'Group by last word', 'alphalisting' ) }
+												checked={ 'last-word' === attributes['group-by'] }
+												onChange={ ( enabled ) =>
+													setAttributes( {
+														'group-by': enabled ? 'last-word' : '',
+													} )
+												}
+												help={ __( 'Group and sort posts by the last word of their title.', 'alphalisting' ) }
+												__next40pxDefaultSize
+												__nextHasNoMarginBottom
+											/>
+										) }
+
+										{ 'posts' === attributes.display && (
+											<SelectControl
+												label={ __( 'Ignore leading articles', 'alphalisting' ) }
+												value={ attributes['ignore-articles'] ?? defaults['ignore-articles'].default }
+												options={ [
+													{ value: '', label: __( 'Do not ignore articles', 'alphalisting' ) },
+													{ value: 'en', label: __( 'English (a, an, the)', 'alphalisting' ) },
+													{ value: 'fr', label: __( 'French (le, la, les, un, une, des)', 'alphalisting' ) },
+													{ value: 'es', label: __( 'Spanish (el, la, los, las, un, una)', 'alphalisting' ) },
+													{ value: 'it', label: __( 'Italian (il, lo, la, i, gli, le, un, uno, una)', 'alphalisting' ) },
+												] }
+												onChange={ ( value ) =>
+													setAttributes( { 'ignore-articles': value } )
+												}
+												disabled={ 'last-word' === attributes['group-by'] }
+												help={
+													'last-word' === attributes['group-by']
+														? __( 'Not available while posts are grouped by their last word.', 'alphalisting' )
+														: __( 'Sort posts by the first word after a leading article. The full title is still displayed.', 'alphalisting' )
+												}
+												__next40pxDefaultSize
+												__nextHasNoMarginBottom
+											/>
+										) }
+
 										<ToggleControl
 											label={ __( 'Show back to top link', 'alphalisting' ) }
 											checked={ !! attributes['back-to-top'] }
@@ -802,54 +835,72 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 											__nextHasNoMarginBottom
 										/>
 
-										<RangeControl
-											label={ __( 'Columns', 'alphalisting' ) }
-											value={ sanitizedColumns }
-											onChange={ ( value ) =>
-												setAttributes( { columns: sanitizeColumnCount( value ) } )
-											}
-											min={ 1 }
-											max={ MAX_POSTS_COLUMNS }
-											withInputField
-											required
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
-										
-										<UnitControl
-											label={ __( 'Column width', 'alphalisting' ) }
-											value={ sanitizedColumnWidth }
-											units={ LENGTH_UNITS }
-											onChange={ ( nextValue ) =>
-												setAttributes( {
-													'column-width': sanitizeLengthValue(
-														nextValue,
-														defaults['column-width'].default
-													),
-												} )
+										<TextControl
+											label={ __( 'Listing ID', 'alphalisting' ) }
+											help={ __(
+												'The HTML id attribute for this listing, used as the target for its anchor links. This is not a post or term ID.',
+												'alphalisting'
+											) }
+											value={ attributes['instance-id'] ?? fallbackInstanceId }
+											onChange={ (value) =>
+												setAttributes( { 'instance-id': value } )
 											}
 											__next40pxDefaultSize
 											__nextHasNoMarginBottom
 										/>
-										<UnitControl
-											label={ __( 'Column gap', 'alphalisting' ) }
-											value={ sanitizedColumnGap }
-											units={ LENGTH_UNITS }
-											onChange={ ( nextValue ) =>
-												setAttributes( {
-													'column-gap': sanitizeLengthValue(
-														nextValue,
-														defaults['column-gap'].default
-													),
-												} )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
+
 										{ subFills }
 									</>
 								) }
 							</DisplayOptions.Slot>
+						</PanelBody>
+
+						<PanelBody title={ __( 'Layout', 'alphalisting' ) } initialOpen={ false }>
+							<RangeControl
+								label={ __( 'Columns', 'alphalisting' ) }
+								value={ sanitizedColumns }
+								onChange={ ( value ) =>
+									setAttributes( { columns: sanitizeColumnCount( value ) } )
+								}
+								min={ 1 }
+								max={ MAX_POSTS_COLUMNS }
+								withInputField
+								required
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+
+							<UnitControl
+								label={ __( 'Column width', 'alphalisting' ) }
+								value={ sanitizedColumnWidth }
+								units={ LENGTH_UNITS }
+								onChange={ ( nextValue ) =>
+									setAttributes( {
+										'column-width': sanitizeLengthValue(
+											nextValue,
+											defaults['column-width'].default
+										),
+									} )
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+
+							<UnitControl
+								label={ __( 'Column gap', 'alphalisting' ) }
+								value={ sanitizedColumnGap }
+								units={ LENGTH_UNITS }
+								onChange={ ( nextValue ) =>
+									setAttributes( {
+										'column-gap': sanitizeLengthValue(
+											nextValue,
+											defaults['column-gap'].default
+										),
+									} )
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
 						</PanelBody>
 
 						<Extensions.Slot>

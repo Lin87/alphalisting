@@ -74,7 +74,7 @@ jQuery( function( $ ) {
 			};
 
 			switch_taxonomy_or_posts();
-			display_type.change( switch_taxonomy_or_posts );
+			display_type.on( 'change', switch_taxonomy_or_posts );
 
 			$( target_post_title ).autocomplete( {
 				source( post_title, response ) {

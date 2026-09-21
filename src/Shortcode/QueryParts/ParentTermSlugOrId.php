@@ -30,11 +30,11 @@ class ParentTermSlugOrId extends ParentTermCommon {
 	/**
 	 * Update the query with this extension's additional configuration.
 	 *
-	 * @param \AlphaListing\Query $query      The query.
-	 * @param string             $display    The display/query type.
-	 * @param string             $key        The name of the attribute.
-	 * @param mixed              $value      The shortcode attribute value.
-	 * @param array              $attributes The complete set of shortcode attributes.
+	 * @param \eslin87\AlphaListing\Query $query      The query.
+	 * @param string                      $display    The display/query type.
+	 * @param string                      $key        The name of the attribute.
+	 * @param mixed                       $value      The shortcode attribute value.
+	 * @param array                       $attributes The complete set of shortcode attributes.
 	 * @return mixed The updated query.
 	 */
 	public function shortcode_query_for_display_and_attribute( $query, string $display, string $key, $value, array $attributes ) {
@@ -48,8 +48,11 @@ class ParentTermSlugOrId extends ParentTermCommon {
 			}
 
 			foreach ( $taxonomies as $taxonomy ) {
+				// get_term_by() returns \WP_Term|false|null -- null for an unregistered
+				// taxonomy, which slips past a `false !==` check and leaves $parent_id
+				// null, fatalling on the int parameter of shortcode_query_with_parent_id().
 				$parent_term = get_term_by( 'slug', $value, $taxonomy );
-				if ( false !== $parent_term ) {
+				if ( $parent_term instanceof \WP_Term ) {
 					$parent_id = $parent_term->term_id;
 					break;
 				}

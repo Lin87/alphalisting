@@ -359,15 +359,80 @@ function get_the_a_z_letters( $query = null, string $target = '', string $stylin
 }
 
 /**
+ * The per-request store of AlphaListing instances backing alphalisting_cache().
+ *
+ * Returned by reference so alphalisting_cache() and alphalisting_cache_flush()
+ * share one static array.
+ *
+ * @since 4.5.0
+ * @access private
+ * @return array<string,\eslin87\AlphaListing\Query> The stored instances, keyed by query.
+ */
+function &alphalisting_cache_store(): array {
+	static $instances = array();
+	return $instances;
+}
+
+/**
+ * Build the store key for a query.
+ *
+ * @since 4.5.0
+ * @access private
+ * @param array|string|WP_Query|\eslin87\AlphaListing\Query|null $query The query.
+ * @param string                                                $type  The listing type.
+ * @return string The store key.
+ */
+function alphalisting_cache_key( $query, string $type ): string {
+	if ( is_object( $query ) ) {
+		// Objects (\WP_Query, Query) are identified by instance rather than serialized:
+		// they can hold the full post set, which would make hashing them expensive.
+		return $type . ':' . spl_object_hash( $query );
+	}
+
+	return $type . ':' . md5( (string) wp_json_encode( $query ) );
+}
+
+/**
+ * Discard the stored instances.
+ *
+ * Hooked to `alphalisting_shortcode_end` so consecutive listings on one page each
+ * start from a clean loop state.
+ *
+ * @since 4.5.0
+ * @return void
+ */
+function alphalisting_cache_flush() {
+	$instances = &alphalisting_cache_store();
+	$instances = array();
+}
+add_action( 'alphalisting_shortcode_end', 'alphalisting_cache_flush' );
+
+/**
  * Get a saved copy of the AlphaListing instance if we have one, or make a new one and save it for later
  *
+ * Every procedural template tag routes through here, so the instance *must* be
+ * reused between calls: returning a fresh Query each time resets the letter and
+ * item offsets, which makes `while ( have_a_z_letters() )` loop forever and re-runs
+ * the whole query on every iteration.
+ *
+ * `$use_cache` is deliberately not part of the key -- it controls the separate
+ * transient cache inside Query, not this per-request instance store.
+ *
+ * @since 4.5.0 Actually reuse the instance, as the name and description always implied.
  * @param array|string|WP_Query|\eslin87\AlphaListing\Query $query     A valid WordPress query or an \eslin87\AlphaListing\Query instance.
  * @param string                                   $type      The type of items displayed in the listing: 'terms' or 'posts'.
  * @param bool                                     $use_cache Try to use a caching plugin. See https://alphalisting.com/ for the caching plugin we created to work with this feature.
  * @return \eslin87\AlphaListing\Query A new or previously-saved instance of \eslin87\AlphaListing\Query using the provided construct_query
  */
 function alphalisting_cache( $query = null, string $type = '', bool $use_cache = true ) {
-        return new \eslin87\AlphaListing\Query( $query, $type, $use_cache );
+	$instances = &alphalisting_cache_store();
+	$key       = alphalisting_cache_key( $query, $type );
+
+	if ( ! isset( $instances[ $key ] ) ) {
+		$instances[ $key ] = new \eslin87\AlphaListing\Query( $query, $type, $use_cache );
+	}
+
+	return $instances[ $key ];
 }
 
 /**

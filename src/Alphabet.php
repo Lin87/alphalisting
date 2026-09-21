@@ -54,6 +54,34 @@ class Alphabet {
 	public $keyed_alphabet;
 
 	/**
+	 * `$alphabet_keys` for ordering rather than for headings: letters merged
+	 * into one heading by grouping are still listed separately here.
+	 *
+	 * @since 4.5.1
+	 * @var array<int,string>
+	 * @see $alphabet_keys
+	 */
+	public $sorting_keys;
+
+	/**
+	 * `$keyed_alphabet` for ordering rather than for headings.
+	 *
+	 * @since 4.5.1
+	 * @var array<string,string>
+	 * @see $keyed_alphabet
+	 */
+	public $sorting_keyed_alphabet;
+
+	/**
+	 * Each sorting key mapped to its offset in `$sorting_keys`, so comparing
+	 * titles does not scan that array for every character.
+	 *
+	 * @since 4.5.1
+	 * @var array<string,int>
+	 */
+	private $sorting_positions;
+
+	/**
 	 * Any unknown letter is sorted to be before the rest of the alphabet
 	 *
 	 * @since 4.1.0
@@ -110,11 +138,58 @@ class Alphabet {
 		 */
 		$others = apply_filters( 'alphalisting-non-alpha-char', $others ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
+		/**
+		 * Filters the alphabet used to order items within a heading. Same format
+		 * as `alphalisting_alphabet`. Defaults to the alphabet itself; return the
+		 * un-merged alphabet if you have merged letters into a shared heading.
+		 *
+		 * @since 4.5.1
+		 * @param string $alphabet The alphabet, after grouping has been applied.
+		 */
+		$sorting_alphabet = apply_filters( 'alphalisting_sorting_alphabet', $alphabet );
+
 		$alphabet_groups = explode( ',', $alphabet );
 		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 1 ) {
 			do_action( 'alphalisting_log', 'AlphaListing: Alphabet Groups', $alphabet_groups );
 		}
-		$letters = array_reduce(
+		$letters = self::build_keyed_alphabet( $alphabet_groups );
+
+		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 2 ) {
+			do_action( 'alphalisting_log', 'AlphaListing: Alphabet', $letters );
+		}
+
+		$this->unknown_letter          = $others;
+		$this->unknown_letter_is_first = ! ! apply_filters( 'alphalisting_unknown_letter_is_first', false );
+		$this->alphabet_keys           = array_values( array_unique( $letters ) );
+		$this->keyed_alphabet          = $letters;
+
+		if ( $sorting_alphabet === $alphabet ) {
+			$sorting_letters = $letters;
+		} else {
+			$sorting_letters = self::build_keyed_alphabet( explode( ',', $sorting_alphabet ) );
+
+			if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 2 ) {
+				do_action( 'alphalisting_log', 'AlphaListing: Sorting Alphabet', $sorting_letters );
+			}
+		}
+
+		$this->sorting_keyed_alphabet = $sorting_letters;
+		$this->sorting_keys           = array_values( array_unique( $sorting_letters ) );
+		$this->sorting_positions      = array();
+		foreach ( $this->sorting_keys as $offset => $sorting_key ) {
+			$this->sorting_positions[ "__$sorting_key" ] = $offset;
+		}
+	}
+
+	/**
+	 * Build the map of every alphabet character to the character identifying its group.
+	 *
+	 * @since 4.5.1
+	 * @param array<int,string> $alphabet_groups The comma-separated groups of the alphabet.
+	 * @return array<string,string> Each character, prefixed with `__`, mapped to its group character.
+	 */
+	private static function build_keyed_alphabet( array $alphabet_groups ): array {
+		return array_reduce(
 			$alphabet_groups,
 			/**
 			 * Closure to extract the alphabet groups
@@ -146,15 +221,6 @@ class Alphabet {
 			},
 			array()
 		);
-
-		if ( defined( 'ALPHALISTING_LOG' ) && ALPHALISTING_LOG > 2 ) {
-			do_action( 'alphalisting_log', 'AlphaListing: Alphabet', $letters );
-		}
-
-		$this->unknown_letter          = $others;
-		$this->unknown_letter_is_first = ! ! apply_filters( 'alphalisting_unknown_letter_is_first', false );
-		$this->alphabet_keys           = array_values( array_unique( $letters ) );
-		$this->keyed_alphabet          = $letters;
 	}
 
 	/**
@@ -165,7 +231,8 @@ class Alphabet {
 	 * @return string The letter.
 	 */
 	public function get_letter_for_key( string $key ): string {
-		if ( $key === $this->unknown_letter || ! in_array( "__$key", array_keys( $this->keyed_alphabet ), true ) ) {
+		// isset() rather than in_array(): this is hot, the O(n) scan was measurable.
+		if ( $key === $this->unknown_letter || ! isset( $this->keyed_alphabet[ "__$key" ] ) ) {
 			return $this->unknown_letter;
 		}
 		return $this->keyed_alphabet[ "__$key" ];
@@ -201,6 +268,74 @@ class Alphabet {
 	 */
 	public function get_unknown_letter(): string {
 		return $this->unknown_letter;
+	}
+
+	/**
+	 * Compare strings using the configured alphabet order and character groups.
+	 *
+	 * @since 4.5.0
+	 * @param string $first  The first string.
+	 * @param string $second The second string.
+	 * @return int -1, 0, or 1 according to the configured alphabet.
+	 */
+	public function compare_strings( string $first, string $second ): int {
+		$first_characters  = $this->normalize_string_for_sorting( $first );
+		$second_characters = $this->normalize_string_for_sorting( $second );
+		$minimum_length    = min( count( $first_characters ), count( $second_characters ) );
+
+		for ( $index = 0; $index < $minimum_length; ++$index ) {
+			$first_position  = $this->sorting_positions[ '__' . $first_characters[ $index ] ] ?? null;
+			$second_position = $this->sorting_positions[ '__' . $second_characters[ $index ] ] ?? null;
+			$first_unknown   = ! is_int( $first_position );
+			$second_unknown  = ! is_int( $second_position );
+
+			if ( $first_unknown && ! $second_unknown ) {
+				return $this->unknown_letter_is_first ? -1 : 1;
+			}
+			if ( ! $first_unknown && $second_unknown ) {
+				return $this->unknown_letter_is_first ? 1 : -1;
+			}
+
+			$comparison = $first_unknown
+				? $first_characters[ $index ] <=> $second_characters[ $index ]
+				: $first_position <=> $second_position;
+			if ( 0 !== $comparison ) {
+				return $comparison;
+			}
+		}
+
+		return count( $first_characters ) <=> count( $second_characters );
+	}
+
+	/**
+	 * Normalize a string to the representative characters in the alphabet.
+	 *
+	 * @since 4.5.0
+	 * @param string $value The string to normalize.
+	 * @return array<int,string> The normalized characters.
+	 */
+	private function normalize_string_for_sorting( string $value ): array {
+		return array_map(
+			function( string $character ): string {
+				$normalized = $this->get_sorting_letter_for_key( $character );
+				return $normalized === $this->unknown_letter ? $character : $normalized;
+			},
+			Strings::mb_string_to_array( $value )
+		);
+	}
+
+	/**
+	 * `get_letter_for_key()` for ordering: letters sharing a heading stay apart.
+	 *
+	 * @since 4.5.1
+	 * @param string $key The key to look up.
+	 * @return string The letter.
+	 */
+	private function get_sorting_letter_for_key( string $key ): string {
+		if ( $key === $this->unknown_letter || ! isset( $this->sorting_keyed_alphabet[ "__$key" ] ) ) {
+			return $this->unknown_letter;
+		}
+		return $this->sorting_keyed_alphabet[ "__$key" ];
 	}
 
 	/**

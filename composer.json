@@ -11,12 +11,9 @@
     ],
     "config": {
         "platform": {
-            "php": "8.3"
+            "php": "8.0"
         },
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "kylekatarnls/update-helper": true
-        }
+        "allow-plugins": {}
     },
     "require": {
         "symfony/polyfill-mbstring": "^1.31.0"
@@ -33,6 +30,10 @@
         }
     },
     "scripts": {
-        "npm-build": "npm run build"
+        "npm-build": "npm run build",
+        "makepot": "@php vendor/wp-cli/wp-cli/php/boot-fs.php i18n make-pot . languages/alphalisting.pot --domain=alphalisting --exclude=test,tests,bin,build,node_modules,vendor,.wordpress-org"
+    },
+    "require-dev": {
+        "wp-cli/i18n-command": "^2.7"
     }
 }

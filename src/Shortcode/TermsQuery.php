@@ -56,7 +56,16 @@ class TermsQuery extends Query {
 			return $items;
 		}
 
-		return get_terms( $query ); // @phan-suppress-current-line PhanAccessMethodInternal
+		$terms = get_terms( $query ); // @phan-suppress-current-line PhanAccessMethodInternal
+
+		// get_terms() returns array|int|\WP_Error. An unregistered taxonomy yields a
+		// \WP_Error, which would violate this method's `array` return type under
+		// strict_types and fatal the page instead of rendering an empty listing.
+		if ( ! is_array( $terms ) ) {
+			return array();
+		}
+
+		return $terms;
 	}
 
 	/**
@@ -129,7 +138,12 @@ class TermsQuery extends Query {
 		}
 
 		if ( $item instanceof \WP_Term ) {
-			$permalink = get_term_link( $item );
+			$link = get_term_link( $item );
+			// get_term_link() returns string|\WP_Error. Storing a \WP_Error here would
+			// only surface much later, as a return-type fatal in Query::get_the_permalink().
+			if ( is_string( $link ) ) {
+				$permalink = $link;
+			}
 		}
 
 		return $permalink;

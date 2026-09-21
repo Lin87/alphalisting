@@ -35,6 +35,16 @@
         "type": "number",
         "default": 1
     },
+    "group-by": {
+        "type": "string",
+        "enum": ["", "last-word"],
+        "default": ""
+    },
+    "ignore-articles": {
+        "type": "string",
+        "enum": ["", "en", "fr", "es", "it"],
+        "default": ""
+    },
     "instance-id": {
         "type": "string"
     },

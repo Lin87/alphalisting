@@ -36,6 +36,14 @@ class Grouping {
 	private $headings;
 
 	/**
+	 * Each group we created, mapped back to the groups it was built from.
+	 *
+	 * @since 4.5.1
+	 * @var array<string,array<int,string>>
+	 */
+	private $ungrouped = array();
+
+	/**
 	 * Add filters to group the alphabet letters
 	 *
 	 * @since 2.0.0
@@ -46,6 +54,7 @@ class Grouping {
 
 		if ( 1 < $grouping ) {
 			add_filter( 'alphalisting-alphabet', array( $this, 'alphabet_filter' ), 2 );
+			add_filter( 'alphalisting_sorting_alphabet', array( $this, 'sorting_alphabet_filter' ), 2 );
 			add_filter( 'the-a-z-letter-title', array( $this, 'heading' ), 5 );
 		}
 	}
@@ -58,6 +67,7 @@ class Grouping {
 	 */
 	public function teardown() {
 		remove_filter( 'alphalisting-alphabet', array( $this, 'alphabet_filter' ), 2 );
+		remove_filter( 'alphalisting_sorting_alphabet', array( $this, 'sorting_alphabet_filter' ), 2 );
 		remove_filter( 'the-a-z-letter-title', array( $this, 'heading' ), 5 );
 	}
 
@@ -76,7 +86,8 @@ class Grouping {
 		$i = 0;
 		$j = 0;
 
-		$grouping = $this->grouping;
+		$grouping  = $this->grouping;
+		$ungrouped = array();
 
 		$groups = array_reduce(
 			$letters,
@@ -87,13 +98,14 @@ class Grouping {
 			 * @param string $letter
 			 * @return array<int,string>
 			 */
-			function( array $carry, string $letter ) use ( $grouping, &$headings, &$i, &$j ) {
+			function( array $carry, string $letter ) use ( $grouping, &$headings, &$ungrouped, &$i, &$j ) {
 				if ( isset( $carry[ $j ] ) ) {
 					$carry[ $j ] = $carry[ $j ] . $letter;
 				} else {
 					$carry[ $j ] = $letter;
 				}
-				$headings[ $j ][] = Strings::maybe_mb_substr( $letter, 0, 1 );
+				$headings[ $j ][]  = Strings::maybe_mb_substr( $letter, 0, 1 );
+				$ungrouped[ $j ][] = $letter;
 
 				if ( $i + 1 === $grouping ) {
 					$i = 0;
@@ -123,7 +135,40 @@ class Grouping {
 			array()
 		);
 
+		$this->ungrouped = array();
+		foreach ( $groups as $offset => $group ) {
+			$this->ungrouped[ "__$group" ] = $ungrouped[ $offset ];
+		}
+
 		return join( ',', $groups );
+	}
+
+	/**
+	 * Expand our own groups again so items under a shared heading still order
+	 * by their real letter. Groups we did not create are passed through, so
+	 * this does not depend on which filters ran before us.
+	 *
+	 * @since 4.5.1
+	 * @param string $alphabet The grouped alphabet.
+	 * @return string The alphabet with our own groups expanded again.
+	 */
+	public function sorting_alphabet_filter( string $alphabet ): string {
+		if ( empty( $this->ungrouped ) ) {
+			return $alphabet;
+		}
+
+		$parts = array_map(
+			function( string $part ): string {
+				$group = trim( $part );
+				if ( ! isset( $this->ungrouped[ "__$group" ] ) ) {
+					return $part;
+				}
+				return join( ',', $this->ungrouped[ "__$group" ] );
+			},
+			explode( ',', $alphabet )
+		);
+
+		return join( ',', $parts );
 	}
 
 	/**
