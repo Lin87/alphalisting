@@ -60,6 +60,11 @@ Comprehensive documentation is now available:
 
 * Bugfix: Items under a grouped letter heading (such as `A-C`, from the "Group letters" setting or `grouping="3"`) are listed in alphabetical order again. They were previously ordered by the second character of the title, so "Banana" could appear before "Apple".
 * Bugfix: Items under the grouped `0-9` heading are now ordered the same way as when the numbers are listed individually.
+* New: The block's "Include all descendants" toggle is now available when a parent post is selected, matching the shortcode's `get-all-children` attribute. It was previously only offered for taxonomy term listings.
+* Change: The block's settings sidebar is reorganized into "Listing selection", "Alphabet & grouping", "Layout", and "Advanced" panels, replacing the single "Display options" panel. Every setting and its shortcode attribute is unchanged.
+* Change: The block's "CSS class names" field is removed in favour of WordPress' built-in "Additional CSS class(es)" field under Advanced, which edits the same value. Existing class names are preserved.
+* Change: The block's "Listing ID" setting now explains that it sets the listing's HTML id attribute, not a post or term ID.
+* Change: Every shortcode attribute is now declared by its own query-part extension, so there is a single list of settings behind both the block and the shortcode. Attribute names, defaults, and filters are unchanged.
 
 = 4.5.0 =
 

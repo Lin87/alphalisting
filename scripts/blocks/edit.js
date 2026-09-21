@@ -56,6 +56,7 @@ addFilter(
 		terms: [ ...defaults.terms.default ],
 		'exclude-posts': [ ...defaults['exclude-posts'].default ],
 		'parent-post': defaults['parent-post'].default,
+		'get-all-children': defaults['get-all-children'].default,
 	} ),
 	5
 );
@@ -486,7 +487,10 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 		: String( attributes['parent-term'] ?? '' );
 	const hasTermParentSelection = attributes.display === 'terms'
 		&& ( parentTermValue.trim() !== '' );
-	const showDescendantsToggle = hasTermParentSelection;
+	// ParentPost reads `get-all-children` too, not just ParentTermCommon.
+	const hasPostParentSelection = attributes.display === 'posts'
+		&& sanitizePositiveInteger( attributes['parent-post'] ) !== null;
+	const showDescendantsToggle = hasTermParentSelection || hasPostParentSelection;
 
     const inspectorControls = (
         <InspectorControls>
@@ -667,215 +671,218 @@ const A_Z_Listing_Edit = ( { attributes, setAttributes } ) => {
 							</ItemSelection.Slot>
 						</PanelBody>
 
-						<PanelBody title={ __( 'Display options', 'alphalisting' ) }>
-							<DisplayOptions.Slot>
-								{ ( subFills ) => (
-									<>
-										<TextControl
-											label={ __( 'Listing ID', 'alphalisting' ) }
-											value={ attributes['instance-id'] ?? fallbackInstanceId }
-											onChange={ (value) =>
-												setAttributes( { 'instance-id': value } )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
-										
-										<TextControl
-											label={ __( 'CSS class names', 'alphalisting' ) }
-											value={ attributes.className ?? '' }
-											onChange={ ( value ) =>
-													setAttributes( { className: value } )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
+						<PanelBody title={ __( 'Alphabet & grouping', 'alphalisting' ) }>
+							<TextControl
+								label={ __( 'Alphabet', 'alphalisting' ) }
+								value={ attributes.alphabet ?? defaults['alphabet'].default }
+								onChange={ ( value ) =>
+										setAttributes( { alphabet: value } )
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
 
-										<TextControl
-											label={ __( 'Alphabet', 'alphalisting' ) }
-											value={ attributes.alphabet ?? defaults['alphabet'].default }
-											onChange={ ( value ) =>
-													setAttributes( { alphabet: value } )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
+							<SelectControl
+								label={ __( 'Numbers', 'alphalisting' ) }
+								value={ attributes.numbers ?? defaults['numbers'].default }
+								options={ [
+									{
+										value: 'hide',
+										label: __(
+											'Hide numbers',
+											'alphalisting'
+										),
+									},
+									{
+										value: 'before',
+										label: __(
+											'Prepend before alphabet',
+											'alphalisting'
+										),
+									},
+									{
+										value: 'after',
+										label: __(
+											'Append after alphabet',
+											'alphalisting'
+										),
+									},
+								] }
+								onChange={ ( value ) =>
+									setAttributes(
+										applyFilters(
+											'alphalisting_selection_changed_for__numbers',
+											{ numbers: value }
+										)
+									)
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
 
-										<SelectControl
-											label={ __( 'Numbers', 'alphalisting' ) }
-											value={ attributes.numbers ?? defaults['numbers'].default }
-											options={ [
-												{
-													value: 'hide',
-													label: __(
-														'Hide numbers',
-														'alphalisting'
-													),
-												},
-												{
-													value: 'before',
-													label: __(
-														'Prepend before alphabet',
-														'alphalisting'
-													),
-												},
-												{
-													value: 'after',
-													label: __(
-														'Append after alphabet',
-														'alphalisting'
-													),
-												},
-											] }
-											onChange={ ( value ) =>
-												setAttributes(
-													applyFilters(
-														'alphalisting_selection_changed_for__numbers',
-														{ numbers: value }
-													)
-												)
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
+							<RangeControl
+								label={ __( 'Group letters', 'alphalisting' ) }
+								help={ __(
+									'The number of letters to include in a single group',
+									'alphalisting'
+								) }
+								value={ attributes.grouping ?? defaults['grouping'].default }
+								min={ 1 }
+								max={ 10 }
+								onChange={ ( value ) =>
+									setAttributes(
+										applyFilters(
+											'alphalisting_selection_changed_for__grouping',
+											{ grouping: value }
+										)
+									)
+								}
+								withInputField
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
 
-										<RangeControl
-											label={ __( 'Group letters', 'alphalisting' ) }
-											help={ __(
-												'The number of letters to include in a single group',
-												'alphalisting'
-											) }
-											value={ attributes.grouping ?? defaults['grouping'].default }
-											min={ 1 }
-											max={ 10 }
-											onChange={ ( value ) =>
-												setAttributes(
-													applyFilters(
-														'alphalisting_selection_changed_for__grouping',
-														{ grouping: value }
-													)
-												)
-											}
-											withInputField
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
-
-										{ 'hide' !== attributes.numbers &&
-											! (
-												1 < attributes.grouping
-											) && (
-												<ToggleControl
-													label={ __(
-														'Group numbers',
-														'alphalisting'
-													) }
-													help={ __(
-														'Group 0-9 as a single letter',
-														'alphalisting'
-													) }
-													checked={ !! attributes['group-numbers'] }
-													onChange={ ( value ) =>
-														setAttributes(
-															applyFilters(
-																'alphalisting_selection_changed_for__group-numbers',
-																{
-																	'group-numbers': !! value,
-																}
-															)
-														)
+							{ 'hide' !== attributes.numbers &&
+								! (
+									1 < attributes.grouping
+								) && (
+									<ToggleControl
+										label={ __(
+											'Group numbers',
+											'alphalisting'
+										) }
+										help={ __(
+											'Group 0-9 as a single letter',
+											'alphalisting'
+										) }
+										checked={ !! attributes['group-numbers'] }
+										onChange={ ( value ) =>
+											setAttributes(
+												applyFilters(
+													'alphalisting_selection_changed_for__group-numbers',
+													{
+														'group-numbers': !! value,
 													}
-													__next40pxDefaultSize
-													__nextHasNoMarginBottom
-												/>
+												)
 											)
 										}
+										__next40pxDefaultSize
+										__nextHasNoMarginBottom
+									/>
+								)
+							}
 
-										<ToggleControl
-											label={ __( 'Display symbols entry first', 'alphalisting' ) }
-											checked={ !!attributes['symbols-first'] }
-											onChange={ ( value ) =>
-												setAttributes( { 'symbols-first': value } )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
+							<ToggleControl
+								label={ __( 'Display symbols entry first', 'alphalisting' ) }
+								checked={ !!attributes['symbols-first'] }
+								onChange={ ( value ) =>
+									setAttributes( { 'symbols-first': value } )
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
 
-										{ 'posts' === attributes.display && (
-                                            <ToggleControl
-                                                label={ __( 'Group by last word', 'alphalisting' ) }
-                                                checked={ 'last-word' === attributes['group-by'] }
-                                                onChange={ ( enabled ) =>
-                                                    setAttributes( {
-                                                        'group-by': enabled ? 'last-word' : '',
-                                                    } )
-                                                }
-                                                help={ __( 'Group and sort posts by the last word of their title.', 'alphalisting' ) }
-                                                __next40pxDefaultSize
-                                                __nextHasNoMarginBottom
-                                            />
-                                        ) }
-
-										<ToggleControl
-											label={ __( 'Show back to top link', 'alphalisting' ) }
-											checked={ !! attributes['back-to-top'] }
-											onChange={ ( value ) =>
-												setAttributes( { 'back-to-top': value } )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
-
-										<RangeControl
-											label={ __( 'Columns', 'alphalisting' ) }
-											value={ sanitizedColumns }
-											onChange={ ( value ) =>
-												setAttributes( { columns: sanitizeColumnCount( value ) } )
-											}
-											min={ 1 }
-											max={ MAX_POSTS_COLUMNS }
-											withInputField
-											required
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
-										
-										<UnitControl
-											label={ __( 'Column width', 'alphalisting' ) }
-											value={ sanitizedColumnWidth }
-											units={ LENGTH_UNITS }
-											onChange={ ( nextValue ) =>
-												setAttributes( {
-													'column-width': sanitizeLengthValue(
-														nextValue,
-														defaults['column-width'].default
-													),
-												} )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
-
-										<UnitControl
-											label={ __( 'Column gap', 'alphalisting' ) }
-											value={ sanitizedColumnGap }
-											units={ LENGTH_UNITS }
-											onChange={ ( nextValue ) =>
-												setAttributes( {
-													'column-gap': sanitizeLengthValue(
-														nextValue,
-														defaults['column-gap'].default
-													),
-												} )
-											}
-											__next40pxDefaultSize
-											__nextHasNoMarginBottom
-										/>
-										{ subFills }
-									</>
-								) }
-							</DisplayOptions.Slot>
+							{ 'posts' === attributes.display && (
+								<ToggleControl
+									label={ __( 'Group by last word', 'alphalisting' ) }
+									checked={ 'last-word' === attributes['group-by'] }
+									onChange={ ( enabled ) =>
+										setAttributes( {
+											'group-by': enabled ? 'last-word' : '',
+										} )
+									}
+									help={ __( 'Group and sort posts by the last word of their title.', 'alphalisting' ) }
+									__next40pxDefaultSize
+									__nextHasNoMarginBottom
+								/>
+							) }
 						</PanelBody>
+
+						<PanelBody title={ __( 'Layout', 'alphalisting' ) } initialOpen={ false }>
+							<RangeControl
+								label={ __( 'Columns', 'alphalisting' ) }
+								value={ sanitizedColumns }
+								onChange={ ( value ) =>
+									setAttributes( { columns: sanitizeColumnCount( value ) } )
+								}
+								min={ 1 }
+								max={ MAX_POSTS_COLUMNS }
+								withInputField
+								required
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+
+							<UnitControl
+								label={ __( 'Column width', 'alphalisting' ) }
+								value={ sanitizedColumnWidth }
+								units={ LENGTH_UNITS }
+								onChange={ ( nextValue ) =>
+									setAttributes( {
+										'column-width': sanitizeLengthValue(
+											nextValue,
+											defaults['column-width'].default
+										),
+									} )
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+
+							<UnitControl
+								label={ __( 'Column gap', 'alphalisting' ) }
+								value={ sanitizedColumnGap }
+								units={ LENGTH_UNITS }
+								onChange={ ( nextValue ) =>
+									setAttributes( {
+										'column-gap': sanitizeLengthValue(
+											nextValue,
+											defaults['column-gap'].default
+										),
+									} )
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+
+							<ToggleControl
+								label={ __( 'Show back to top link', 'alphalisting' ) }
+								checked={ !! attributes['back-to-top'] }
+								onChange={ ( value ) =>
+									setAttributes( { 'back-to-top': value } )
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+						</PanelBody>
+
+						<PanelBody title={ __( 'Advanced', 'alphalisting' ) } initialOpen={ false }>
+							<TextControl
+								label={ __( 'Listing ID', 'alphalisting' ) }
+								help={ __(
+									'The HTML id attribute for this listing, used for anchor links. This is not a post or term ID.',
+									'alphalisting'
+								) }
+								value={ attributes['instance-id'] ?? fallbackInstanceId }
+								onChange={ (value) =>
+									setAttributes( { 'instance-id': value } )
+								}
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+							/>
+						</PanelBody>
+
+						{ /* The built-in controls moved to the panels above; the slot keeps
+						     its own panel so third-party fills stay where they were. */ }
+						<DisplayOptions.Slot>
+							{ ( subFills ) =>
+								subFills?.length ? (
+									<PanelBody title={ __( 'Display options', 'alphalisting' ) }>
+										{ subFills }
+									</PanelBody>
+								) : null
+							}
+						</DisplayOptions.Slot>
 
 						<Extensions.Slot>
 							{ ( subFills ) => ( <> { subFills } </> ) }

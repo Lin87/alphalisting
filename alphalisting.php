@@ -58,9 +58,18 @@ function alphalisting_init() {
 	\eslin87\AlphaListing\Shortcode\PostsQuery::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\TermsQuery::instance()->activate( __FILE__ )->initialize();
 
-	// Shortcode attribute handlers.
-	\eslin87\AlphaListing\Shortcode\QueryParts\Alphabet::instance()->activate( __FILE__ )->initialize();
+	// Shortcode attribute handlers -- one per attribute, nothing is seeded in
+	// Shortcode::handle(). This order is the order apply_query_to_shortcode()
+	// processes the attributes in, so append rather than reorder.
 	\eslin87\AlphaListing\Shortcode\QueryParts\BackToTop::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Display::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\GetAllChildren::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\GroupNumbers::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Grouping::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Numbers::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\ReturnType::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Target::instance()->activate( __FILE__ )->initialize();
+	\eslin87\AlphaListing\Shortcode\QueryParts\Alphabet::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\Columns::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ColumnGap::instance()->activate( __FILE__ )->initialize();
 	\eslin87\AlphaListing\Shortcode\QueryParts\ColumnWidth::instance()->activate( __FILE__ )->initialize();

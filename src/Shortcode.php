@@ -45,19 +45,8 @@ class Shortcode extends Singleton {
 		 */
 		do_action( 'alphalisting_shortcode_start', $attributes );
 
-		$defaults   = apply_filters(
-			'alphalisting_get_shortcode_attributes',
-			array(
-				'back-to-top'      => 'true',
-				'display'          => 'posts',
-				'get-all-children' => 'false',
-				'group-numbers'    => '',
-				'grouping'         => '',
-				'numbers'          => 'hide',
-				'return'           => 'listing',
-				'target'           => '',
-			)
-		);
+		// Every attribute is contributed by a Query Part -- see alphalisting_init().
+		$defaults   = apply_filters( 'alphalisting_get_shortcode_attributes', array() );
 		$attributes = shortcode_atts(
 			$defaults,
 			$attributes,
@@ -69,7 +58,9 @@ class Shortcode extends Singleton {
 		}
 		$attributes = apply_filters( 'alphalisting_sanitize_shortcode_attributes', $attributes );
 
-		$grouping      = $attributes['grouping'];
+		// The `??` fallbacks here and below mirror the Query Part defaults, and only
+		// apply if a part failed to register and shortcode_atts() dropped the key.
+		$grouping      = $attributes['grouping'] ?? '';
 		$group_numbers = false;
 		if ( ! empty( $attributes['group-numbers'] ) && alphalisting_is_truthy( $attributes['group-numbers'] ) ) {
 			$group_numbers = true;
@@ -86,7 +77,7 @@ class Shortcode extends Singleton {
 		}
 
 		$grouping_obj = new Grouping( $grouping );
-		$numbers_obj  = new Numbers( $attributes['numbers'], $group_numbers );
+		$numbers_obj  = new Numbers( $attributes['numbers'] ?? 'hide', $group_numbers );
 
 		$a_z_query = new Query( null, '', true, $attributes );
 
@@ -102,7 +93,7 @@ class Shortcode extends Singleton {
 			}
 		}
 
-		if ( 'letters' === $attributes['return'] ) {
+		if ( 'letters' === ( $attributes['return'] ?? 'listing' ) ) {
 			$ret = '<div class="az-letters">' . $a_z_query->get_the_letters( $target ) . '</div>';
 		} else {
 			$ret = $a_z_query->get_the_listing();

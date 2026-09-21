@@ -23,7 +23,7 @@ This file tells AI coding agents how to work safely and effectively in this repo
 ### Layout
 
 - `alphalisting.php` — bootstrap. Defines `ALPHALISTING_VERSION`, `ALPHALISTING_LOG`, `ALPHALISTING_PLUGIN_FILE`, `ALPHALISTING_DEFAULT_TEMPLATE`; loads `vendor/autoload.php` and the `functions/` + `widgets/` files; then `alphalisting_init()` on `init` priority **5** instantiates every singleton.
-- `src/` — PSR-4 `eslin87\AlphaListing\`. Core: `Alphabet`, `Query`, `Indices`, `Grouping`, `Numbers`, `Strings`, `Shortcode`, `GutenBlock`, `Singleton`, `Extension`. Plus `src/Shortcode/` (`Query`, `PostsQuery`, `TermsQuery`, `Extension`) and `src/Shortcode/QueryParts/` (21 files — one per shortcode attribute).
+- `src/` — PSR-4 `eslin87\AlphaListing\`. Core: `Alphabet`, `Query`, `Indices`, `Grouping`, `Numbers`, `Strings`, `Shortcode`, `GutenBlock`, `Singleton`, `Extension`. Plus `src/Shortcode/` (`Query`, `PostsQuery`, `TermsQuery`, `Extension`) and `src/Shortcode/QueryParts/` (28 files — one per shortcode attribute, plus three abstract bases).
 - `widgets/` — `class-alphalisting-widget.php` (also PSR-4 mapped).
 - `functions/` — `enqueues.php`, `health-check.php`, `helpers.php`, `scripts.php`, `styles.php`.
 - `templates/` — `a-z-listing.php` (the default, referenced by `ALPHALISTING_DEFAULT_TEMPLATE`) and `a-z-listing.example.php`.
@@ -63,11 +63,11 @@ It also hooks `alphalisting_shortcode_start` → `handler()` and `alphalisting_s
 **To add a shortcode attribute:**
 
 1. Add a class to `src/Shortcode/QueryParts/`, overriding `sanitize_attribute()` and/or `shortcode_query()` / `shortcode_query_for_display_and_attribute()`.
-2. Register it in `alphalisting_init()` in `alphalisting.php` as `ClassName::instance()->activate( __FILE__ )->initialize();`.
+2. Register it in `alphalisting_init()` in `alphalisting.php` as `ClassName::instance()->activate( __FILE__ )->initialize();`. **Append it; don't reorder the list.** Registration order is the order the keys land in the shortcode attribute array, which is the order `Shortcode\Query::apply_query_to_shortcode()` processes them in.
 3. Add a matching entry to `scripts/blocks/attributes.json` so the block exposes it.
-4. Add the editor control in `scripts/blocks/edit.js` (or the relevant `scripts/components/*` panel).
+4. Add the editor control to the fitting `PanelBody` in `scripts/blocks/edit.js` — *Listing selection* (what is listed), *Alphabet & grouping* (how items are bucketed and ordered), *Layout* (how the listing is laid out), or *Advanced* — or to the relevant `scripts/components/*` panel.
 
-Copy `QueryParts/BackToTop.php` (simple, boolean-ish) or `QueryParts/GroupBy.php` (enum affecting sorting) as your model. Copy `QueryParts/HideEmpty_Deprecated.php` as the model for deprecating an attribute.
+Copy `QueryParts/BackToTop.php` (simple, boolean-ish) or `QueryParts/GroupBy.php` (enum affecting sorting) as your model. Copy `QueryParts/HideEmpty_Deprecated.php` as the model for deprecating an attribute. For an attribute that only needs to exist and be read from `$attributes` elsewhere, copy `QueryParts/Target.php` — a declaration-only part that overrides nothing.
 
 ---
 
@@ -213,7 +213,7 @@ find . -name "*.php" -not -path "./vendor/*" -not -path "./node_modules/*" -prin
 ## Backward compatibility
 
 ### Shortcode `[alphalisting]`
-Registered in `src/Shortcode.php`. Base defaults are hard-coded in `Shortcode::handle()`; the rest are contributed by `QueryParts` classes. All of these are public API:
+Registered in `src/Shortcode.php`. `Shortcode::handle()` seeds **no** attributes of its own — every one is contributed by a `QueryParts` class. All of these are public API:
 
 - **Any display:** `display`, `return`, `alphabet`, `numbers`, `group-numbers`, `grouping`, `symbols-first`, `back-to-top`, `target`, `instance-id`, `columns`, `column-width`, `column-gap`
 - **`display="posts"`:** `post-type`, `parent-post`, `terms`, `exclude-posts`, `exclude-terms`, `get-all-children`, `group-by`
