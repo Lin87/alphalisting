@@ -5,7 +5,7 @@
 **Requires at least:** 6.0  
 **Requires PHP:** 8.0  
 **Tested up to:** 7.1  
-**Stable tag:** 4.6.0  
+**Stable tag:** 4.6.1  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -59,6 +59,10 @@ Comprehensive documentation is now available:
 
 
 ## Changelog ##
+
+### 4.6.1 ###
+
+* Bugfix: Converting an `[alphalisting]` shortcode into a block no longer drops the last attribute in the shortcode. A trailing `terms="news"` or `exclude-posts="2046"` is now carried over, as is `grouping="numbers"`.
 
 ### 4.6.0 ###
 
