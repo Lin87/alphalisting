@@ -62,7 +62,7 @@ Comprehensive documentation is now available:
 
 ### 4.6.1 ###
 
-* Bugfix: Converting an `[alphalisting]` shortcode into a block no longer drops the last attribute in the shortcode. A trailing `terms="news"` or `exclude-posts="2046"` is now carried over, as is `grouping="numbers"`.
+* Bugfix: Converting an `[alphalisting]` shortcode into a block no longer drops the last attribute in the shortcode.
 
 ### 4.6.0 ###
 
