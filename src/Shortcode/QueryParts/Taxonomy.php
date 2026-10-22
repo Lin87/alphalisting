@@ -59,7 +59,14 @@ class Taxonomy extends Extension {
 	 * @return mixed The updated query.
 	 */
 	public function shortcode_query_for_display_and_attribute( $query, string $display, string $key, $value, array $attributes ) {
-		$query['taxonomy'] = Strings::maybe_mb_split( ',', $value );
+		$taxonomies = alphalisting_filter_listable_taxonomies( Strings::maybe_mb_split( ',', $value ) );
+		if ( ! $taxonomies ) {
+			// Every requested taxonomy was refused. get_terms() reads an empty taxonomy
+			// list as "all taxonomies", so the items query must be skipped instead.
+			$query['_alphalisting_no_results'] = true;
+		}
+
+		$query['taxonomy'] = $taxonomies;
 		return $query;
 	}
 }

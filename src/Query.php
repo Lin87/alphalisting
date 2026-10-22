@@ -651,6 +651,18 @@ class Query {
 			);
 		}
 
+		// $section can come straight from a shortcode attribute, so drop any candidate
+		// that would traverse out of the theme directory before it reaches `require`.
+		// Backslashes are path separators on Windows; normalize so validate_file() sees them.
+		$templates = array_values(
+			array_filter(
+				$templates,
+				function( string $template ): bool {
+					return 0 === validate_file( str_replace( '\\', '/', $template ) );
+				}
+			)
+		);
+
 		_do_template( $this, locate_template( $templates ) );
 
 		wp_reset_postdata();

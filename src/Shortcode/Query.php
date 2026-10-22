@@ -27,6 +27,17 @@ abstract class Query extends Singleton {
 	public $display;
 
 	/**
+	 * Items already fetched during this request, keyed by get_request_items_key().
+	 *
+	 * Lets identical listings on one page (such as the widget and the listing it links to)
+	 * share a single query. Never persisted, so it cannot serve stale results.
+	 *
+	 * @since 4.6.2
+	 * @var array<string,array>
+	 */
+	protected static $request_items = array();
+
+	/**
 	 * Initialize the extension.
 	 *
 	 * @since 4.0.0
@@ -73,5 +84,43 @@ abstract class Query extends Singleton {
 			}
 		}
 		return $query;
+	}
+
+	/**
+	 * Build the key under which this request's items for a query are remembered.
+	 *
+	 * Query parts change which items are fetched only through the query array, so the
+	 * array identifies the result. The user and locale are included because they also
+	 * decide which items WordPress returns (private posts, multilingual plugins).
+	 *
+	 * @since 4.6.2
+	 * @param mixed $query The query.
+	 * @return string The key, or '' when the result must not be reused.
+	 */
+	protected function get_request_items_key( $query ): string {
+		if ( ! is_array( $query ) ) {
+			return '';
+		}
+
+		/**
+		 * Whether identical listing queries in one request may share their results.
+		 *
+		 * @since 4.6.2
+		 * @param bool   $reuse   Whether to reuse the results. Default true.
+		 * @param array  $query   The query.
+		 * @param string $display The display/query type.
+		 */
+		if ( ! apply_filters( 'alphalisting_reuse_query_results', true, $query, $this->display ) ) {
+			return '';
+		}
+
+		try {
+			$serialized = serialize( array( $this->display, $query, get_current_user_id(), get_locale() ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
+		} catch ( \Throwable $e ) {
+			// A third-party query arg such as a closure cannot be serialized; just don't reuse.
+			return '';
+		}
+
+		return md5( $serialized );
 	}
 }

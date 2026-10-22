@@ -9,7 +9,7 @@ This file tells AI coding agents how to work safely and effectively in this repo
 - **What this is:** A WordPress plugin that displays posts/pages/terms alphabetically (A–Z index), via a Gutenberg block, a shortcode, and a widget.
 - **Don't break:** The `[alphalisting]` shortcode attributes and behavior, the block's attributes, translations (`textdomain: alphalisting`), and public PHP hooks/filters — including their **legacy dashed aliases**.
 - **Runtime reqs:** PHP **≥ 8.0** (`mbstring`, polyfilled by `symfony/polyfill-mbstring`), WordPress **≥ 6.0**, tested up to **7.1**.
-- **Current version:** `4.6.0`. It must match in **three** places: the `Version:` header in `alphalisting.php`, `Stable tag` in `readme.txt`, and `version` in `package.json`.
+- **Current version:** `4.6.2`. It must match in **three** places: the `Version:` header in `alphalisting.php`, `Stable tag` in `readme.txt`, and `version` in `package.json`.
 - **There is no CI.** No `.github/` workflows exist — nothing runs on push. Local verification is the only gate.
 - **No regressions.** Nothing here is covered by tests, so a regression ships silently. See **No regressions** below.
 
@@ -280,6 +280,13 @@ Registered in `src/Shortcode.php`. `Shortcode::handle()` seeds **no** attributes
 
 Special cases worth knowing: `return="letters"` renders only the `<div class="az-letters">` block; `grouping="numbers"` is special-cased; `target` accepts a post ID or a URL.
 
+`post-type` and `taxonomy` only list *listable* types (see **Security invariants**). A registered
+type that is neither public nor viewable is dropped; an unregistered name passes through untouched
+(it already matched nothing). If every requested type is dropped, the query part sets
+`$query['_alphalisting_no_results']` and `PostsQuery`/`TermsQuery::get_items()` return no items —
+never a fallback to `page`/`category`, and never an empty `taxonomy` array, which `get_terms()` reads
+as *all* taxonomies.
+
 ### Block attributes
 Treat `scripts/blocks/attributes.json` as public API. Add new attributes with safe defaults; never rename or remove one without an upgrade path.
 
@@ -299,8 +306,38 @@ Hook families and where they live:
 | Block | `src/GutenBlock.php` | `alphalisting_get_gutenberg_attributes` |
 | Styles/output | `functions/enqueues.php`, `templates/` | `alphalisting_add_styling`, `alphalisting_styles`, `alphalisting_show_back_to_top` |
 | Actions | `src/Shortcode.php`, `src/Query.php` | `alphalisting_shortcode_start`, `alphalisting_shortcode_end`, `alphalisting_save_cache`, `alphalisting_log` |
+| Listing security | `functions/helpers.php`, `src/Shortcode/Query.php` | `alphalisting_post_type_is_listable`, `alphalisting_taxonomy_is_listable`, `alphalisting_reuse_query_results` |
 
 Grep before you assume — the list above is representative, not exhaustive.
+
+---
+
+## Security invariants
+
+Shortcode and block attributes are attacker-controlled: any Contributor can set them, through a
+post preview or the `/wp/v2/block-renderer` REST endpoint, without publishing anything.
+
+- **Template candidates must pass `validate_file()`.** `Query::the_listing()` builds theme template
+  names from the taxonomy, the section slug, and the current post, and the winner is `require`d. The
+  filter right before `locate_template()` drops any name containing `./` or `../`; backslashes are
+  normalized first because Windows treats them as separators and resolves `..` even through a folder
+  that does not exist. Keep that filter, and keep any new candidate behind it. Current WordPress
+  releases (7.1, and security backports such as 6.0.17 and 6.8.11) also refuse such paths inside
+  `locate_template()` via `_wp_is_template_path_allowed()`, but older patch releases (e.g. 6.8.3)
+  do not, and `Requires at least: 6.0` means the plugin's own filter is what protects them.
+- **Attribute-driven type selection goes through the listable helpers.**
+  `alphalisting_filter_listable_post_types()` / `alphalisting_filter_listable_taxonomies()` keep a
+  type when it is viewable *or* public — a superset of what the block editor (`viewable`) and the
+  widget form (`public`) offer, so no UI choice is refused. The PHP API (`new Query( 'nav_menu' )`,
+  `alphalisting_query`) is deliberately not restricted.
+- **Known gap:** with `display="posts"`, `PostsTerms` and `ExcludeTerms` still read `taxonomy` raw
+  to *filter* public posts by term. They print no term names, so nothing hidden is listed.
+- **Anything that changes *which items* are fetched must live in `$query`.** `get_items()` reuses the
+  items of an identical query within one request, keyed on display type, `$query`, user ID, and
+  locale (`Shortcode\Query::get_request_items_key()`). A query part that changed the result through a
+  request-wide SQL hook (`posts_where`, `terms_clauses`, `pre_get_posts`) instead would be served the
+  previous listing's items. Hooks that only change bucketing or order (`alphalisting_item_index_letter`,
+  the comparator) are safe — they run on the items afterwards.
 
 ---
 

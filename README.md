@@ -5,7 +5,7 @@
 **Requires at least:** 6.0  
 **Requires PHP:** 8.0  
 **Tested up to:** 7.1  
-**Stable tag:** 4.6.1  
+**Stable tag:** 4.6.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -60,13 +60,19 @@ Comprehensive documentation is now available:
 
 ## Changelog ##
 
+### 4.6.2 ###
+
+* Security: A listing's `taxonomy` value can no longer contain path segments that make the plugin load a PHP file from outside the theme in place of the listing template. Theme template overrides such as `a-z-listing.php` and `a-z-listing-category.php` work as before.
+* Security: The `post-type` and `taxonomy` settings now only list public or publicly viewable content types. Internal types such as reusable blocks (`wp_block`) or navigation menus (`nav_menu`) render an empty listing instead of their titles. Every type offered in the block and widget settings is unaffected. A site that needs to list a non-public type can allow it with the new `alphalisting_post_type_is_listable` or `alphalisting_taxonomy_is_listable` filter.
+* Change: Identical listings on the same page, such as the A-Z Site Map widget and the listing it links to, now share one database query. The `alphalisting_reuse_query_results` filter turns this off.
+
 ### 4.6.1 ###
 
 * Bugfix: Converting an `[alphalisting]` shortcode into a block no longer drops the last attribute in the shortcode.
 
 ### 4.6.0 ###
 
-* New: Post listings can ignore a leading article when choosing a title's letter and when sorting, so "The Great Gatsby" is listed under G. Choose a language under "Ignore leading articles" in the block settings, or add `ignore-articles="en"` to the shortcode. English, French, Spanish, and Italian are supported, one language per listing, and elided forms such as "L'Étranger" and "Un'Altra Vita" are recognised. The full title is still displayed.
+* New: Post listings can ignore a leading article when choosing a title's letter and when sorting, so "The Great Gatsby" is listed under G. Choose a language under "Ignore leading articles" in the block settings, or add `ignore-articles="en"` to the shortcode. English, French, Spanish, and Italian are supported, one language per listing, and elided forms such as "L'Étranger" and "Un'Altra Vita" are recognized. The full title is still displayed.
 
 ### 4.5.1 ###
 
@@ -89,7 +95,7 @@ Comprehensive documentation is now available:
 * Bugfix: The widget's post-title autocomplete no longer shows stray backslashes in titles containing apostrophes.
 * Security: Widget settings are no longer interpolated into a shortcode string, so a value containing a quote or bracket can no longer alter the rendered shortcode.
 * Change: The `instance-id` attribute is sanitized for use in an HTML id and URL fragment.
-* Change: The plugin now declares `Requires PHP: 8.0` and `Requires at least: 6.0`, so WordPress will block activation on unsupported versions instead of fataling.
+* Change: The plugin now declares `Requires PHP: 8.0` and `Requires at least: 6.0`, so WordPress will block activation on unsupported versions instead of causing fatal error.
 
 ### 4.4.0 ###
 

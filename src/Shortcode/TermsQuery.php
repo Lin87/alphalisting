@@ -56,13 +56,26 @@ class TermsQuery extends Query {
 			return $items;
 		}
 
+		if ( is_array( $query ) && ! empty( $query['_alphalisting_no_results'] ) ) {
+			return array();
+		}
+
+		$request_key = $this->get_request_items_key( $query );
+		if ( '' !== $request_key && isset( self::$request_items[ $request_key ] ) ) {
+			return self::$request_items[ $request_key ];
+		}
+
 		$terms = get_terms( $query ); // @phan-suppress-current-line PhanAccessMethodInternal
 
 		// get_terms() returns array|int|\WP_Error. An unregistered taxonomy yields a
 		// \WP_Error, which would violate this method's `array` return type under
 		// strict_types and fatal the page instead of rendering an empty listing.
 		if ( ! is_array( $terms ) ) {
-			return array();
+			$terms = array();
+		}
+
+		if ( '' !== $request_key ) {
+			self::$request_items[ $request_key ] = $terms;
 		}
 
 		return $terms;

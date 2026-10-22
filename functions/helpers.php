@@ -455,3 +455,87 @@ function alphalisting_is_truthy( $value ): bool {
 		return false;
 	}
 }
+
+/**
+ * Drop registered post types that should not be listed from a shortcode or block attribute.
+ *
+ * Unregistered names are kept: they already match nothing, so passing them through keeps the
+ * listing exactly as it was before this check existed.
+ *
+ * @since 4.6.2
+ * @param array<string> $post_types The requested post type names.
+ * @return array<string> The post types that may be listed.
+ */
+function alphalisting_filter_listable_post_types( array $post_types ): array {
+	return array_values(
+		array_filter(
+			$post_types,
+			function ( $post_type ): bool {
+				$object = get_post_type_object( (string) $post_type );
+				if ( ! $object instanceof \WP_Post_Type ) {
+					return true;
+				}
+
+				/**
+				 * Whether a post type may be listed by the shortcode, block, or widget.
+				 *
+				 * Defaults to true for public or publicly viewable post types only, so
+				 * internal types such as `wp_block` and `wp_navigation` are not exposed.
+				 *
+				 * @since 4.6.2
+				 * @param bool          $listable  Whether the post type may be listed.
+				 * @param string        $post_type The post type name.
+				 * @param \WP_Post_Type $object    The post type object.
+				 */
+				return (bool) apply_filters(
+					'alphalisting_post_type_is_listable',
+					is_post_type_viewable( $object ) || $object->public,
+					(string) $post_type,
+					$object
+				);
+			}
+		)
+	);
+}
+
+/**
+ * Drop registered taxonomies that should not be listed from a shortcode or block attribute.
+ *
+ * Unregistered names are kept: they already match nothing, so passing them through keeps the
+ * listing exactly as it was before this check existed.
+ *
+ * @since 4.6.2
+ * @param array<string> $taxonomies The requested taxonomy names.
+ * @return array<string> The taxonomies that may be listed.
+ */
+function alphalisting_filter_listable_taxonomies( array $taxonomies ): array {
+	return array_values(
+		array_filter(
+			$taxonomies,
+			function ( $taxonomy ): bool {
+				$object = get_taxonomy( (string) $taxonomy );
+				if ( ! $object instanceof \WP_Taxonomy ) {
+					return true;
+				}
+
+				/**
+				 * Whether a taxonomy may be listed by the shortcode, block, or widget.
+				 *
+				 * Defaults to true for public or publicly viewable taxonomies only, so
+				 * internal taxonomies such as `nav_menu` are not exposed.
+				 *
+				 * @since 4.6.2
+				 * @param bool         $listable Whether the taxonomy may be listed.
+				 * @param string       $taxonomy The taxonomy name.
+				 * @param \WP_Taxonomy $object   The taxonomy object.
+				 */
+				return (bool) apply_filters(
+					'alphalisting_taxonomy_is_listable',
+					is_taxonomy_viewable( $object ) || $object->public,
+					(string) $taxonomy,
+					$object
+				);
+			}
+		)
+	);
+}
