@@ -26,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "eslin87\\AlphaListing\\": ["src/", "widgets/"]
+            "eslin87\\AlphaListing\\": "src/"
         }
     },
     "scripts": {

@@ -24,7 +24,7 @@ This file tells AI coding agents how to work safely and effectively in this repo
 
 - `alphalisting.php` — bootstrap. Defines `ALPHALISTING_VERSION`, `ALPHALISTING_LOG`, `ALPHALISTING_PLUGIN_FILE`, `ALPHALISTING_DEFAULT_TEMPLATE`; loads `vendor/autoload.php` and the `functions/` + `widgets/` files; then `alphalisting_init()` on `init` priority **5** instantiates every singleton.
 - `src/` — PSR-4 `eslin87\AlphaListing\`. Core: `Alphabet`, `Query`, `Indices`, `Grouping`, `Numbers`, `Strings`, `Shortcode`, `GutenBlock`, `Singleton`, `Extension`. Plus `src/Shortcode/` (`Query`, `PostsQuery`, `TermsQuery`, `Extension`) and `src/Shortcode/QueryParts/` (29 files — one per shortcode attribute, plus three abstract bases).
-- `widgets/` — `class-alphalisting-widget.php` (also PSR-4 mapped).
+- `widgets/` — `class-alphalisting-widget.php`. `require_once`d by `alphalisting.php`, **not** PSR-4 mapped: the file registers hooks at load time, so it must load eagerly, and its WordPress-style filename does not satisfy PSR-4.
 - `functions/` — `enqueues.php`, `health-check.php`, `helpers.php`, `scripts.php`, `styles.php`.
 - `templates/` — `a-z-listing.php` (the default, referenced by `ALPHALISTING_DEFAULT_TEMPLATE`) and `a-z-listing.example.php`.
 - `scripts/` — block editor JS. `scripts/blocks/` (`index.js`, `edit.js`, `attributes.json`, `constants.js`, `shortcode-attributes.js`, `shortcode-upgrader.js`) and `scripts/components/`. Also `alphalisting-widget-admin.js`. **There is no `blocks/` directory at the repo root.**
