@@ -81,6 +81,13 @@ class PostType extends Extension {
 		$post_type = array_filter( $post_type );
 		$post_type = array_unique( $post_type );
 
+		$requested = $post_type;
+		$post_type = alphalisting_filter_listable_post_types( $requested );
+		if ( $requested && ! $post_type ) {
+			// Every requested type was refused; list nothing rather than fall back to pages.
+			$query['_alphalisting_no_results'] = true;
+		}
+
 		$query['post_type'] = $post_type ? $post_type : array( 'page' );
 
 		return $query;

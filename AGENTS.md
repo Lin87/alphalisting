@@ -9,7 +9,7 @@ This file tells AI coding agents how to work safely and effectively in this repo
 - **What this is:** A WordPress plugin that displays posts/pages/terms alphabetically (A–Z index), via a Gutenberg block, a shortcode, and a widget.
 - **Don't break:** The `[alphalisting]` shortcode attributes and behavior, the block's attributes, translations (`textdomain: alphalisting`), and public PHP hooks/filters — including their **legacy dashed aliases**.
 - **Runtime reqs:** PHP **≥ 8.0** (`mbstring`, polyfilled by `symfony/polyfill-mbstring`), WordPress **≥ 6.0**, tested up to **7.1**.
-- **Current version:** `4.6.0`. It must match in **three** places: the `Version:` header in `alphalisting.php`, `Stable tag` in `readme.txt`, and `version` in `package.json`.
+- **Current version:** `4.6.2`. It must match in **three** places: the `Version:` header in `alphalisting.php`, `Stable tag` in `readme.txt`, and `version` in `package.json`.
 - **There is no CI.** No `.github/` workflows exist — nothing runs on push. Local verification is the only gate.
 - **No regressions.** Nothing here is covered by tests, so a regression ships silently. See **No regressions** below.
 
@@ -24,7 +24,7 @@ This file tells AI coding agents how to work safely and effectively in this repo
 
 - `alphalisting.php` — bootstrap. Defines `ALPHALISTING_VERSION`, `ALPHALISTING_LOG`, `ALPHALISTING_PLUGIN_FILE`, `ALPHALISTING_DEFAULT_TEMPLATE`; loads `vendor/autoload.php` and the `functions/` + `widgets/` files; then `alphalisting_init()` on `init` priority **5** instantiates every singleton.
 - `src/` — PSR-4 `eslin87\AlphaListing\`. Core: `Alphabet`, `Query`, `Indices`, `Grouping`, `Numbers`, `Strings`, `Shortcode`, `GutenBlock`, `Singleton`, `Extension`. Plus `src/Shortcode/` (`Query`, `PostsQuery`, `TermsQuery`, `Extension`) and `src/Shortcode/QueryParts/` (29 files — one per shortcode attribute, plus three abstract bases).
-- `widgets/` — `class-alphalisting-widget.php` (also PSR-4 mapped).
+- `widgets/` — `class-alphalisting-widget.php`. `require_once`d by `alphalisting.php`, **not** PSR-4 mapped: the file registers hooks at load time, so it must load eagerly, and its WordPress-style filename does not satisfy PSR-4.
 - `functions/` — `enqueues.php`, `health-check.php`, `helpers.php`, `scripts.php`, `styles.php`.
 - `templates/` — `a-z-listing.php` (the default, referenced by `ALPHALISTING_DEFAULT_TEMPLATE`) and `a-z-listing.example.php`.
 - `scripts/` — block editor JS. `scripts/blocks/` (`index.js`, `edit.js`, `attributes.json`, `constants.js`, `shortcode-attributes.js`, `shortcode-upgrader.js`) and `scripts/components/`. Also `alphalisting-widget-admin.js`. **There is no `blocks/` directory at the repo root.**
@@ -194,21 +194,19 @@ composer install --no-interaction
 
 ```bash
 npm run build          # wp-scripts build ./scripts/blocks/index.js && grunt
-npm run build:release  # npm run build && composer makepot — use at release time only
-npm run start          # dev watch — JS only; does NOT run grunt/sass
 npx grunt              # one-shot: addtextdomain + readme + sass. NOT a watch task.
 npx grunt sass         # recompile css/*.scss only
 npx grunt readme       # regenerate README.md from readme.txt
-npm run package        # release zip — see Packaging & release. Do NOT use for everyday builds.
+npm run release        # release zip — see Packaging & release. Do NOT use for everyday builds.
 ```
 
 **Notes for agents**
 
 - Use `npm run build` for everyday work. POT regeneration is deliberately **not** part of it: `make-pot` rewrites `POT-Creation-Date` on every run, so bundling it would leave `languages/alphalisting.pot` dirty after every build and train you to discard changes that sometimes matter. It would also make the JS build require PHP + `composer install`.
-- `npm run build:release` is the release-time superset. `npm run makepot` regenerates the POT alone (an alias for `composer makepot`).
+- `npm run release` is the release-time superset: it runs `build` and regenerates the POT on the way to the zip. `npm run makepot` regenerates the POT alone (an alias for `composer makepot`).
 - Do **not** commit built assets (`build/`, `vendor/`, compiled `css/*.css` beyond what's already tracked).
 - `grunt readme` overwrites `README.md`. Edit `readme.txt` and regenerate.
-- `npm run package` is release-only. It swaps `vendor/` to a no-dev install mid-run and swaps it back — don't reach for it to check that a build works.
+- `npm run release` is release-only. It swaps `vendor/` to a no-dev install mid-run and swaps it back — don't reach for it to check that a build works.
 
 ---
 
@@ -256,7 +254,6 @@ Linting exists (via `@wordpress/scripts` defaults — there is no `.eslintrc`/`.
 npm run lint:js        # eslint over ./scripts
 npm run lint:css       # ./css/editor.css ./css/style.css only
 npm run lint:pkg-json
-npm run format:js
 ```
 
 Nothing enforces lint in CI, so the baseline is already dirty: as of 4.5.1 `lint:js` reports **~1713 problems**, almost all `prettier/prettier` "Delete `␍`" CRLF line-ending errors. Do not run `--fix` across `scripts/` to clean this up — it would rewrite every file and bury your actual change. Compare against the baseline instead of expecting zero.
@@ -280,6 +277,13 @@ Registered in `src/Shortcode.php`. `Shortcode::handle()` seeds **no** attributes
 
 Special cases worth knowing: `return="letters"` renders only the `<div class="az-letters">` block; `grouping="numbers"` is special-cased; `target` accepts a post ID or a URL.
 
+`post-type` and `taxonomy` only list *listable* types (see **Security invariants**). A registered
+type that is neither public nor viewable is dropped; an unregistered name passes through untouched
+(it already matched nothing). If every requested type is dropped, the query part sets
+`$query['_alphalisting_no_results']` and `PostsQuery`/`TermsQuery::get_items()` return no items —
+never a fallback to `page`/`category`, and never an empty `taxonomy` array, which `get_terms()` reads
+as *all* taxonomies.
+
 ### Block attributes
 Treat `scripts/blocks/attributes.json` as public API. Add new attributes with safe defaults; never rename or remove one without an upgrade path.
 
@@ -299,8 +303,38 @@ Hook families and where they live:
 | Block | `src/GutenBlock.php` | `alphalisting_get_gutenberg_attributes` |
 | Styles/output | `functions/enqueues.php`, `templates/` | `alphalisting_add_styling`, `alphalisting_styles`, `alphalisting_show_back_to_top` |
 | Actions | `src/Shortcode.php`, `src/Query.php` | `alphalisting_shortcode_start`, `alphalisting_shortcode_end`, `alphalisting_save_cache`, `alphalisting_log` |
+| Listing security | `functions/helpers.php`, `src/Shortcode/Query.php` | `alphalisting_post_type_is_listable`, `alphalisting_taxonomy_is_listable`, `alphalisting_reuse_query_results` |
 
 Grep before you assume — the list above is representative, not exhaustive.
+
+---
+
+## Security invariants
+
+Shortcode and block attributes are attacker-controlled: any Contributor can set them, through a
+post preview or the `/wp/v2/block-renderer` REST endpoint, without publishing anything.
+
+- **Template candidates must pass `validate_file()`.** `Query::the_listing()` builds theme template
+  names from the taxonomy, the section slug, and the current post, and the winner is `require`d. The
+  filter right before `locate_template()` drops any name containing `./` or `../`; backslashes are
+  normalized first because Windows treats them as separators and resolves `..` even through a folder
+  that does not exist. Keep that filter, and keep any new candidate behind it. Current WordPress
+  releases (7.1, and security backports such as 6.0.17 and 6.8.11) also refuse such paths inside
+  `locate_template()` via `_wp_is_template_path_allowed()`, but older patch releases (e.g. 6.8.3)
+  do not, and `Requires at least: 6.0` means the plugin's own filter is what protects them.
+- **Attribute-driven type selection goes through the listable helpers.**
+  `alphalisting_filter_listable_post_types()` / `alphalisting_filter_listable_taxonomies()` keep a
+  type when it is viewable *or* public — a superset of what the block editor (`viewable`) and the
+  widget form (`public`) offer, so no UI choice is refused. The PHP API (`new Query( 'nav_menu' )`,
+  `alphalisting_query`) is deliberately not restricted.
+- **Known gap:** with `display="posts"`, `PostsTerms` and `ExcludeTerms` still read `taxonomy` raw
+  to *filter* public posts by term. They print no term names, so nothing hidden is listed.
+- **Anything that changes *which items* are fetched must live in `$query`.** `get_items()` reuses the
+  items of an identical query within one request, keyed on display type, `$query`, user ID, and
+  locale (`Shortcode\Query::get_request_items_key()`). A query part that changed the result through a
+  request-wide SQL hook (`posts_where`, `terms_clauses`, `pre_get_posts`) instead would be served the
+  previous listing's items. Hooks that only change bucketing or order (`alphalisting_item_index_letter`,
+  the comparator) are safe — they run on the items afterwards.
 
 ---
 
@@ -332,7 +366,7 @@ Grep before you assume — the list above is representative, not exhaustive.
   2. `Stable tag` in `readme.txt` (plus `Tested up to` / `Requires PHP` / `Requires at least` if they moved)
   3. `version` in `package.json`
   4. New changelog entry in `readme.txt`
-  5. `npm run build:release` — builds, regenerates `README.md` from `readme.txt`, and refreshes `languages/alphalisting.pot`
+  5. `npm run release` — builds, regenerates `README.md` from `readme.txt`, refreshes `languages/alphalisting.pot`, and produces the release zip (see **Packaging & release**)
   6. **Do not update `changelog.md`.**
 
 ---
@@ -340,16 +374,16 @@ Grep before you assume — the list above is representative, not exhaustive.
 ## Packaging & release
 
 ```bash
-npm run package   # build + POT + no-dev vendor + zip + restore dev vendor
+npm run release   # dev vendor + build + POT + no-dev vendor + zip + restore dev vendor + verify
 ```
 
 Produces `alphalisting.zip` at the repo root, with an `alphalisting/` root folder inside — the shape
-WordPress.org expects. Requires PHP, Composer, and a prior `composer install`.
+WordPress.org expects. Requires PHP and Composer; it runs `composer install` itself.
 
-1. Do the **version bump flow** above first.
+1. Do steps 1–4 of the **version bump flow** above first.
 2. Confirm `readme.txt` **Tested up to**, **Requires PHP**, **Requires at least** are accurate.
 3. Confirm `Stable tag` == `alphalisting.php` version == `package.json` version.
-4. `npm run package`. The last step verifies the archive and prints a summary:
+4. `npm run release`. The last step verifies the archive and prints a summary:
 
    ```text
    Package verified: 82 files, 434 KB uncompressed.
@@ -364,9 +398,9 @@ WordPress.org expects. Requires PHP, Composer, and a prior `composer install`.
 
 **How it works, and what not to break**
 
-- `npm run package` chains five steps: `build:release` → `package:vendor:prod` → `package:zip` → `package:vendor:dev` → `package:verify`. The order is load-bearing: `composer makepot` inside `build:release` needs the **dev** `vendor/`, so the no-dev swap has to come after it and the restore before verification (that way `vendor/` is always restored even when verification fails).
-- If the run fails partway, `vendor/` may be left in its no-dev state — the giveaway is `composer makepot` failing on the next run. Recover with `npm run package:vendor:dev`.
-- **Never run `npm run package:zip` on its own to produce a release.** It zips whatever is on disk, so with a normal dev `vendor/` present it produces a ~5 MB archive containing all of WP-CLI. `package:verify` now catches this, but the sub-scripts exist for recovery, not shortcuts — always go through `npm run package`.
+- `npm run release` chains seven steps: `composer install` → `npm run build` → `composer makepot` → `composer install --no-dev --optimize-autoloader` → `wp-scripts plugin-zip` → `composer install` → `node ./bin/verify-package.mjs`. The order is load-bearing: `composer makepot` needs the **dev** `vendor/`, so the no-dev swap has to come after it and the restore before verification (that way `vendor/` is always restored even when verification fails).
+- If the run fails partway, `vendor/` may be left in its no-dev state. Just re-run `npm run release`: its first step is `composer install`, which restores the dev packages.
+- **Never run `wp-scripts plugin-zip` on its own to produce a release.** It zips whatever is on disk, so with a normal dev `vendor/` present it produces a ~5 MB archive containing all of WP-CLI. The verify step catches this, but always go through `npm run release`.
 - `bin/verify-package.mjs` inspects the built zip and fails the build on: a plugin-relative asset path referenced by shipped PHP but absent from the archive, a missing entry from its `MUST_SHIP` list, or anything matching `MUST_NOT_SHIP` (dev Composer packages, `vendor/bin/`, webpack source, `.scss`, repo tooling). **When you add a file the plugin reads at runtime, add it to `files` in `package.json` — and if it is critical, to `MUST_SHIP` as well.**
 - Only **one** Composer package ships: `symfony/polyfill-mbstring`. Everything else in `vendor/` is dev tooling pulled in by `wp-cli/i18n-command`. Never prune `vendor/` by hand — `vendor/composer/autoload_files.php` force-requires dev bootstrap files, so deleting directories leaves dangling requires and a fatal. `composer install --no-dev --optimize-autoloader` regenerates the maps correctly.
 - `vendor/` must still **ship**: `alphalisting.php` requires `vendor/autoload.php` unguarded, and that autoloader is what provides the plugin's own `eslin87\AlphaListing\` PSR-4 map.
@@ -374,7 +408,7 @@ WordPress.org expects. Requires PHP, Composer, and a prior `composer install`.
 - **`scripts/` is build source, but two files in it are read at runtime and MUST ship.** Removing either fatals the site on activation:
   - `scripts/blocks/attributes.json` — `file_get_contents()`d by `src/GutenBlock.php`; if absent, `json_decode(false)` throws a `TypeError` on every page load.
   - `scripts/alphalisting-widget-admin.js` — enqueued by `functions/enqueues.php`.
-- More generally: **any file PHP reads or enqueues at runtime must be in the allowlist**, even if it lives in a directory that is otherwise build-time only. `package:verify` enforces this automatically by scanning shipped PHP for quoted asset paths, so you no longer have to remember — but it can only see *literal* paths. A path built at runtime from a variable is invisible to it; add those to `MUST_SHIP` by hand.
+- More generally: **any file PHP reads or enqueues at runtime must be in the allowlist**, even if it lives in a directory that is otherwise build-time only. The verify step of `npm run release` enforces this automatically by scanning shipped PHP for quoted asset paths, so you no longer have to remember — but it can only see *literal* paths. A path built at runtime from a variable is invisible to it; add those to `MUST_SHIP` by hand.
 - **Do not delete `.npmignore`, and do not add `vendor` or `build` to it.** `wp-scripts plugin-zip` uses npm-packlist, where `.gitignore` outranks the `files` allowlist — and `.gitignore` lists `/vendor/` and `/build/`. npm-packlist disables `.gitignore` whenever `.npmignore` has rules, so that file's existence is the only thing keeping releases correct. The file itself explains this too.
 - `git archive` is **not** a valid packaging method here; it omits `build/` and `vendor/`.
 

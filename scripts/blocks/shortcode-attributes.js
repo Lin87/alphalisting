@@ -1,4 +1,4 @@
-import { attrs } from '@wordpress/shortcode';
+import { attrs, next } from '@wordpress/shortcode';
 
 const BOOLEAN_ATTRIBUTES = new Set( [
     'get-all-children',
@@ -81,9 +81,17 @@ const normalizeAttributeValue = ( key, value ) => {
     return value;
 };
 
+// `attrs()` expects only the attribute text: each of its patterns requires whitespace or
+// end-of-string after a value, so a trailing `]` swallows the last attribute. `next()` runs
+// the full shortcode regex and hands `attrs()` the right substring.
 const getNamedShortcodeAttributes = ( shortcodeText ) => {
-    const parsedAttributes = attrs( shortcodeText );
-    return parsedAttributes?.named || parsedAttributes || {};
+    const match = next( 'alphalisting', shortcodeText );
+
+    if ( match?.shortcode?.attrs?.named ) {
+        return match.shortcode.attrs.named;
+    }
+
+    return attrs( shortcodeText )?.named || {};
 };
 
 export const parseShortcodeAttributes = ( shortcodeText ) => {

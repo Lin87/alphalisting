@@ -2,20 +2,20 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: AlphaListing 4.6.0\n"
+"Project-Id-Version: AlphaListing 4.6.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/alphalisting\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-21T17:27:24+00:00\n"
+"POT-Creation-Date: 2026-10-26T18:30:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: alphalisting\n"
 
 #. Plugin Name of the plugin
-#: alphalisting.php:5
+#: alphalisting.php:3
 #: scripts/blocks/edit.js:927
 #: scripts/blocks/edit.js:943
 #: scripts/blocks/edit.js:951
@@ -24,22 +24,22 @@ msgid "AlphaListing"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: alphalisting.php:7
+#: alphalisting.php:4
 msgid "https://github.com/Lin87/alphalisting"
 msgstr ""
 
 #. Description of the plugin
-#: alphalisting.php:9
+#: alphalisting.php:5
 msgid "Display posts, pages, and terms alphabetically in a Rolodex-, catalog-, or directory-style list."
 msgstr ""
 
 #. Author of the plugin
-#: alphalisting.php:11
+#: alphalisting.php:6
 msgid "Ethan Lin"
 msgstr ""
 
 #. Author URI of the plugin
-#: alphalisting.php:13
+#: alphalisting.php:7
 msgid "https://profiles.wordpress.org/eslin87/"
 msgstr ""
 

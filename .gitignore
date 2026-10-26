@@ -314,5 +314,5 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,visualstudiocode,composer,symfony,grunt,node,windows,macos,sass
 
-# Release artifact produced by `npm run package`
+# Release artifact produced by `npm run release`
 /alphalisting.zip

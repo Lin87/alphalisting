@@ -37,6 +37,15 @@ class PostsQuery extends Query {
 			return $items;
 		}
 
+		if ( is_array( $query ) && ! empty( $query['_alphalisting_no_results'] ) ) {
+			return array();
+		}
+
+		$request_key = $this->get_request_items_key( $query );
+		if ( '' !== $request_key && isset( self::$request_items[ $request_key ] ) ) {
+			return self::$request_items[ $request_key ];
+		}
+
 		add_filter( 'posts_fields', array( $this, 'wp_query_fields' ), 10, 2 );
 		if ( $query instanceof \WP_Query ) {
 			$items = $query->posts;
@@ -70,7 +79,12 @@ class PostsQuery extends Query {
 		}
 		remove_filter( 'posts_fields', array( $this, 'wp_query_fields' ) );
 
-		return empty( $items ) ? array() : $items;
+		$items = empty( $items ) ? array() : $items;
+		if ( '' !== $request_key ) {
+			self::$request_items[ $request_key ] = $items;
+		}
+
+		return $items;
 	}
 
 	/**
