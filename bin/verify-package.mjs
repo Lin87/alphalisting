@@ -1,6 +1,6 @@
 /* eslint-disable no-console -- this is a build script; console IS the output. */
 /**
- * Verify the release archive produced by `npm run package:zip`.
+ * Verify the release archive produced by `npm run release`.
  *
  * The archive contents are an allowlist (`files` in package.json, minus
  * `.npmignore`). That is easy to get wrong in a way no build output reveals:
@@ -145,7 +145,7 @@ if ( problems.length ) {
 	unlinkSync( zipPath );
 	console.error(
 		'Fix the `files` allowlist in package.json (and check .npmignore, whose\n' +
-			'rules override it), then run `npm run package` again.\n'
+			'rules override it), then run `npm run release` again.\n'
 	);
 	process.exit( 1 );
 }

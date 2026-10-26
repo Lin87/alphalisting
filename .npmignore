@@ -1,6 +1,6 @@
 # Do not delete this file, and do not add `vendor` or `build` to it.
 #
-# `npm run package:zip` (wp-scripts plugin-zip) builds its file list with
+# `npm run release` (wp-scripts plugin-zip) builds its file list with
 # npm-packlist, which applies ignore sources in this order:
 #
 #   builtins -> package.json "files" -> .npmignore -> .gitignore
