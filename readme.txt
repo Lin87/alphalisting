@@ -58,7 +58,7 @@ Comprehensive documentation is now available:
 
 = 4.6.2 =
 
-* Security: A listing's `taxonomy` value can no longer contain path segments that make the plugin load a PHP file from outside the theme in place of the listing template. Theme template overrides such as `a-z-listing.php` and `a-z-listing-category.php` work as before.
+* Security: A listing's `taxonomy` value can no longer contain path segments that make the plugin load a PHP file from outside the theme in place of the listing template. Theme template overrides such as `a-z-listing.php` work as before.
 * Security: The `post-type` and `taxonomy` settings now only list public or publicly viewable content types. Internal types such as reusable blocks (`wp_block`) or navigation menus (`nav_menu`) render an empty listing instead of their titles. Every type offered in the block and widget settings is unaffected. A site that needs to list a non-public type can allow it with the new `alphalisting_post_type_is_listable` or `alphalisting_taxonomy_is_listable` filter.
 * Change: Identical listings on the same page, such as the A-Z Site Map widget and the listing it links to, now share one database query. The `alphalisting_reuse_query_results` filter turns this off.
 
